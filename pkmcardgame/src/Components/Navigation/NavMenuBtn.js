@@ -1,16 +1,14 @@
 import React, {useState} from 'react'
 import clsx from "clsx"
 
-//images
-import menuIcon from '../../../src/images/bars-solid.svg'
 
 function NavMenuBtn() {
   const [open, setOpen] = useState('false');
   return (
     <div>
         <nav>
-        <button onClick={() => setOpen(!open)} className="openStyle menuBtn"><img src={menuIcon} alt="Navigation menu button" height="50px" width="50px" /></button>
-        <ul className={clsx(open ? "openStyle" : "closeStyle")}>
+        <button onClick={() => setOpen(!open)} className="openStyle menuBtn"><i class="fa fa-bars"></i></button>
+        <ul className={clsx(open ? "closeStyle" : "openStyle")}>
           <h3>2022</h3>
           <ol>
             <li>Sword and Shield - Lost Orogin</li>
