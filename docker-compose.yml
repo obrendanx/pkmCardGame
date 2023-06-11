@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: pkmCardGame
+    image: docker-react-i
+    build:
+      context: C:\Users\brend\Documents\Websites\pkmCardGame\frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
