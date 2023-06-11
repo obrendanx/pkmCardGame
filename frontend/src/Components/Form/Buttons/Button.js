@@ -8,13 +8,15 @@ function Button({ handleClick, text, primary, sm }) {
         onClick={handleClick}
         className={css`
                 font-size:1em;
-                color:#F36644;
+                color:#fff;
                 height:35px;
                 ${sm ? 'width: 75px;' : 'width:100px;'}
                 padding:5px;
                 border:none;
-                font-weight:600;
-                ${primary ? 'background:#252627;' : 'background:#fff;'}
+                border-radius:10px;
+                font-weight:900;
+                text-transform:uppercase;
+                ${primary ? 'background: #369143;' : 'background: #CC0000;'}
                 @media (max-width: 770px){
                   width:100%;
                 }
