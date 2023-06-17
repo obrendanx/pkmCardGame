@@ -31,7 +31,15 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className={css`
+        width:50%;
+        display:flex;
+        flex-direction:column;
+        background:green;
+        margin-left:25%;
+        margin-top:25vh;
+        overflow-x:hidden;
+    `}>
       <form onSubmit={handleSubmit}>
         <Label htmlFor="username" text="Username" primary />
         <Input
