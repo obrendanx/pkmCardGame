@@ -7,7 +7,7 @@ function Button({ handleClick, text, primary, sm }) {
         <button
         onClick={handleClick}
         className={css`
-                font-size:1em;
+                font-size:0.8em;
                 color:#fff;
                 height:35px;
                 ${sm ? 'width: 75px;' : 'width:100px;'}
