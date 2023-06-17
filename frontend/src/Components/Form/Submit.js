@@ -12,10 +12,10 @@ function Submit({ small, left }) {
             line-height:10px;
             margin-top:10px;
             color:#fff;
-            background:#f44034;
+            background:#B3A125;
             margin-left:${left};
             border-radius:10px;
-            margin-bottom:50px;
+            margin-bottom:10px;
             &:hover{
                 border:
                 solid 1px #1C1C1C;

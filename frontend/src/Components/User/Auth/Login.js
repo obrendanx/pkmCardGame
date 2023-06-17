@@ -32,15 +32,31 @@ function Login() {
 
   return (
     <div className={css`
-        width:50%;
-        display:flex;
-        flex-direction:column;
-        background:green;
-        margin-left:25%;
-        margin-top:25vh;
+        width: 100%;
+        height:100vh;
         overflow-x:hidden;
+        background: ;
     `}>
-      <form onSubmit={handleSubmit}>
+      <div className={css`
+        width:30%;
+        margin-left:35%;
+        height: 40vh;
+        margin-top:10%;
+        border-radius:15px;
+        background:#CC0000;
+        @media (max-width: 770px) {
+          width:90%;
+          margin-left:5%;
+        }
+      `}>
+        <form 
+        onSubmit={handleSubmit}
+        className={css`
+          width:100%;
+          padding-left:12.5%;
+          padding-top:7.5%;
+        `}
+        >
         <Label htmlFor="username" text="Username" primary />
         <Input
           type="text"
@@ -57,6 +73,8 @@ function Login() {
           onValueChange={handlePasswordChange}
         />
 
+        <Submit/>
+
         <div>
           <input
             type="checkbox"
@@ -67,13 +85,12 @@ function Login() {
           <label htmlFor="rememberMe">Remember Me</label>
         </div>
 
-        <Submit/>
-
         <div>
             <p>Sign up <Link to="/register">here</Link></p>
         </div>
 
       </form>
+      </div>
     </div>
   );
 }
