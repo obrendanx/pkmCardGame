@@ -12,7 +12,7 @@ function Submit({ small, left }) {
             line-height:10px;
             margin-top:10px;
             color:#fff;
-            background:#B3A125;
+            background:#31acee;
             margin-left:${left};
             border-radius:10px;
             margin-bottom:10px;

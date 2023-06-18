@@ -8,7 +8,7 @@ function Button({ handleClick, text, primary, sm }) {
         onClick={handleClick}
         className={css`
                 font-size:0.8em;
-                color:#fff;
+                color:#8b2900;
                 height:35px;
                 ${sm ? 'width: 75px;' : 'width:100px;'}
                 padding:5px;
@@ -16,7 +16,7 @@ function Button({ handleClick, text, primary, sm }) {
                 border-radius:10px;
                 font-weight:900;
                 text-transform:uppercase;
-                ${primary ? 'background: #369143;' : 'background: #CC0000;'}
+                ${primary ? 'background: #31acee;' : 'background: #ffd57b;'}
                 @media (max-width: 770px){
                   width:100%;
                 }
