@@ -7,12 +7,12 @@ function MediumHeader({text}) {
         <h3
         className={css`
             font-family: 'Oswald', sans-serif;
-            height:50px;
+            height:35px;
             width:97%;
             margin:10px;
             padding:10px;
             font-size:1.2em;
-            color:#fff;
+            color:#8b2900;
         `}
         >
             {text}

@@ -7,7 +7,7 @@ function Label({htmlfor, text, primary}) {
         <label 
             htmlFor={htmlfor}
             className={css`
-                ${primary ? 'color: #fff;' : 'color: #F44366;'}
+                ${primary ? 'color: #fff;' : 'color: #8b2900;'}
                 height:35px;
                 padding:5px;
                 margin:5px;

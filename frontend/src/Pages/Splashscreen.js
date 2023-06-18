@@ -2,8 +2,9 @@ import React from 'react'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import SplashscreenLg from '../Images/splashscreen-lg.png'
-import Button from '../Components/Form/Buttons/Button'
 import PikachuRun from '../Components/Animations/PikachuRun'
+import Button from '../Components/Form/Buttons/Button'
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   height:40%;
@@ -43,6 +44,16 @@ const SubWrapper = styled.div`
 
 
 function Splashscreen() {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
   return (
     <div className={css`
       height:100vh;
@@ -53,12 +64,12 @@ function Splashscreen() {
       background-size: cover;
       overflow:hidden;
     `}>
-      <PikachuRun width='60%' left='20%' top='40vh'/>
+      <PikachuRun width='60%' left='20%' top='40vh' />
       <Wrapper>
         <Header>Welcome</Header>
         <SubWrapper>
-          <Button text='Login'></Button>
-          <Button text='Register'></Button>
+          <Button text="Login" handleClick={handleLoginClick}>Login</Button>
+          <Button text="Register" handleClick={handleRegisterClick}>Register</Button>
         </SubWrapper>
       </Wrapper>
     </div>

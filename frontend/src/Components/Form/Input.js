@@ -19,11 +19,10 @@ function Input({ small, type, placeholder, value, onValueChange, left }) {
           padding: 10px;
           border: 0;
           border-radius: 10px;
-          box-shadow: 0 0 15px 4px #000;
           font-size: 1em;
           font-weight: normal;
           font-family: Roboto, sans-serif;
-          color: #f44034;
+          color: #8b2900;
           transition: 1s;
           outline:none;
           ${small ? 'width: 50%;' : 'width: 70%;'}
