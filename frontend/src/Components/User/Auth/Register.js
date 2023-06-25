@@ -7,6 +7,8 @@ import { css } from '@emotion/css';
 import MediumHeader from '../../Headers/MediumHeader';
 import axios from 'axios';
 import moment from 'moment';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -93,14 +95,33 @@ function Register() {
       } catch (error) {
         // Handle signup error
         console.error(error.response.data); // or error.message
-        
+
         if (
           error.response &&
           error.response.data &&
-          error.response.data.error === 'Duplicate field value'
+          error.response.data.message
         ) {
-          // Display alert for duplicate value error
-          alert('This username or email is already taken. Please choose a different one.');
+          // Display toast alert for the error message
+          toast.error(error.response.data.message, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          // Display a generic error message
+          toast.error('An unexpected error occurred', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       }
     }
@@ -238,6 +259,7 @@ function Register() {
               </p>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );
