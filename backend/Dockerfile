@@ -1,12 +1,12 @@
 FROM node:18
 
-WORKDIR /frontend
+WORKDIR /backend
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 5000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

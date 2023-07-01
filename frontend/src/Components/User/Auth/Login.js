@@ -1,34 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Input from '../../Form/Input'
 import Label from '../../Form/Label';
 import Submit from '../../Form/Submit';
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/css';
 import MediumHeader from '../../Headers/MediumHeader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const { login } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
-  const handleUsernameChange = (value) => {
-    setUsername(value);
-  };
-
-  const handlePasswordChange = (value) => {
-    setPassword(value);
-  };
-
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
-  };
-
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     // Add your login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
-    console.log('Remember Me:', rememberMe);
+    
+    console.log(username);
+    //Fetching the users login information from mongo
+    const response = await fetch('http://localhost:5000/app/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            //converts into JSON
+            username, password
+        }),
+    })
+   
+    //Stores the fetch response in the 'data' variable
+    const data = await response.json()
+
+    if (data.user) {
+        console.log(data.user);
+        /*
+            If data matches:
+            - Set a unique token for the user in there local storage
+            - Dispatch the login state to Redux state to use
+            in other components
+        */
+        // Set a cookie to keep the user signed in
+        const now = new Date();
+        now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
+        document.cookie = `token=${data.user.token}; userId=${data.user.id}; expires=${now.toUTCString()}; path=/`;
+
+        
+        console.log('Login successful');
+        login(data.user.token, data.user.userId);
+
+        // Use navigate to navigate without full page reload
+        navigate('/Home');
+    } else {
+        //if incorrect notify the user
+        toast.error('Please check your username and password');
+    }
+    console.log(data)
   };
 
   return (
@@ -36,7 +68,7 @@ function Login() {
         width: 100%;
         height:100vh;
         overflow-x:hidden;
-        background:#de5239;
+        background:red;
     `}>
       <div className={css`
         width:45%;
@@ -65,7 +97,7 @@ function Login() {
           type="text"
           placeholder="Enter your username"
           value={username}
-          onValueChange={handleUsernameChange}
+          onValueChange={setUsername}
         />
 
         <Label htmlFor="password" text="Password" primary />
@@ -73,7 +105,7 @@ function Login() {
           type="password"
           placeholder="Enter your password"
           value={password}
-          onValueChange={handlePasswordChange}
+          onValueChange={setPassword}
         />
 
         <Submit/>
@@ -87,7 +119,7 @@ function Login() {
             type="checkbox"
             id="rememberMe"
             checked={rememberMe}
-            onChange={handleRememberMeChange}
+            onChange={setRememberMe}
           />
           <label 
             htmlFor="rememberMe"
@@ -108,7 +140,7 @@ function Login() {
               Not registered? Sign up <Link to="/register">here</Link>
             </p>
         </div>
-
+        <ToastContainer />
       </form>
       </div>
     </div>
