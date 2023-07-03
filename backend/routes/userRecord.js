@@ -37,7 +37,6 @@ router.use(errorHandler);
 router.post('/login', async (request, response, next) => {
   try {
     const user = await signUp.findOne({ username: request.body.username });
-    console.log('User ID:', user._id);
     if (user) {
       const cmp = await bcrypt.compare(request.body.password, user.password);
       if (cmp) {
@@ -46,15 +45,16 @@ router.post('/login', async (request, response, next) => {
           email: user.email,
         }, process.env.SECRET_KEY);
         
-        // Set the token and userId cookies in the response
+        // Set the token as a cookie in the response
         response.cookie('token', token, {
           expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Expires in 30 days
           httpOnly: true,
           secure: false, // Set to true if using HTTPS
           sameSite: 'Lax', // Set to 'None' when using HTTPS, 'Lax' when using HTTP
         });
-        
-        response.cookie('userId', user._id, {
+
+        // Set the userId as a cookie in the response
+        response.cookie('userId', user._id.toString(), {
           expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           httpOnly: true,
           secure: false,

@@ -1,24 +1,26 @@
-import './App.css';
-import Splashscreen from "./Pages/Splashscreen";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './Components/User/AuthContext';
+import PrivateRoute from './Components/User/PrivateRoute';
+import Home from './Pages/Home';
 import Login from './Components/User/Auth/Login';
 import Register from './Components/User/Auth/Register';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './Components/User/AuthContext';
-import Home from './Pages/Home';
+import Splashscreen from './Pages/Splashscreen';
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <Router>
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Splashscreen />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
+            {/* <PrivateRoute path="/home" element={<Home />} /> */}
           </Routes>
         </AuthProvider>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
