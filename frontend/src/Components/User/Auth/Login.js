@@ -68,7 +68,7 @@ function Login() {
         width: 100%;
         height:100vh;
         overflow-x:hidden;
-        background:red;
+        background:#de5239;
     `}>
       <div className={css`
         width:45%;

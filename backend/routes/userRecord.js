@@ -2,7 +2,7 @@ require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const router = express.Router();
 const signUp = require('../models/user');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const errorHandler = require('../middleware/errorHandling');
 const dotenv = require('dotenv')
