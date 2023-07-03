@@ -4,7 +4,11 @@ import Label from '../../Form/Label';
 import Submit from '../../Form/Submit';
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/css';
-import MediumHeader from '../../Headers/MediumHeader'
+import MediumHeader from '../../Headers/MediumHeader';
+import axios from 'axios';
+import moment from 'moment';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -16,7 +20,7 @@ function Register() {
   const [announcements, setAnnouncements] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
     // Validate form inputs
     const formErrors = {};
@@ -38,7 +42,7 @@ function Register() {
     } else if (password.length < 6) {
       formErrors.password = 'Password must be at least 6 characters long';
     } else if (
-      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{6,}/.test(password)
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(password)
     ) {
       formErrors.password =
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
@@ -71,7 +75,55 @@ function Register() {
 
     // Proceed with sign-up logic if there are no errors
     if (Object.keys(formErrors).length === 0) {
-      // Perform sign-up logic here
+      try {
+        const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
+
+        const response = await axios.post('http://localhost:5000/app/signup', {
+          fullName,
+          username,
+          email,
+          password,
+          dob,
+          announcements
+        });
+        
+        // Handle successful signup
+        console.log(response.data); // do something with the response
+
+        window.location = './Login'
+        
+      } catch (error) {
+        // Handle signup error
+        console.error(error.response.data); // or error.message
+
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          // Display toast alert for the error message
+          toast.error(error.response.data.message, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          // Display a generic error message
+          toast.error('An unexpected error occurred', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      }
     }
   };
 
@@ -207,6 +259,7 @@ function Register() {
               </p>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

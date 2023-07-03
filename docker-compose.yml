@@ -1,11 +1,38 @@
-version: "3.9"
+version: "4.0"
 
 services:
-  app:
-    container_name: pkmCardGame
-    image: docker-react-i
+  frontend:
+    container_name: pkmCardGameFront
     build:
       context: C:\Users\brend\Documents\Websites\pkmCardGame\frontend
       dockerfile: Dockerfile
     ports:
       - 3000:3000
+    volumes:
+      - C:\Users\brend\Documents\Websites\pkmCardGame\frontend:/frontend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  backend:
+    container_name: pkmCardGameBack
+    build:
+      context: C:\Users\brend\Documents\Websites\pkmCardGame\backend
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - C:\Users\brend\Documents\Websites\pkmCardGame\backend:/backend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+#PC 
+#C:\Users\brend\Documents\Websites\pkmCardGame\frontend
+#C:\Users\brend\Documents\Websites\pkmCardGame\frontend:/frontend
+#C:\Users\brend\Documents\Websites\pkmCardGame\backend
+#C:\Users\brend\Documents\Websites\pkmCardGame\backend:/backend
+
+#LAPTOP
+#/home/brendan/Documents/Websites/pkmCardGame/frontend
+#/home/brendan/Documents/Websites/pkmCardGame/frontend:/frontend
+#/home/brendan/Documents/Websites/pkmCardGame/backend
+#/home/brendan/Documents/Websites/pkmCardGame/backend:/backend
