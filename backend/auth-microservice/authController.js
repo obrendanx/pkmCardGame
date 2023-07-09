@@ -1,16 +1,10 @@
-require("dotenv").config({ path: "./.env" });
-const express = require("express");
-const router = express.Router();
-const signUp = require('../models/user');
+const signUp = require('./models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const errorHandler = require('../middleware/errorHandling');
-const dotenv = require('dotenv')
 
-dotenv.config();
+require('dotenv').config();
 
-
-router.post('/signup', async (request, response, next) => {
+const signup = async (request, response) => {
   try {
     const saltPassword = await bcrypt.genSalt(10);
     const securePassword = await bcrypt.hash(request.body.password, saltPassword);
@@ -21,22 +15,26 @@ router.post('/signup', async (request, response, next) => {
       email: request.body.email,
       password: securePassword,
       dateOfBirth: request.body.dob,
-      announcements: request.body.announcements, 
+      announcements: request.body.announcements,
       isGlobalAdmin: false
     });
 
     const savedUser = await signedUpUser.save();
     response.json(savedUser);
   } catch (error) {
-    next(error);
+    response.status(500).json({ error: 'Signup failed' });
   }
-});
+};
 
-router.use(errorHandler);
-
-router.post('/login', async (request, response, next) => {
+const login = async (request, response) => {
   try {
+    console.log('Login function called'); // Add this line
+    console.log('Request body:', request.body); // Add this line
+
     const user = await signUp.findOne({ username: request.body.username });
+
+    console.log('User found:', user); // Add this line
+
     if (user) {
       const cmp = await bcrypt.compare(request.body.password, user.password);
       if (cmp) {
@@ -44,16 +42,14 @@ router.post('/login', async (request, response, next) => {
           username: user.username,
           email: user.email,
         }, process.env.SECRET_KEY);
-        
-        // Set the token as a cookie in the response
+
         response.cookie('token', token, {
-          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Expires in 30 days
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           httpOnly: true,
-          secure: false, // Set to true if using HTTPS
-          sameSite: 'Lax', // Set to 'None' when using HTTPS, 'Lax' when using HTTP
+          secure: false,
+          sameSite: 'Lax',
         });
 
-        // Set the userId as a cookie in the response
         response.cookie('userId', user._id.toString(), {
           expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           httpOnly: true,
@@ -66,13 +62,15 @@ router.post('/login', async (request, response, next) => {
         return response.json({ status: 'error', user: false });
       }
     } else {
-      return next(new Error('Wrong username or password.'));
+      response.status(401).json({ error: 'Wrong username or password.' });
     }
   } catch (error) {
-    next(error);
+    console.error('Login error:', error); // Add this line
+    response.status(500).json({ error: 'Login failed controller' });
   }
-});
+};
 
-router.use(errorHandler);
-
-module.exports = router
+module.exports = {
+  signup,
+  login
+};

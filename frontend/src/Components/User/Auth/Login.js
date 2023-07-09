@@ -23,7 +23,7 @@ function Login() {
     
     console.log(username);
     //Fetching the users login information from mongo
-    const response = await fetch('http://localhost:5000/app/login', {
+    const response = await fetch('http://localhost:5001/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

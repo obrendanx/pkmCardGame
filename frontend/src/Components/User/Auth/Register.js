@@ -78,7 +78,7 @@ function Register() {
       try {
         const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
 
-        const response = await axios.post('http://localhost:5000/app/signup', {
+        const response = await axios.post('http://localhost:5001/signup', {
           fullName,
           username,
           email,
