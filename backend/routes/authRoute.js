@@ -1,8 +1,14 @@
 const express = require('express');
-const router = express.Router();
-const { signup, login } = require('../auth-microservice/authController');
+const axios = require('axios');
 
-router.post('/signup', signup);
-router.post('/login', login);
+const router = express.Router();
+
+router.post('/signup', async (req, res) => axios.post('http://localhost:5001/signup', req.body)
+  .then(response => res.json(response.data))
+  .catch(error => res.status(500).json({ error: 'Signup failed' })));
+
+router.post('/login', async (req, res) => axios.post('http://localhost:5001/login', req.body)
+  .then(response => res.json(response.data))
+  .catch(error => res.status(500).json({ error: 'Login failed' })));
 
 module.exports = router;

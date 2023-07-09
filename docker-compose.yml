@@ -23,7 +23,8 @@ services:
     volumes:
       - ./backend:/backend
     environment:
-      - DATABASE_ACCESS=${DATABASE_ACCESS}
+      - DATABASE_ACCESS=mongodb+srv://brendanewen16:Zx56Tt407.9s@cluster0.3mfmcng.mongodb.net/?retryWrites=true&w=majority
+      - SECRET_KEY=Zz47H.Aa5B
     networks:
       - pkmCardGameNet
 
@@ -38,7 +39,8 @@ services:
       - ./backend/auth-microservice:/app
       - ./backend:/backend
     environment:
-      - DATABASE_ACCESS=${DATABASE_ACCESS}
+      - DATABASE_ACCESS=mongodb+srv://brendanewen16:Zx56Tt407.9s@cluster0.3mfmcng.mongodb.net/?retryWrites=true&w=majority
+      - SECRET_KEY=Zz47H.Aa5B
     networks:
       - pkmCardGameNet
 
