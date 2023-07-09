@@ -4,7 +4,7 @@
   "description": "Authentication microservice package.json",
   "main": "authMicroservice.js",
   "scripts": {
-    "start": "node authMicroservice.js"
+    "start": "nodemon authMicroservice.js"
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -12,6 +12,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.8"
+    "mongoose": "^6.0.8",
+    "nodemon": "^2.0.19"
   }
 }

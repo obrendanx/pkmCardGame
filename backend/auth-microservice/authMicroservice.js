@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const { signup, login } = require('./authController');
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -9,10 +11,30 @@ function startAuthMicroservice() {
 
   // Middleware
   app.use(express.json());
+  app.use(cors());
 
   // Routes
-  app.post('/signup', (req, res) => signup(req, res, process.env.DATABASE_ACCESS));
-  app.post('/login', (req, res) => login(req, res, process.env.DATABASE_ACCESS));
+  app.post('/signup', signup);
+  app.post('/login', login);
+
+  // MongoDB connection options
+  const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    socketTimeoutMS: 30000, // Set the socket timeout to 30 seconds (adjust as needed)
+  };
+
+  // Connect to MongoDB
+  mongoose.connect(process.env.DATABASE_ACCESS, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+    })
+    .then(() => {
+        console.log('Auth microservice connected to MongoDB cluster!');
+    })
+    .catch((error) => {
+        console.error('Error connecting to MongoDB:', error);
+    });
 
   // Start the server
   const port = process.env.PORT || 5001;
@@ -20,5 +42,7 @@ function startAuthMicroservice() {
     console.log(`Auth microservice is running on port ${port}`);
   });
 }
+
+startAuthMicroservice(); // Add this line
 
 module.exports = { startAuthMicroservice };

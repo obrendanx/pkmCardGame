@@ -28,7 +28,13 @@ const signup = async (request, response) => {
 
 const login = async (request, response) => {
   try {
+    console.log('Login function called'); // Add this line
+    console.log('Request body:', request.body); // Add this line
+
     const user = await signUp.findOne({ username: request.body.username });
+
+    console.log('User found:', user); // Add this line
+
     if (user) {
       const cmp = await bcrypt.compare(request.body.password, user.password);
       if (cmp) {
@@ -59,7 +65,8 @@ const login = async (request, response) => {
       response.status(401).json({ error: 'Wrong username or password.' });
     }
   } catch (error) {
-    response.status(500).json({ error: 'Login failed' });
+    console.error('Login error:', error); // Add this line
+    response.status(500).json({ error: 'Login failed controller' });
   }
 };
 

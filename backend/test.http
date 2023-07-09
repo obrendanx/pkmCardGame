@@ -2,6 +2,18 @@ POST http://localhost:5001/login
 Content-Type: application/json
 
 {
-  "username": "obrendanx",
+  "username": "adminuser",
   "password": "Zx56Tt407.9s"
 }
+
+# POST http://localhost:5001/signup
+# Content-Type: application/json
+
+# {
+#   "fullName": "John Doe",
+#   "username": "johndoe",
+#   "email": "johndoe@example.com",
+#   "password": "mypassword",
+#   "dob": "1990-01-01",
+#   "announcements": true
+# }
