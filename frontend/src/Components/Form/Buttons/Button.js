@@ -1,12 +1,14 @@
 import React from 'react'
 import { css } from '@emotion/css'
 
-function Button({ handleClick, text, primary, sm }) {
+function Button({ handleClick, text, primary, sm, h, w }) {
   return (
     <div>
         <button
         onClick={handleClick}
         className={css`
+                height:${h};
+                widht:${w}
                 font-size:0.8em;
                 color:#8b2900;
                 height:35px;
