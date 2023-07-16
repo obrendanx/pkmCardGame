@@ -3,7 +3,7 @@ import { Route, Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ isLoggedIn, redirect, children }) => {
   if (!isLoggedIn) {
-    return <Navigate to={redirect} replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Route element={children} />;

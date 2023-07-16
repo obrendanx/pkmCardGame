@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { AuthContext } from '../User/AuthContext';
 import ProfileIcon from '../User/Profile/ProfileIcon';
 import { css } from '@emotion/css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Bar = styled.div`
   height: 50px;
@@ -94,6 +94,7 @@ function Navbar() {
 
   const handleLogout = () => {
     logout();
+    navigate('../login');
   };
 
   const handleClick = () => {
