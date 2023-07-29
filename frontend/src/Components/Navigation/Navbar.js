@@ -17,6 +17,12 @@ const BarRight = styled.div`
   position: absolute;
   right: 0;
   display: flex;
+  @media (max-width: 1000px) {
+    width:15%;
+  }
+  @media (max-width: 770px) {
+    width:40%;
+  }
 `;
 
 const Group = styled.div`
@@ -30,50 +36,54 @@ const Group = styled.div`
 
 const Button = styled.button`
   font-size: 0.8em;
-  color: #8b2900;
+  color: #fff;
   height: 50px;
   padding:5px;
-  width: 100%;
+  width: 80%;
   padding: 5px;
   border: none;
   font-weight: 900;
   text-transform: uppercase;
-  background: #31acee;
+  background: #de5239;
   cursor: pointer;
+  margin-left:20%;
   &:hover{
     border-bottom:#ffd57b 4px solid;
   }
-  @media (max-width: 770px) {
-    width: 100%;
-  }
   transition: 0.5s;
+  @media (max-width: 770px) {
+    width:60%;
+    margin-left:40%;
+  }
 `;
 
 const ButtonUser = styled.button`
   font-size: 0.6em;
-  color: #8b2900;
+  color: #fff;
   height: 50px;
-  width: 100%;
+  width: 30%;
   padding: 5px;
   border: none;
   font-weight: 900;
   text-transform: uppercase;
-  background: #31acee;
-  display:flex;
-  flex-direction:row;
+  background: #ffd57b;
   line-height:35px;
   transition:0.25s;
   cursor: pointer;
-  &:hover{
-    border-bottom:#ffd57b 4px solid;
-  }
+  margin-left:70%;
   @media (max-width: 770px) {
-    width: 100%;
+    width:20%;
+    margin-left:80%;
+  }
+  @media (max-width: 570px) {
+    width:30%;
+    margin-left:70%;
   }
 `
 
+
 function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
@@ -81,42 +91,36 @@ function Navbar() {
     if (showDropdown) {
       const timeout = setTimeout(() => {
         setShowDropdown(false);
-      }, 1250);
+      }, 5000);
       return () => clearTimeout(timeout);
     }
   }, [showDropdown]);
 
   const ShowButtons = styled.div`
-    height:100px;
-    width:100%;
+    height: 100px;
+    width: 100%;
     ${showDropdown ? 'display:block;' : 'display:none;'}
-  `
+  `;
 
   const handleLogout = () => {
     logout();
-    navigate('../login');
+    navigate('/login'); // Correct the redirect path to /login
   };
 
   const handleClick = () => {
-    navigate('./editprofile');
+    navigate('/editprofile'); // Correct the redirect path to /editprofile
   };
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
-  return (
+  return isLoggedIn ? (
     <Bar>
       <BarRight>
         <Group>
           <ButtonUser onClick={toggleDropdown}>
-            <span className={css`
-                width:70%;
-                height:50px;
-            `}>
-                username
-            </span>
-            <ProfileIcon h='35px' w='30%'/>
+            <ProfileIcon h="35px" w="100%" />
           </ButtonUser>
           <ShowButtons>
             <Button onClick={handleClick}>Edit Profile</Button>
@@ -125,7 +129,7 @@ function Navbar() {
         </Group>
       </BarRight>
     </Bar>
-  );
+  ) : null;
 }
 
 export default Navbar;

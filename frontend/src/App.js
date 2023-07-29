@@ -16,7 +16,7 @@ function App() {
     <div>
       <Router>
         <AuthProvider>
-              { isLoggedIn && <Navbar /> }
+              <Navbar />
               <Routes>
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/home" element={<Home />} />
