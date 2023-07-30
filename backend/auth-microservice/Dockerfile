@@ -4,12 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
+RUN npm install -g nodemon
 
 COPY . .
 
 COPY models ./models
-
-COPY ..?* .env
 
 EXPOSE 5001
 
