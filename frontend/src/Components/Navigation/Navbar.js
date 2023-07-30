@@ -47,10 +47,10 @@ const Button = styled.button`
   background: #de5239;
   cursor: pointer;
   margin-left:20%;
+  transition:0.25s;
   &:hover{
     border-bottom:#ffd57b 4px solid;
   }
-  transition: 0.5s;
   @media (max-width: 770px) {
     width:60%;
     margin-left:40%;
@@ -61,26 +61,17 @@ const ButtonUser = styled.button`
   font-size: 0.6em;
   color: #fff;
   height: 50px;
-  width: 30%;
+  width: 50px;
+  position:absolute;
+  right:0;
   padding: 5px;
   border: none;
   font-weight: 900;
   text-transform: uppercase;
   background: #ffd57b;
   line-height:35px;
-  transition:0.25s;
   cursor: pointer;
-  margin-left:70%;
-  @media (max-width: 770px) {
-    width:20%;
-    margin-left:80%;
-  }
-  @media (max-width: 570px) {
-    width:30%;
-    margin-left:70%;
-  }
 `
-
 
 function Navbar() {
   const { isLoggedIn, logout, user } = useContext(AuthContext);
@@ -100,6 +91,7 @@ function Navbar() {
     height: 100px;
     width: 100%;
     ${showDropdown ? 'display:block;' : 'display:none;'}
+    margin-top:50px;
   `;
 
   const handleLogout = () => {
@@ -120,7 +112,7 @@ function Navbar() {
       <BarRight>
         <Group>
           <ButtonUser onClick={toggleDropdown}>
-            <ProfileIcon h="35px" w="100%" />
+            <ProfileIcon h="35px" w="35px" />
           </ButtonUser>
           <ShowButtons>
             <Button onClick={handleClick}>Edit Profile</Button>
