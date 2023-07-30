@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { AuthContext } from '../User/AuthContext';
 import ProfileIcon from '../User/Profile/ProfileIcon';
 import { css } from '@emotion/css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Bar = styled.div`
   height: 50px;
@@ -17,6 +17,12 @@ const BarRight = styled.div`
   position: absolute;
   right: 0;
   display: flex;
+  @media (max-width: 1000px) {
+    width:15%;
+  }
+  @media (max-width: 770px) {
+    width:40%;
+  }
 `;
 
 const Group = styled.div`
@@ -30,50 +36,45 @@ const Group = styled.div`
 
 const Button = styled.button`
   font-size: 0.8em;
-  color: #8b2900;
+  color: #fff;
   height: 50px;
   padding:5px;
-  width: 100%;
+  width: 80%;
   padding: 5px;
   border: none;
   font-weight: 900;
   text-transform: uppercase;
-  background: #31acee;
+  background: #de5239;
   cursor: pointer;
+  margin-left:20%;
+  transition:0.25s;
   &:hover{
     border-bottom:#ffd57b 4px solid;
   }
   @media (max-width: 770px) {
-    width: 100%;
+    width:60%;
+    margin-left:40%;
   }
-  transition: 0.5s;
 `;
 
 const ButtonUser = styled.button`
   font-size: 0.6em;
-  color: #8b2900;
+  color: #fff;
   height: 50px;
-  width: 100%;
+  width: 50px;
+  position:absolute;
+  right:0;
   padding: 5px;
   border: none;
   font-weight: 900;
   text-transform: uppercase;
-  background: #31acee;
-  display:flex;
-  flex-direction:row;
+  background: #ffd57b;
   line-height:35px;
-  transition:0.25s;
   cursor: pointer;
-  &:hover{
-    border-bottom:#ffd57b 4px solid;
-  }
-  @media (max-width: 770px) {
-    width: 100%;
-  }
 `
 
 function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
@@ -81,41 +82,37 @@ function Navbar() {
     if (showDropdown) {
       const timeout = setTimeout(() => {
         setShowDropdown(false);
-      }, 1250);
+      }, 5000);
       return () => clearTimeout(timeout);
     }
   }, [showDropdown]);
 
   const ShowButtons = styled.div`
-    height:100px;
-    width:100%;
+    height: 100px;
+    width: 100%;
     ${showDropdown ? 'display:block;' : 'display:none;'}
-  `
+    margin-top:50px;
+  `;
 
   const handleLogout = () => {
     logout();
+    navigate('/login'); // Correct the redirect path to /login
   };
 
   const handleClick = () => {
-    navigate('./editprofile');
+    navigate('/editprofile'); // Correct the redirect path to /editprofile
   };
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
-  return (
+  return isLoggedIn ? (
     <Bar>
       <BarRight>
         <Group>
           <ButtonUser onClick={toggleDropdown}>
-            <span className={css`
-                width:70%;
-                height:50px;
-            `}>
-                username
-            </span>
-            <ProfileIcon h='35px' w='30%'/>
+            <ProfileIcon h="35px" w="35px" />
           </ButtonUser>
           <ShowButtons>
             <Button onClick={handleClick}>Edit Profile</Button>
@@ -124,7 +121,7 @@ function Navbar() {
         </Group>
       </BarRight>
     </Bar>
-  );
+  ) : null;
 }
 
 export default Navbar;

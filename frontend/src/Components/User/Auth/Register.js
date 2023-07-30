@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Input from '../../Form/Input';
 import Label from '../../Form/Label';
 import Submit from '../../Form/Submit';
@@ -9,6 +9,8 @@ import axios from 'axios';
 import moment from 'moment';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContext';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -19,6 +21,8 @@ function Register() {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [announcements, setAnnouncements] = useState(false);
   const [errors, setErrors] = useState({});
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -86,12 +90,12 @@ function Register() {
           dob,
           announcements
         });
-        
+
         // Handle successful signup
         console.log(response.data); // do something with the response
 
         window.location = './Login'
-        
+
       } catch (error) {
         // Handle signup error
         console.error(error.response.data); // or error.message
@@ -128,139 +132,142 @@ function Register() {
   };
 
   return (
-    <div className={css`
-      width: 100%;
-      height:100vh;
-      overflow-x:hidden;
-      background:#de5239;
-    `}>
-      <div className={css`
-        width:45%;
-        margin-left:27.5%;
-        min-height: 750px;
-        margin-top:5%;
-        margin-bottom:7.5%;
-        border-radius:15px;
-        background:#ffd57b;
-        padding-bottom:20px;
-        @media (max-width: 770px) {
-          width:90%;
-          margin-left:5%;
-        }
-      `}>
-        <form 
-          onSubmit={handleSignUp}
-          className={css`
-            width:100%;
-            padding-left:12.5%;
-            padding-top:20px;
-            
-          `}
-        >
-          <MediumHeader text="Register"/>
-          <div>
-            <Label htmlfor="username" text="Username" />
-            <Input
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onValueChange={setUsername}
-            />
-            {errors.username && <span>{errors.username}</span>}
-          </div>
-
-          <div>
-            <Label htmlfor="fullName" text="Full Name" />
-            <Input
-              type="text"
-              placeholder="Enter your full name"
-              value={fullName}
-              onValueChange={setFullName}
-            />
-            {errors.fullName && <span>{errors.fullName}</span>}
-          </div>
-
-          <div>
-            <Label htmlfor="password" text="Password" />
-            <Input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onValueChange={setPassword}
-            />
-            {errors.password && <span>{errors.password}</span>}
-          </div>
-
-          <div>
-            <Label htmlfor="retypePassword" text="Retype Password" />
-            <Input
-              type="password"
-              placeholder="Retype your password"
-              value={retypePassword}
-              onValueChange={setRetypePassword}
-            />
-            {errors.retypePassword && <span>{errors.retypePassword}</span>}
-          </div>
-
-          <div>
-            <Label htmlfor="email" text="Email" />
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onValueChange={setEmail}
-            />
-            {errors.email && <span>{errors.email}</span>}
-          </div>
-
-          <div>
-            <Label htmlfor="dateOfBirth" text="Date of Birth" />
-            <Input
-              type="text"
-              placeholder="dd/mm/yyyy"
-              value={dateOfBirth}
-              onValueChange={setDateOfBirth}
-            />
-            {errors.dateOfBirth && <span>{errors.dateOfBirth}</span>}
-          </div>
-
-          <div>
-            <label 
-              htmlFor="announcements"
+    <div>
+      {isLoggedIn ? (
+        navigate('../home')
+      ) : (
+        <div className={css`
+          width: 100%;
+          height:100vh;
+          overflow-x:hidden;
+          background:#de5239;
+        `}>
+          <div className={css`
+            width:45%;
+            margin-left:27.5%;
+            min-height: 750px;
+            margin-top:5%;
+            margin-bottom:7.5%;
+            border-radius:15px;
+            background:#ffd57b;
+            padding-bottom:20px;
+            @media (max-width: 770px) {
+              width:90%;
+              margin-left:5%;
+            }
+          `}>
+            <form
+              onSubmit={handleSignUp}
               className={css`
-                height:20px;
-                color:#8b2900;
-                font-size:1em;
-              `}
-            >
-              <input
-                className={css`
+              width:100%;
+              padding-left:12.5%;
+              padding-top:20px;
+            `}>
+              <MediumHeader text="Register" />
+              <div>
+                <Label htmlfor="username" text="Username" />
+                <Input
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onValueChange={setUsername}
+                />
+                {errors.username && <span>{errors.username}</span>}
+              </div>
+
+              <div>
+                <Label htmlfor="fullName" text="Full Name" />
+                <Input
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={fullName}
+                  onValueChange={setFullName}
+                />
+                {errors.fullName && <span>{errors.fullName}</span>}
+              </div>
+
+              <div>
+                <Label htmlfor="password" text="Password" />
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onValueChange={setPassword}
+                />
+                {errors.password && <span>{errors.password}</span>}
+              </div>
+
+              <div>
+                <Label htmlfor="retypePassword" text="Retype Password" />
+                <Input
+                  type="password"
+                  placeholder="Retype your password"
+                  value={retypePassword}
+                  onValueChange={setRetypePassword}
+                />
+                {errors.retypePassword && <span>{errors.retypePassword}</span>}
+              </div>
+
+              <div>
+                <Label htmlfor="email" text="Email" />
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onValueChange={setEmail}
+                />
+                {errors.email && <span>{errors.email}</span>}
+              </div>
+
+              <div>
+                <Label htmlfor="dateOfBirth" text="Date of Birth" />
+                <Input
+                  type="text"
+                  placeholder="dd/mm/yyyy"
+                  value={dateOfBirth}
+                  onValueChange={setDateOfBirth}
+                />
+                {errors.dateOfBirth && <span>{errors.dateOfBirth}</span>}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="announcements"
+                  className={css`
                   height:20px;
-                  width:20px;
-                `}
-                type="checkbox"
-                id="announcements"
-                checked={announcements}
-                onChange={(event) => setAnnouncements(event.target.checked)}
-              />
-              Receive announcements
-            </label>
-          </div>
+                  color:#8b2900;
+                  font-size:1em;
+                `}>
+                  <input
+                    className={css`
+                    height:20px;
+                    width:20px;
+                  `}
+                    type="checkbox"
+                    id="announcements"
+                    checked={announcements}
+                    onChange={(event) => setAnnouncements(event.target.checked)}
+                  />
+                  Receive announcements
+                </label>
+              </div>
 
-          <div>
-            <Submit small={false} left={null} />
-          </div>
+              <div>
+                <Submit small={false} left={null} />
+              </div>
 
-          <div>
-              <p className={css`
-                color:#8b2900;
-              `}>
-                Already Signed up? Login <Link to="/login">here</Link>
-              </p>
+              <div>
+                <p className={css`
+                  color:#8b2900;
+                `}>
+                  Already Signed up? Login <Link to="/login">here</Link>
+                </p>
+              </div>
+            </form>
+            <ToastContainer />
           </div>
-        </form>
-        <ToastContainer />
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import SplashscreenLg from '../Images/splashscreen-lg.png'
 import PikachuRun from '../Components/Animations/PikachuRun'
 import Button from '../Components/Form/Buttons/Button'
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Components/User/AuthContext'
 
 const Wrapper = styled.div`
   height:40%;
@@ -45,6 +46,7 @@ const SubWrapper = styled.div`
 
 function Splashscreen() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -55,23 +57,29 @@ function Splashscreen() {
   };
 
   return (
-    <div className={css`
-      height:100vh;
-      width:100vw;
-      background-image: url(${SplashscreenLg});
-      background-attachment: fixed;
-      background-position: center;
-      background-size: cover;
-      overflow:hidden;
-    `}>
-      <PikachuRun width='60%' left='20%' top='40vh' />
-      <Wrapper>
-        <Header>Welcome</Header>
-        <SubWrapper>
-          <Button text="Login" handleClick={handleLoginClick}>Login</Button>
-          <Button text="Register" handleClick={handleRegisterClick}>Register</Button>
-        </SubWrapper>
-      </Wrapper>
+    <div>
+      {isLoggedIn ? (
+        navigate('../home')
+      ) : (
+        <div className={css`
+          height:100vh;
+          width:100vw;
+          background-image: url(${SplashscreenLg});
+          background-attachment: fixed;
+          background-position: center;
+          background-size: cover;
+          overflow:hidden;
+        `}>
+          <PikachuRun width='60%' left='20%' top='40vh' />
+          <Wrapper>
+            <Header>Welcome</Header>
+            <SubWrapper>
+              <Button text="Login" handleClick={handleLoginClick}>Login</Button>
+              <Button text="Register" handleClick={handleRegisterClick}>Register</Button>
+            </SubWrapper>
+          </Wrapper>
+        </div>
+      )}
     </div>
   )
 }
