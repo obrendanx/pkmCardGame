@@ -4,7 +4,7 @@
   "description": "Authentication microservice package.json",
   "main": "authMicroservice.js",
   "scripts": {
-    "start": "node authMicroservice.js"
+    "start": "nodemon authMicroservice.js"
   },
   "dependencies": {
     "axios": "^0.24.0",
