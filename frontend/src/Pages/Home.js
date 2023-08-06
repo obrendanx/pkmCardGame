@@ -4,7 +4,7 @@ import Button from '../Components/Form/Buttons/Button';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
@@ -15,7 +15,7 @@ function Home() {
     <div>
       {isLoggedIn ? (
         <div>
-            <h2>Welcome! You are logged in.</h2>
+            <h2>Welcome {username}! You are logged in.</h2>
             <Button text="Logout" handleClick={handleLogoutClick}>Logout</Button>
         </div>
       ) : (

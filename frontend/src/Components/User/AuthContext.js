@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
 
   useEffect(() => {
     const token = getCookie('token');
@@ -21,9 +22,10 @@ export const AuthProvider = ({ children }) => {
     return cookieValue ? cookieValue.pop() : '';
   };
 
-  const login = (token, userId) => {
+  const login = (token, userId, userName) => {
     setIsLoggedIn(true);
     setUserId(userId);
+    setUsername(userName);
 
     // Set the user token in the cookie
     const now = new Date();
@@ -43,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   // Pass the state and functions to the value prop of the context provider
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout, username }}>
       {children}
     </AuthContext.Provider>
   );
