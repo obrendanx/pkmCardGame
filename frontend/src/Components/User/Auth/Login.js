@@ -52,7 +52,7 @@ function Login() {
 
 
       console.log('Login successful');
-      login(data.user.token, data.user.userId);
+      login(data.user.token, data.user.userId, username);
 
       // Use navigate to navigate without full page reload
       navigate('/home');

@@ -81,6 +81,7 @@ function Register() {
     if (Object.keys(formErrors).length === 0) {
       try {
         const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
+        // const dob = moment(dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
         const response = await axios.post('http://localhost:5001/signup', {
           fullName,
@@ -93,6 +94,14 @@ function Register() {
 
         // Handle successful signup
         console.log(response.data); // do something with the response
+
+        // const profileResponse = await axios.post('http://localhost:5002/userprofile', {
+        //   username,
+        //   dob
+        // });
+
+        // console.log(profileResponse.data); // do something with the profileResponse
+
 
         window.location = './Login'
 

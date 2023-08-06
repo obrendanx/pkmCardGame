@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute')
 const cors = require('cors');
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 
 // Use the authRoute middleware
 app.use('/app', authRoute);
+app.use('/app', userRoute);
 
 // Start the server
 const port = process.env.PORT || 5000;
