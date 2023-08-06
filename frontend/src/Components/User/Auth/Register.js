@@ -95,13 +95,12 @@ function Register() {
         // Handle successful signup
         console.log(response.data); // do something with the response
 
-        // const profileResponse = await axios.post('http://localhost:5002/userprofile', {
-        //   username,
-        //   dob
-        // });
+        const profileResponse = await axios.post('http://localhost:5002/userprofile', {
+          username,
+          dob
+        });
 
-        // console.log(profileResponse.data); // do something with the profileResponse
-
+        console.log(profileResponse.data); // do something with the profileResponse
 
         window.location = './Login'
 
