@@ -1,10 +1,14 @@
-POST http://localhost:5002/userprofile
+GET http://localhost:5002/fetchprofileicon
 Content-Type: application/json
 
 {
-  "username": "adminuser",
-  "dob": "1990-01-01T00:00:00.000Z"
+  "username": "testuser2"  
 }
+
+# {
+#   "username": "adminuser",
+#   "dob": "1990-01-01T00:00:00.000Z"
+# }
 
 
 # POST http://localhost:5000/app/login

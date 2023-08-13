@@ -10,11 +10,19 @@ export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState(null);
 
   useEffect(() => {
-    const token = getCookie('token');
-    if (token) {
-      setIsLoggedIn(true);
+    const tokenCookie = getCookie('token');
+    if (tokenCookie) {
+      const tokenPayloadString = decodeURIComponent(tokenCookie);
+      try {
+        const tokenPayload = JSON.parse(tokenPayloadString);
+        setIsLoggedIn(true);
+        setUserId(tokenPayload.userId);
+        setUsername(tokenPayload.username);
+      } catch (error) {
+        console.error('Error parsing token payload:', error);
+      }
     }
-  }, []);
+  }, [username, isLoggedIn, userId]);
 
   // Utility function to get a specific cookie by name
   const getCookie = (name) => {
@@ -22,18 +30,28 @@ export const AuthProvider = ({ children }) => {
     return cookieValue ? cookieValue.pop() : '';
   };
 
-  const login = (token, userId, userName) => {
+ const login = (token, userId, username) => {
     setIsLoggedIn(true);
     setUserId(userId);
-    setUsername(userName);
+    setUsername(username);
+
+    // Create the token payload with user information
+    const tokenPayload = {
+      token,
+      userId,
+      username,
+    };
+
+    // Convert the token payload to a JSON string
+    const tokenPayloadString = JSON.stringify(tokenPayload);
 
     // Set the user token in the cookie
     const now = new Date();
     now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
-    document.cookie = `token=${token}; expires=${now.toUTCString()}; path='/'`;
+    document.cookie = `token=${encodeURIComponent(tokenPayloadString)}; expires=${now.toUTCString()}; path='/'`;
 
     console.log('Cookie value after setting:', document.cookie);
-  };
+  }; 
 
   const logout = () => {
     setIsLoggedIn(false);

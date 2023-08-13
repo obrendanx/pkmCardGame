@@ -48,7 +48,7 @@ function Login() {
       // Set a cookie to keep the user signed in
       const now = new Date();
       now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
-      document.cookie = `token=${data.user.token}; userId=${data.user.id}; expires=${now.toUTCString()}; path=/`;
+      document.cookie = `token=${data.user.token}; userId=${data.user.id}; username=${username}; expires=${now.toUTCString()}; path=/`;
 
 
       console.log('Login successful');
