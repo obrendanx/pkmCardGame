@@ -3,7 +3,7 @@ const axios = require('axios');
 // User profile icon retrieval service
 const getProfileIconService = async (username) => {
   try {
-    const response = await axios.get(`/profile-icon?username=${username}`);
+    const response = await axios.get(`http://localhost:5002/fetchProfileIcon?username=${username}`);
     return response.data;
   } catch (error) {
     throw new Error('Error retrieving profile icon');

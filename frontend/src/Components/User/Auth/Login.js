@@ -19,7 +19,6 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // Add your login logic here
 
     console.log(username);
     //Fetching the users login information from mongo
@@ -29,7 +28,6 @@ function Login() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        //converts into JSON
         username, password
       }),
     })
@@ -48,7 +46,7 @@ function Login() {
       // Set a cookie to keep the user signed in
       const now = new Date();
       now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
-      document.cookie = `token=${data.user.token}; userId=${data.user.id}; expires=${now.toUTCString()}; path=/`;
+      document.cookie = `token=${data.user.token}; userId=${data.user.id}; username=${username}; expires=${now.toUTCString()}; path=/`;
 
 
       console.log('Login successful');

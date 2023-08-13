@@ -1,22 +1,16 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../Components/User/AuthContext';
-import Button from '../Components/Form/Buttons/Button';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const { isLoggedIn, username } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogoutClick = () => {
-    navigate('/logout');
-  };
-
   return (
     <div>
       {isLoggedIn ? (
         <div>
             <h2>Welcome {username}! You are logged in.</h2>
-            <Button text="Logout" handleClick={handleLogoutClick}>Logout</Button>
         </div>
       ) : (
         navigate('../login')

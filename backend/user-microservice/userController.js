@@ -1,4 +1,5 @@
 const profile = require('./models/profile');
+const userService = require('./userService');
 
 require('dotenv').config();
 
@@ -34,40 +35,66 @@ const userprofile = async (request, response) => {
   }
 };
 
-const fetchuserprofile = async (request, response) => {
+const fetchProfileIcon = async (request, response) => {
   try {
-    const profileData = await profile.findOne({ username: request.body.username });
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
+
     if (!profileData) {
-      return response.status(404).json({ error: 'Profile not found controller' });
+      return response.status(404).json({ error: 'Profile not found' });
     }
 
-    // Fetch specific data from the userService using the fetched profileData
-    const profileIcon = await userService.getProfileIconService(profileData.username);
-    const bio = await userService.getBioService(profileData.username);
-    const gender = await userService.getGenderService(profileData.username);
-    const interests = await userService.getInterestsService(profileData.username);
-    const socialMedia = await userService.getSocialMediaService(profileData.username);
-    const favoritePokemon = await userService.getFavoritePokemonService(profileData.username);
+    const profileIconColor = profileData.profileIconColor;
 
-    // Compose the complete user profile response
-    const userProfile = {
-      username: profileData.username,
-      dateOfBirth: profileData.dateOfBirth,
-      profileIcon,
-      bio,
-      gender,
-      interests,
-      socialMedia,
-      favoritePokemon
-    };
-
-    return response.json(userProfile);
+    response.json({ profileIconColor });
   } catch (error) {
-    response.status(500).json({ error: 'Failed to fetch profile' });
+    console.error('Error in fetchProfileIconColor:', error);
+    response.status(500).json({ error: 'Failed to fetch profile icon color' });
+  }
+};
+
+const fetchBio = async (request, response) => {
+  try {
+    // Fetch profile data from the database
+    const profileData = await profile.findOne({ username: request.body.username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    // Get the bio field from the fetched profile data
+    const bio = profileData.bio;
+
+    response.json({ bio });
+  } catch (error) {
+    console.error('Error in fetchBio:', error);
+    response.status(500).json({ error: 'Failed to fetch bio' });
+  }
+};
+
+const fetchGender = async (request, response) => {
+  try {
+    // Fetch profile data from the database
+    const profileData = await profile.findOne({ username: request.body.username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    // Get the gender field from the fetched profile data
+    const gender = profileData.gender;
+
+    response.json({ gender });
+  } catch (error) {
+    console.error('Error in fetchGender:', error);
+    response.status(500).json({ error: 'Failed to fetch gender' });
   }
 };
 
 module.exports = {
   userprofile,
-  fetchuserprofile
+  fetchProfileIcon,
+  fetchBio,
+  fetchGender,
 };
+

@@ -26,6 +26,7 @@ function startAuthMicroservice() {
 
   // Connect to MongoDB
   mongoose.connect(process.env.DATABASE_ACCESS, {
+    dbName: 'pkmcardgame',
     useNewUrlParser: true,
     useUnifiedTopology: true
     })
