@@ -19,7 +19,6 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // Add your login logic here
 
     console.log(username);
     //Fetching the users login information from mongo
@@ -29,7 +28,6 @@ function Login() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        //converts into JSON
         username, password
       }),
     })

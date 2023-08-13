@@ -93,27 +93,20 @@ function Register() {
         });
 
         // Handle successful signup
-        console.log(response.data); // do something with the response
-
         const profileResponse = await axios.post('http://localhost:5002/userprofile', {
           username,
           dob
         });
 
-        console.log(profileResponse.data); // do something with the profileResponse
-
         window.location = './Login'
 
       } catch (error) {
-        // Handle signup error
-        console.error(error.response.data); // or error.message
-
+        console.error(error.response.data); 
         if (
           error.response &&
           error.response.data &&
           error.response.data.message
         ) {
-          // Display toast alert for the error message
           toast.error(error.response.data.message, {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 5000,
@@ -124,7 +117,6 @@ function Register() {
             progress: undefined,
           });
         } else {
-          // Display a generic error message
           toast.error('An unexpected error occurred', {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 5000,

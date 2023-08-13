@@ -5,7 +5,7 @@ import axios from 'axios';
 
 function ProfileIcon({ h, w }) {
   const [profileIcon, setProfileIcon] = useState();
-  const { isLoggedIn, username } = useContext(AuthContext);
+  const { username } = useContext(AuthContext);
 
   useEffect(() => {
     fetchIcon();
@@ -13,7 +13,6 @@ function ProfileIcon({ h, w }) {
 
   const fetchIcon = async () => {
     try {
-      console.log(username); // This should log the correct username from context
       const response = await axios.get(`http://localhost:5002/fetchprofileicon?username=${username}`);
 
       if (response.status === 200) {

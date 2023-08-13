@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { AuthContext } from '../User/AuthContext';
 import ProfileIcon from '../User/Profile/ProfileIcon';
-import { css } from '@emotion/css';
 import { useNavigate } from 'react-router-dom';
 
 const Bar = styled.div`

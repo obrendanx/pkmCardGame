@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Create the context
 export const AuthContext = createContext();
@@ -24,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [username, isLoggedIn, userId]);
 
-  // Utility function to get a specific cookie by name
   const getCookie = (name) => {
     const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
     return cookieValue ? cookieValue.pop() : '';
@@ -49,8 +47,6 @@ export const AuthProvider = ({ children }) => {
     const now = new Date();
     now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
     document.cookie = `token=${encodeURIComponent(tokenPayloadString)}; expires=${now.toUTCString()}; path='/'`;
-
-    console.log('Cookie value after setting:', document.cookie);
   }; 
 
   const logout = () => {
