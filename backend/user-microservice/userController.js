@@ -56,7 +56,8 @@ const fetchProfileIcon = async (request, response) => {
 const fetchBio = async (request, response) => {
   try {
     // Fetch profile data from the database
-    const profileData = await profile.findOne({ username: request.body.username });
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
 
     if (!profileData) {
       return response.status(404).json({ error: 'Profile not found' });
@@ -75,7 +76,8 @@ const fetchBio = async (request, response) => {
 const fetchGender = async (request, response) => {
   try {
     // Fetch profile data from the database
-    const profileData = await profile.findOne({ username: request.body.username });
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
 
     if (!profileData) {
       return response.status(404).json({ error: 'Profile not found' });
@@ -94,14 +96,15 @@ const fetchGender = async (request, response) => {
 const fetchDateOfBirth = async (request, response) => {
   try {
     // Fetch profile data from the database
-    const profileData = await profile.findOne({ username: request.body.username });
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
 
     if (!profileData) {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
     // Get the gender field from the fetched profile data
-    const gender = profileData.dateOfBirth;
+    const dateOfBirth = profileData.dateOfBirth;
 
     response.json({ dateOfBirth });
   } catch (error) {

@@ -104,14 +104,15 @@ const updateAuthProfile = async (request, response) => {
 const fetchFullName = async (request, response) => {
   try {
     // Fetch profile data from the database
-    const profileData = await signUp.findOne({ username: request.body.username });
+    const username = request.query.username; 
+    const profileData = await signUp.findOne({ username });
 
     if (!profileData) {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
     // Get the gender field from the fetched profile data
-    const gender = profileData.fullName;
+    const fullName = profileData.fullName;
 
     response.json({ fullName });
   } catch (error) {
@@ -123,14 +124,15 @@ const fetchFullName = async (request, response) => {
 const fetchEmail = async (request, response) => {
   try {
     // Fetch profile data from the database
-    const profileData = await signUp.findOne({ username: request.body.username });
+    const username = request.query.username; 
+    const profileData = await signUp.findOne({ username });
 
     if (!profileData) {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
     // Get the gender field from the fetched profile data
-    const gender = profileData.email;
+    const email = profileData.email;
 
     response.json({ email });
   } catch (error) {

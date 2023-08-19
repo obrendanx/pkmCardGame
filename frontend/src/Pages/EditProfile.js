@@ -17,8 +17,105 @@ function EditProfile() {
   const [bio, setBio] = useState('');
   const [profileIconColor, setProfileIconColor] = useState('#3F51B5'); // Default color
   const [gender, setGender] = useState('');
+  const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
+  const [currentFullname, setCurrentFullname] = useState('');
+  const [currentBio, setCurrentBio] = useState('');
+  const [currentGender, setCurrentGender] = useState('');
+  const [isLoading, setLoading] = useState(true);
+  const [isLoadingUsername, setLoadingUsername] = useState(true);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  /*
+    using a promise and if statement to check that the username is not NULL
+    as errors are formed due to trying to fetch data but username hasnt been 
+    fetched from auth context yet
+  */
+
+  useEffect(() => {
+    if (username !== null) {
+      Promise.all([
+        fetchEmail(),
+        fetchDob(),
+        fetchFullname(),
+        fetchBio(),
+        fetchGender(),
+      ]).finally(() => setLoading(false));
+    } else {
+      setLoadingUsername(false); // Set loading to false if username is not found
+    }
+  }, [username]);
+
+  const fetchEmail = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5001/fetchemail?username=${username}`);
+
+      if (response.status === 200) {
+        setEmail(response.data.email);
+      } else {
+        console.error('No email found');
+      }
+    } catch (error) {
+      console.error('No email found here', error);
+    }
+  };
+
+  const fetchDob = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5002/fetchdob?username=${username}`);
+
+      if (response.status === 200) {
+        setDob(response.data.dateOfBirth);
+      } else {
+        console.error('No date of birth found');
+      }
+    } catch (error) {
+      console.error('No date of birth found here', error);
+    }
+  };
+
+  const fetchFullname = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5001/fetchfullname?username=${username}`);
+
+      if (response.status === 200) {
+        setCurrentFullname(response.data.fullName);
+      } else {
+        console.error('No icon found');
+      }
+    } catch (error) {
+      console.error('No icon found here', error);
+    }
+  };
+
+  const fetchBio = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5002/fetchbio?username=${username}`);
+
+      if (response.status === 200) {
+        setCurrentBio(response.data.bio);
+      } else {
+        console.error('No bio found');
+      }
+    } catch (error) {
+      console.error('No bio found here', error);
+    }
+  };
+
+  const fetchGender = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5002/fetchgender?username=${username}`);
+
+      if (response.status === 200) {
+        setCurrentGender(response.data.gender);
+      } else {
+        console.error('No gender found');
+      }
+    } catch (error) {
+      console.error('No gender found here', error);
+    }
+  };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -92,84 +189,90 @@ function EditProfile() {
     <div>
         {isLoggedIn ? (
             <div>
-               <form onSubmit={handleUpdate}>
-                   <div>
-                        <Label htmlFor="username" text="Username"/>
-                        <span>{username}</span>
-                   </div> 
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <form onSubmit={handleUpdate}>
+                        <div>
+                                <Label htmlFor="username" text="Username"/>
+                                <span>{username}</span>
+                        </div> 
 
-                   <div>
-                        <Label htmlFor="email" text="Email"/>
-                        <span>Emal Here</span>
-                   </div>
+                        <div>
+                                <Label htmlFor="email" text="Email"/>
+                                <span>{email}</span>
+                        </div>
 
-                   <div>
-                        <Label htmlFor='dateofbirth' text="Date of Birth"/>
-                        <span>DOB</span>
-                   </div>
+                        <div>
+                                <Label htmlFor='dateofbirth' text="Date of Birth"/>
+                                <span>{dob}</span>
+                        </div>
 
-                   <div>
-                        <Label htmlFor="fullName" text="Full Name"/>
-                        <Input 
-                            type="text"
-                            placeholder="Please enter your name"
-                            value={updateFullName}
-                            onValueChange={setUpdateFullName}
-                        />
-                        {errors.updateFullName && <span>{errors.updateFullName}</span>}
-                   </div>
+                        <div>
+                                <Label htmlFor="fullName" text="Full Name"/>
+                                <span>{currentFullname}</span>
+                                <Input 
+                                    type="text"
+                                    placeholder="Please enter your name"
+                                    value={updateFullName}
+                                    onValueChange={setUpdateFullName}
+                                />
+                                {errors.updateFullName && <span>{errors.updateFullName}</span>}
+                        </div>
 
-                   <div>
-                        <Label htmlFor="password" text="Update Password"/>
-                        <Input 
-                            type="password"
-                            placeholder="Please enter a password"
-                            value={updatedPassword}
-                            onValueChange={setUpdatedPassword}
-                        />
-                        {errors.updatedPassword && <span>{errors.updatedPassword}</span>}
-                   </div>
+                        <div>
+                                <Label htmlFor="password" text="Update Password"/>
+                                <Input 
+                                    type="password"
+                                    placeholder="Please enter a password"
+                                    value={updatedPassword}
+                                    onValueChange={setUpdatedPassword}
+                                />
+                                {errors.updatedPassword && <span>{errors.updatedPassword}</span>}
+                        </div>
 
-                   <div>
-                        <Label htmlFor="password" text="Retype Password"/>
-                        <Input 
-                            type="password"
-                            placeholder="Please enter your password again"
-                            value={passwordRetype}
-                            onValueChange={setPasswordRetype}
-                        />
-                        {errors.passwordRetype && <span>{errors.passwordRetype}</span>}
-                   </div>
+                        <div>
+                                <Label htmlFor="password" text="Retype Password"/>
+                                <Input 
+                                    type="password"
+                                    placeholder="Please enter your password again"
+                                    value={passwordRetype}
+                                    onValueChange={setPasswordRetype}
+                                />
+                                {errors.passwordRetype && <span>{errors.passwordRetype}</span>}
+                        </div>
 
-                   <div>
-                        <Label htmlFor="bio" text="Bio" />
-                        <TextArea
-                            type="text"
-                            placeholder="Bio"
-                            value={bio}
-                            onValueChange={setBio}
-                        />
-                   </div>
+                        <div>
+                                <Label htmlFor="bio" text="Bio" />
+                                <span>{currentBio}</span>
+                                <TextArea
+                                    type="text"
+                                    placeholder="Bio"
+                                    value={bio}
+                                    onValueChange={setBio}
+                                />
+                        </div>
 
-                   <div>
-                        <Label htmlFor="profileIconColor" text="Profile Icon Color" />
-                        <SketchPicker
-                        color={profileIconColor}
-                        onChange={(color) => setProfileIconColor(color.hex)}
-                        />
-                    </div>
+                        <div>
+                                <Label htmlFor="profileIconColor" text="Profile Icon Color" />
+                                <SketchPicker
+                                color={profileIconColor}
+                                onChange={(color) => setProfileIconColor(color.hex)}
+                                />
+                            </div>
 
-                    <div>
-                        <Label htmlFor="gender" text="Gender" />
-                        <select name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
-                        <option>Select a Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                        </select>
-                    </div>
-                   <Submit />
-               </form>
+                            <div>
+                                <Label htmlFor="gender" text="Gender" />
+                                <select name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                                <option>Select a Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        <Submit />
+                    </form>
+                )}
             </div>
         ) 
         : (navigate('../login'))}
