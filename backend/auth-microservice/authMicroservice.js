@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const { signup, login, updateAuthProfile } = require('./authController');
+const { signup, login, updateAuthProfile, fetchEmail, fetchFullName } = require('./authController');
 const cors = require('cors');
 
 require('dotenv').config();
@@ -16,7 +16,9 @@ function startAuthMicroservice() {
   // Routes
   app.post('/signup', signup);
   app.post('/login', login);
-  app.put('./updateauthprofile', updateAuthProfile);
+  app.get('/fetchemail', fetchEmail);
+  app.get('/fetchfullname', fetchFullName);
+  app.put('/updateauthprofile', updateAuthProfile);
 
   // MongoDB connection options
   const options = {

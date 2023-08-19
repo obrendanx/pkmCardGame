@@ -91,6 +91,25 @@ const fetchGender = async (request, response) => {
   }
 };
 
+const fetchDateOfBirth = async (request, response) => {
+  try {
+    // Fetch profile data from the database
+    const profileData = await profile.findOne({ username: request.body.username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    // Get the gender field from the fetched profile data
+    const gender = profileData.dateOfBirth;
+
+    response.json({ dateOfBirth });
+  } catch (error) {
+    console.error('Error in fetchDateOfBirth:', error);
+    response.status(500).json({ error: 'Failed to fetch DOB' });
+  }
+};
+
 const updateProfile = async (request, response) => {
   try {
     const { username } = request.body;
@@ -131,5 +150,6 @@ module.exports = {
   fetchProfileIcon,
   fetchBio,
   fetchGender,
-  updateProfile // Add this line
+  updateProfile,
+  fetchDateOfBirth
 };

@@ -162,6 +162,7 @@ function EditProfile() {
                     <div>
                         <Label htmlFor="gender" text="Gender" />
                         <select name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                        <option>Select a Gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>

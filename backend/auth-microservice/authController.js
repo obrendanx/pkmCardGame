@@ -101,8 +101,48 @@ const updateAuthProfile = async (request, response) => {
   }
 };
 
+const fetchFullName = async (request, response) => {
+  try {
+    // Fetch profile data from the database
+    const profileData = await signUp.findOne({ username: request.body.username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    // Get the gender field from the fetched profile data
+    const gender = profileData.fullName;
+
+    response.json({ fullName });
+  } catch (error) {
+    console.error('Error in fetchFullName:', error);
+    response.status(500).json({ error: 'Failed to fetch fullname' });
+  }
+};
+
+const fetchEmail = async (request, response) => {
+  try {
+    // Fetch profile data from the database
+    const profileData = await signUp.findOne({ username: request.body.username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    // Get the gender field from the fetched profile data
+    const gender = profileData.email;
+
+    response.json({ email });
+  } catch (error) {
+    console.error('Error in fetchEmail:', error);
+    response.status(500).json({ error: 'Failed to fetch email' });
+  }
+};
+
 module.exports = {
   signup,
   login,
   updateAuthProfile, 
+  fetchFullName,
+  fetchEmail
 };

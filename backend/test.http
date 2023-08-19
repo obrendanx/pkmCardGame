@@ -2,7 +2,7 @@ GET http://localhost:5002/fetchbio
 Content-Type: application/json
 
 {
-  "username": "adminuser"  
+  "username": "testuser2"  
 }
 
 # {
