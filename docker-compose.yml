@@ -44,6 +44,22 @@ services:
     networks:
       - pkmCardGameNet
 
+  user-microservice:
+    container_name: pkmCardGameUser
+    build:
+      context: ./backend/user-microservice
+      dockerfile: Dockerfile
+    ports:
+      - 5002:5002
+    volumes:
+      - ./backend/user-microservice:/app
+      - ./backend:/backend
+    environment:
+      - DATABASE_ACCESS=mongodb+srv://brendanewen16:3BmFyuA4alqoB666@cluster0.3mfmcng.mongodb.net/?retryWrites=true&w=majority
+      - SECRET_KEY=Zz47H.Aa5B
+    networks:
+      - pkmCardGameNet
+
 networks:
   pkmCardGameNet:
 

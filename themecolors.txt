@@ -9,4 +9,8 @@ Secondary Text: #8b2900
 Button Color: #31acee
 Button Text Color: #ffffff
 
+incomplete: #6a627b
+in progress: #FFD54A
+complete: #73ac31
+
 

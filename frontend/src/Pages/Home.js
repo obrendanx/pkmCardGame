@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../Components/User/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../Components/Navigation/Sidebar';
 
 function Home() {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -10,7 +11,7 @@ function Home() {
     <div>
       {isLoggedIn ? (
         <div>
-            <h2>Welcome {username}! You are logged in.</h2>
+            <Sidebar/>
         </div>
       ) : (
         navigate('../login')
