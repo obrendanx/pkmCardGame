@@ -119,6 +119,7 @@ const updateProfile = async (request, response) => {
     );
 
     response.json(updatedProfile);
+    console.log(updatedProfile);
   } catch (error) {
     console.error('Error in updateProfile:', error);
     response.status(500).json({ error: 'Failed to update profile' });
@@ -130,5 +131,5 @@ module.exports = {
   fetchProfileIcon,
   fetchBio,
   fetchGender,
-  updateProfile, // Add this line
+  updateProfile // Add this line
 };

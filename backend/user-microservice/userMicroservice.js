@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const { userprofile, fetchProfileIcon, fetchBio, fetchGender } = require('./userController');
+const { userprofile, fetchProfileIcon, fetchBio, fetchGender, updateProfile } = require('./userController');
 const cors = require('cors');
 
 require('dotenv').config();
@@ -18,6 +18,7 @@ function startUserMicroservice() {
   app.get('/fetchprofileicon', fetchProfileIcon);
   app.get('/fetchbio', fetchBio);
   app.get('/fetchgender', fetchGender);
+  app.put('/updateprofile', updateProfile);
 
   // MongoDB connection options
   const options = {

@@ -94,6 +94,7 @@ const updateAuthProfile = async (request, response) => {
     );
 
     response.json(updatedUser);
+    console.log(updatedUser);
   } catch (error) {
     console.error('Error in updateAuthProfile:', error);
     response.status(500).json({ error: 'Failed to update profile' });

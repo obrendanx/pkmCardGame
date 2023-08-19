@@ -26,56 +26,67 @@ function EditProfile() {
     const formErrors = {};
 
     if (updateFullName.trim() === '') {
-      formErrors.updateFullName = 'Full Name is required';
+        formErrors.updateFullName = 'Full Name is required';
     } else if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
-      formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+        formErrors.updateFullName = 'Full Name can only contain letters and spaces';
     }
 
     if (updatedPassword.trim() === '') {
-      formErrors.updatedPassword = 'Password is required';
+        formErrors.updatedPassword = 'Password is required';
     } else if (updatedPassword.length < 6) {
-      formErrors.updatedPassword = 'Password must be at least 6 characters long';
+        formErrors.updatedPassword = 'Password must be at least 6 characters long';
     } else if (
-      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
+        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
     ) {
-      formErrors.updatedPassword =
+        formErrors.updatedPassword =
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
     }
 
     if (updatedPassword !== passwordRetype) {
-      formErrors.passwordRetype = 'Passwords do not match';
+        formErrors.passwordRetype = 'Passwords do not match';
     }
 
     setErrors(formErrors);
 
     const authUpdateData = {
-      username,
-      updatedPassword,
-      updateFullName,
+        username,
+        updatedPassword,
+        updateFullName,
     };
 
     const userUpdateData = {
-      username,
-      profileIconColor,
-      bio,
-      gender,
+        username,
+        profileIconColor,
+        bio,
+        gender,
     };
 
     try {
-      await axios.post('http://localhost:5001/updateAuthProfile', authUpdateData); // Replace with your route
-      // Handle success or show a success message
-    } catch (error) {
-      // Handle error or show an error message
-    }
+        let authUpdated = false;
+        let userUpdated = false;
 
-    // Send the update request for user profile (icon color, bio, and gender)
-    try {
-      await axios.post('http://localhost:5002/updateProfile', userUpdateData); // Replace with your route
-      // Handle success or show a success message
+        if (updatedPassword || updateFullName) {
+        await axios.put('http://localhost:5001/updateauthprofile', authUpdateData);
+        authUpdated = true;
+        }
+
+        if (profileIconColor || bio || gender) {
+        await axios.put('http://localhost:5002/updateprofile', userUpdateData);
+        userUpdated = true;
+        }
+
+        // Handle success or show a success message
+        if (authUpdated || userUpdated) {
+        console.log('Profile updated successfully!');
+        // You can set a state variable to show a success message to the user
+        }
     } catch (error) {
-      // Handle error or show an error message
+        console.log(error);
+        // Handle error or show an error message
+        console.log('Profile update failed.');
+        // You can set a state variable to show an error message to the user
     }
-  };
+    };
 
   return (
     <div>
