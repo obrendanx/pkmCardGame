@@ -36,11 +36,6 @@ const userSchema = new mongoose.Schema({
     required:true,
     default: false
   },
-  profileIconColor:{
-    type:String,
-    required:true,
-    default: "#3F51B5"
-  },
   date:{
     type:Date,
     default:Date.now

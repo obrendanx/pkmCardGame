@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
+import {css} from '@emotion/css'
 
 const Wrapper = styled.div`
   height: 100%;
   width: 30%;
   position: fixed;
   overflow-y: scroll;
+  margin-bottom:50px;
   overflow-x: hidden;
   background: #de5239;
 
@@ -69,7 +71,7 @@ const CollectionItem = styled.a`
 `
 
 const CollectionBlock = styled.div`
-    
+   min-height:150px;
 `
 
 const Splitter = styled.hr`
@@ -302,7 +304,7 @@ function Sidebar() {
                 </List>
             </CollectionBlock>
 
-            <CollectionBlock>
+            <CollectionBlock className={css`margin-bottom:70px;`}>
                 <Heading>
                     2008
                     <Splitter></Splitter>
