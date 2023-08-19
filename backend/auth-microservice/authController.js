@@ -70,7 +70,38 @@ const login = async (request, response) => {
   }
 };
 
+const updateAuthProfile = async (request, response) => {
+  try {
+    const { username } = request.body;
+    const updates = {};
+
+    if (request.body.updatedPassword) {
+      // Validate and hash the updated password
+      // Update the user's password
+      updates.password = hashedPassword;
+    }
+
+    if (request.body.updateFullName) {
+      // Validate and update the full name
+      updates.fullName = request.body.updateFullName;
+    }
+
+    // Update the user profile
+    const updatedUser = await signUp.findOneAndUpdate(
+      { username },
+      { $set: updates },
+      { new: true }
+    );
+
+    response.json(updatedUser);
+  } catch (error) {
+    console.error('Error in updateAuthProfile:', error);
+    response.status(500).json({ error: 'Failed to update profile' });
+  }
+};
+
 module.exports = {
   signup,
-  login
+  login,
+  updateAuthProfile, 
 };

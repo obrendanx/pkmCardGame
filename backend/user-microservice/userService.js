@@ -69,6 +69,15 @@ const saveProfileService = async (userData) => {
   }
 };
 
+const updateProfileService = async (updateData) => {
+  try {
+    const response = await axios.post('/update-profile', updateData);
+    return response.data;
+  } catch (error) {
+    throw new Error('Update profile failed');
+  }
+};
+
 module.exports = {
   getProfileIconService,
   getBioService,
@@ -76,5 +85,6 @@ module.exports = {
   getInterestsService,
   getSocialMediaService,
   getFavoritePokemonService,
-  saveProfileService
+  saveProfileService,
+  updateProfileService
 };

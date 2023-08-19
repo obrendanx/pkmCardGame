@@ -91,10 +91,44 @@ const fetchGender = async (request, response) => {
   }
 };
 
+const updateProfile = async (request, response) => {
+  try {
+    const { username } = request.body;
+    const updates = {};
+
+    if (request.body.profileIconColor) {
+      // Validate and update the profileIconColor
+      updates.profileIconColor = request.body.profileIconColor;
+    }
+
+    if (request.body.bio) {
+      // Validate and update the bio
+      updates.bio = request.body.bio;
+    }
+
+    if (request.body.gender) {
+      // Validate and update the gender
+      updates.gender = request.body.gender;
+    }
+
+    // Update the user profile
+    const updatedProfile = await profile.findOneAndUpdate(
+      { username },
+      { $set: updates },
+      { new: true }
+    );
+
+    response.json(updatedProfile);
+  } catch (error) {
+    console.error('Error in updateProfile:', error);
+    response.status(500).json({ error: 'Failed to update profile' });
+  }
+};
+
 module.exports = {
   userprofile,
   fetchProfileIcon,
   fetchBio,
   fetchGender,
+  updateProfile, // Add this line
 };
-

@@ -40,9 +40,19 @@ const isAdminService = async (username) => {
   }
 };
 
+const updateAuthProfileService = async (updateData) => {
+  try {
+    const response = await axios.post('/update-auth-profile', updateData);
+    return response.data;
+  } catch (error) {
+    throw new Error('Update auth profile failed');
+  }
+};
+
 module.exports = {
   signupService,
   loginService,
   getProfileIconService,
-  isAdminService
+  isAdminService,
+  updateAuthProfileService
 };
