@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/css'
 
-function Submit({ small, left }) {
+function Submit({ small, left, value, form }) {
   return (
     <div>
         <input 
@@ -24,7 +24,8 @@ function Submit({ small, left }) {
             }
         `}
         type='submit' 
-        value='Submit' 
+        value={value} 
+        form={form}
         />
     </div>
   )

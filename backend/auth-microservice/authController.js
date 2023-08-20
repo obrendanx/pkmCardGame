@@ -28,12 +28,12 @@ const signup = async (request, response) => {
 
 const login = async (request, response) => {
   try {
-    console.log('Login function called'); // Add this line
-    console.log('Request body:', request.body); // Add this line
+    console.log('Login function called'); 
+    console.log('Request body:', request.body); 
 
     const user = await signUp.findOne({ username: request.body.username });
 
-    console.log('User found:', user); // Add this line
+    console.log('User found:', user); 
 
     if (user) {
       const cmp = await bcrypt.compare(request.body.password, user.password);
@@ -70,7 +70,74 @@ const login = async (request, response) => {
   }
 };
 
+const updateAuthProfile = async (request, response) => {
+  try {
+    const { username } = request.body;
+    const updates = {};
+
+    if (request.body.updatedPassword) {
+      const saltPassword = await bcrypt.genSalt(10);
+      updates.password = await bcrypt.hash(request.body.updatedPassword, saltPassword);;
+    }
+
+    if (request.body.updateFullName) {
+      updates.fullName = request.body.updateFullName;
+    }
+
+    const updatedUser = await signUp.findOneAndUpdate(
+      { username },
+      { $set: updates },
+      { new: true }
+    );
+
+    response.json(updatedUser);
+    console.log(updatedUser);
+  } catch (error) {
+    console.error('Error in updateAuthProfile:', error);
+    response.status(500).json({ error: 'Failed to update profile' });
+  }
+};
+
+const fetchFullName = async (request, response) => {
+  try {
+    const username = request.query.username; 
+    const profileData = await signUp.findOne({ username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    const fullName = profileData.fullName;
+
+    response.json({ fullName });
+  } catch (error) {
+    console.error('Error in fetchFullName:', error);
+    response.status(500).json({ error: 'Failed to fetch fullname' });
+  }
+};
+
+const fetchEmail = async (request, response) => {
+  try {
+    const username = request.query.username; 
+    const profileData = await signUp.findOne({ username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    const email = profileData.email;
+
+    response.json({ email });
+  } catch (error) {
+    console.error('Error in fetchEmail:', error);
+    response.status(500).json({ error: 'Failed to fetch email' });
+  }
+};
+
 module.exports = {
   signup,
-  login
+  login,
+  updateAuthProfile, 
+  fetchFullName,
+  fetchEmail
 };

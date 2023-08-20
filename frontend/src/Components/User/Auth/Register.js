@@ -253,7 +253,7 @@ function Register() {
               </div>
 
               <div>
-                <Submit small={false} left={null} />
+                <Submit small={false} left={null} value="Register" />
               </div>
 
               <div>

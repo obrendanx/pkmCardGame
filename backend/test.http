@@ -1,4 +1,4 @@
-GET http://localhost:5002/fetchprofileicon
+GET http://localhost:5002/fetchbio
 Content-Type: application/json
 
 {
