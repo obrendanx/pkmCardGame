@@ -6,8 +6,66 @@ import Input from '../Components/Form/Input';
 import Submit from '../Components/Form/Submit';
 import Label from '../Components/Form/Label';
 import TextArea from '../Components/Form/TextArea'
-import { SketchPicker } from 'react-color';
-import axios from 'axios'
+import { TwitterPicker } from 'react-color';
+import axios from 'axios';
+import { css } from '@emotion/css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const PageWrapper = styled.div`
+    height:100%;
+    width:100%;
+    overflow-x:hidden;
+`
+
+const Wrapper = styled.form`
+    height:100%;
+    width:80%;
+    margin-left:10%;
+    margin-top:2.5%;
+    margin-bottom:70px;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    position:relative;
+    @media (max-width: 770px) {
+        width:100%;
+        margin-left:0;
+    }
+`
+
+const LabelGroup = styled.div`
+    min-height:50px;
+    width:42%;
+    margin:1% 2% 1% 2%;
+    padding:2%;
+    border-radius:15px;
+    background:#FFD57B;
+    @media (max-width: 770px) {
+        width:96%;
+    }
+`
+
+const DisplayText = styled.span`
+    min-height:35px;
+    width:100%;
+    margin:3% 2% 2% 3%;
+    padding:2.5px;
+`
+
+const Error = styled.span`
+    font-size:0.8em;
+    color:#F44336;
+    margin-left:2.5%;
+`
+
+const Select = styled.select`
+    border:none;
+    height:35px;
+    padding:5px;
+    margin-left:2.5%;
+    margin-top:5px;
+`
 
 function EditProfile() {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -26,12 +84,6 @@ function EditProfile() {
   const [isLoadingUsername, setLoadingUsername] = useState(true);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
-  /*
-    using a promise and if statement to check that the username is not NULL
-    as errors are formed due to trying to fetch data but username hasnt been 
-    fetched from auth context yet
-  */
 
   useEffect(() => {
     if (username !== null) {
@@ -119,15 +171,16 @@ function EditProfile() {
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-    // Validate form inputs
     const formErrors = {};
 
+    //Check to see if a correct 'Full Name' is entered
     if (updateFullName.trim() === '') {
         formErrors.updateFullName = 'Full Name is required';
     } else if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
         formErrors.updateFullName = 'Full Name can only contain letters and spaces';
     }
 
+    //Check to see if a correct 'Password' is entered and matched correctly
     if (updatedPassword.trim() === '') {
         formErrors.updatedPassword = 'Password is required';
     } else if (updatedPassword.length < 6) {
@@ -162,6 +215,9 @@ function EditProfile() {
         let authUpdated = false;
         let userUpdated = false;
 
+
+        //Routes to update information to 
+        //Routes split due to different information in different microservices
         if (updatedPassword || updateFullName) {
         await axios.put('http://localhost:5001/updateauthprofile', authUpdateData);
         authUpdated = true;
@@ -172,108 +228,132 @@ function EditProfile() {
         userUpdated = true;
         }
 
-        // Handle success or show a success message
+        // Handle success and failure of updating profile
         if (authUpdated || userUpdated) {
-        console.log('Profile updated successfully!');
-        // You can set a state variable to show a success message to the user
+        toast.success('Profile Updated Successfully!')
+        }
+
+        if(!authUpdateData && !userUpdateData){
+            toast.error("No changes have been made");
         }
     } catch (error) {
         console.log(error);
-        // Handle error or show an error message
-        console.log('Profile update failed.');
-        // You can set a state variable to show an error message to the user
+        toast.error('Error Updating Profile!');
     }
     };
 
   return (
     <div>
         {isLoggedIn ? (
-            <div>
+            <PageWrapper>
                 {isLoading ? (
                     <p>Loading...</p>
                 ) : (
-                    <form onSubmit={handleUpdate}>
-                        <div>
+                    <Wrapper onSubmit={handleUpdate} id="updateform">
+                        <LabelGroup>
                                 <Label htmlFor="username" text="Username"/>
-                                <span>{username}</span>
-                        </div> 
+                                <DisplayText>{username}</DisplayText>
+                        </LabelGroup> 
 
-                        <div>
+                        <LabelGroup>
                                 <Label htmlFor="email" text="Email"/>
-                                <span>{email}</span>
-                        </div>
+                                <DisplayText>{email}</DisplayText>
+                        </LabelGroup>
 
-                        <div>
+                        <LabelGroup>
                                 <Label htmlFor='dateofbirth' text="Date of Birth"/>
-                                <span>{dob}</span>
-                        </div>
+                                <DisplayText>{dob}</DisplayText>
+                        </LabelGroup>
 
-                        <div>
-                                <Label htmlFor="fullName" text="Full Name"/>
-                                <span>{currentFullname}</span>
-                                <Input 
-                                    type="text"
-                                    placeholder="Please enter your name"
-                                    value={updateFullName}
-                                    onValueChange={setUpdateFullName}
-                                />
-                                {errors.updateFullName && <span>{errors.updateFullName}</span>}
-                        </div>
+                        <LabelGroup>
+                            <Label htmlFor="gender" text="Gender" />
+                            <Select name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                            <option>Select a Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                            </Select>
+                        </LabelGroup>
 
-                        <div>
+                        <LabelGroup>
                                 <Label htmlFor="password" text="Update Password"/>
                                 <Input 
                                     type="password"
                                     placeholder="Please enter a password"
                                     value={updatedPassword}
                                     onValueChange={setUpdatedPassword}
+                                    left="2.5%"
                                 />
-                                {errors.updatedPassword && <span>{errors.updatedPassword}</span>}
-                        </div>
+                                {errors.updatedPassword && <Error>{errors.updatedPassword}</Error>}
+                        </LabelGroup>
 
-                        <div>
+                        <LabelGroup>
                                 <Label htmlFor="password" text="Retype Password"/>
                                 <Input 
                                     type="password"
                                     placeholder="Please enter your password again"
                                     value={passwordRetype}
                                     onValueChange={setPasswordRetype}
+                                    left="2.5%"
                                 />
-                                {errors.passwordRetype && <span>{errors.passwordRetype}</span>}
-                        </div>
+                                {errors.passwordRetype && <Error>{errors.passwordRetype}</Error>}
+                        </LabelGroup>
 
-                        <div>
+                        <LabelGroup>
                                 <Label htmlFor="bio" text="Bio" />
-                                <span>{currentBio}</span>
+                                <DisplayText>{currentBio}</DisplayText>
                                 <TextArea
                                     type="text"
                                     placeholder="Bio"
                                     value={bio}
                                     onValueChange={setBio}
+                                    width="90%"
                                 />
+                        </LabelGroup>
+
+                        <LabelGroup>
+                            <Label htmlFor="profileIconColor" text="Profile Icon Color" />
+                            <TwitterPicker
+                            color={profileIconColor}
+                            onChange={(color) => setProfileIconColor(color.hex)}
+                            className={css`
+                                margin-top:20px;
+                                margin-left:3%;
+                                padding:15px;
+                                @media (max-width: 770px) {
+                                    margin-bottom:15px;
+                                }
+                            `}
+                            />
+                        </LabelGroup>
+
+                        <LabelGroup>
+                                <Label htmlFor="fullName" text="Full Name"/>
+                                <DisplayText>{currentFullname}</DisplayText>
+                                <Input 
+                                    type="text"
+                                    placeholder="Please enter your name"
+                                    value={updateFullName}
+                                    onValueChange={setUpdateFullName}
+                                    left="2.5%"
+                                />
+                                {errors.updateFullName && <Error>{errors.updateFullName}</Error>}
+                        </LabelGroup>
+                        <div className={css`
+                            width:20%;
+                            position:absolute;
+                            bottom:-60px;
+                            margin-left:2.5%;
+                            @media (max-width: 770px) {
+                                width:50%;
+                            }
+                        `}>
+                            <Submit value="Update Profile" form="updateform"/>
                         </div>
-
-                        <div>
-                                <Label htmlFor="profileIconColor" text="Profile Icon Color" />
-                                <SketchPicker
-                                color={profileIconColor}
-                                onChange={(color) => setProfileIconColor(color.hex)}
-                                />
-                            </div>
-
-                            <div>
-                                <Label htmlFor="gender" text="Gender" />
-                                <select name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
-                                <option>Select a Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        <Submit />
-                    </form>
+                        <ToastContainer/>
+                    </Wrapper>
                 )}
-            </div>
+            </PageWrapper>
         ) 
         : (navigate('../login'))}
     </div>

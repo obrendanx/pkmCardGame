@@ -109,7 +109,7 @@ function Login() {
                 onValueChange={setPassword}
               />
 
-              <Submit />
+              <Submit value="Login" />
 
               <div>
                 <input
