@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { AuthContext } from '../User/AuthContext';
 import ProfileIcon from '../User/Profile/ProfileIcon';
 import { useNavigate } from 'react-router-dom';
+import { TbPokeball, TbPokeballOff } from "react-icons/tb"
 
 const Bar = styled.div`
   height: 50px;
@@ -16,6 +17,19 @@ const BarRight = styled.div`
   position: absolute;
   right: 0;
   display: flex;
+  @media (max-width: 1000px) {
+    width:15%;
+  }
+  @media (max-width: 770px) {
+    width:40%;
+  }
+`;
+
+const BarLeft = styled.div`
+  height: 50px;
+  width: 5%;
+  position: absolute;
+  left: 0;
   @media (max-width: 1000px) {
     width:15%;
   }
@@ -72,6 +86,13 @@ const ButtonUser = styled.button`
   cursor: pointer;
 `
 
+const HomeBtn = styled.span`
+  font-size:2em;
+  line-height:60px;
+  padding-left:5px;
+  cursor:pointer;
+`
+
 function Navbar() {
   const { isLoggedIn, logout, user } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -95,12 +116,16 @@ function Navbar() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login'); // Correct the redirect path to /login
+    navigate('/login'); 
   };
 
   const handleClick = () => {
-    navigate('/editprofile'); // Correct the redirect path to /editprofile
+    navigate('/editprofile'); 
   };
+
+  const handleHomeClick = () => {
+    navigate('./home');
+  }
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -108,6 +133,9 @@ function Navbar() {
 
   return isLoggedIn ? (
     <Bar>
+      <BarLeft>
+        <HomeBtn onClick={handleHomeClick}><TbPokeball/></HomeBtn>
+      </BarLeft>
       <BarRight>
         <Group>
           <ButtonUser onClick={toggleDropdown}>
