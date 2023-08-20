@@ -28,12 +28,12 @@ const signup = async (request, response) => {
 
 const login = async (request, response) => {
   try {
-    console.log('Login function called'); // Add this line
-    console.log('Request body:', request.body); // Add this line
+    console.log('Login function called'); 
+    console.log('Request body:', request.body); 
 
     const user = await signUp.findOne({ username: request.body.username });
 
-    console.log('User found:', user); // Add this line
+    console.log('User found:', user); 
 
     if (user) {
       const cmp = await bcrypt.compare(request.body.password, user.password);
@@ -76,17 +76,14 @@ const updateAuthProfile = async (request, response) => {
     const updates = {};
 
     if (request.body.updatedPassword) {
-      // Validate and hash the updated password
-      // Update the user's password
-      updates.password = hashedPassword;
+      const saltPassword = await bcrypt.genSalt(10);
+      updates.password = await bcrypt.hash(request.body.updatedPassword, saltPassword);;
     }
 
     if (request.body.updateFullName) {
-      // Validate and update the full name
       updates.fullName = request.body.updateFullName;
     }
 
-    // Update the user profile
     const updatedUser = await signUp.findOneAndUpdate(
       { username },
       { $set: updates },
@@ -103,7 +100,6 @@ const updateAuthProfile = async (request, response) => {
 
 const fetchFullName = async (request, response) => {
   try {
-    // Fetch profile data from the database
     const username = request.query.username; 
     const profileData = await signUp.findOne({ username });
 
@@ -111,7 +107,6 @@ const fetchFullName = async (request, response) => {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
-    // Get the gender field from the fetched profile data
     const fullName = profileData.fullName;
 
     response.json({ fullName });
@@ -123,7 +118,6 @@ const fetchFullName = async (request, response) => {
 
 const fetchEmail = async (request, response) => {
   try {
-    // Fetch profile data from the database
     const username = request.query.username; 
     const profileData = await signUp.findOne({ username });
 
@@ -131,7 +125,6 @@ const fetchEmail = async (request, response) => {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
-    // Get the gender field from the fetched profile data
     const email = profileData.email;
 
     response.json({ email });

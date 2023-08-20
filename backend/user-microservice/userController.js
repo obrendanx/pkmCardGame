@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const userprofile = async (request, response) => {
   try {
-    console.log('Request body:', request.body); // Add this line to check the request body
+    console.log('Request body:', request.body); 
 
     const newProfile = new profile({
       username: request.body.username,
@@ -22,15 +22,15 @@ const userprofile = async (request, response) => {
       favouritePokemon: ""
     });
 
-    console.log('New profile:', newProfile); // Add this line to check the new profile data
+    console.log('New profile:', newProfile); 
 
     const savedProfile = await newProfile.save();
 
-    console.log('Saved profile:', savedProfile); // Add this line to check the saved profile data
+    console.log('Saved profile:', savedProfile); 
 
     response.json(savedProfile);
   } catch (error) {
-    console.error('Error in userprofile:', error.message); // Add this line to log the error message
+    console.error('Error in userprofile:', error.message); 
     response.status(500).json({ error: 'Failed to create profile controller' });
   }
 };
@@ -55,7 +55,6 @@ const fetchProfileIcon = async (request, response) => {
 
 const fetchBio = async (request, response) => {
   try {
-    // Fetch profile data from the database
     const username = request.query.username; 
     const profileData = await profile.findOne({ username });
 
@@ -63,7 +62,6 @@ const fetchBio = async (request, response) => {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
-    // Get the bio field from the fetched profile data
     const bio = profileData.bio;
 
     response.json({ bio });
@@ -75,7 +73,6 @@ const fetchBio = async (request, response) => {
 
 const fetchGender = async (request, response) => {
   try {
-    // Fetch profile data from the database
     const username = request.query.username; 
     const profileData = await profile.findOne({ username });
 
@@ -83,7 +80,6 @@ const fetchGender = async (request, response) => {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
-    // Get the gender field from the fetched profile data
     const gender = profileData.gender;
 
     response.json({ gender });
@@ -95,7 +91,6 @@ const fetchGender = async (request, response) => {
 
 const fetchDateOfBirth = async (request, response) => {
   try {
-    // Fetch profile data from the database
     const username = request.query.username; 
     const profileData = await profile.findOne({ username });
 
@@ -103,7 +98,6 @@ const fetchDateOfBirth = async (request, response) => {
       return response.status(404).json({ error: 'Profile not found' });
     }
 
-    // Get the gender field from the fetched profile data
     const dateOfBirth = profileData.dateOfBirth;
 
     response.json({ dateOfBirth });
@@ -119,21 +113,17 @@ const updateProfile = async (request, response) => {
     const updates = {};
 
     if (request.body.profileIconColor) {
-      // Validate and update the profileIconColor
       updates.profileIconColor = request.body.profileIconColor;
     }
 
     if (request.body.bio) {
-      // Validate and update the bio
       updates.bio = request.body.bio;
     }
 
     if (request.body.gender) {
-      // Validate and update the gender
       updates.gender = request.body.gender;
     }
 
-    // Update the user profile
     const updatedProfile = await profile.findOneAndUpdate(
       { username },
       { $set: updates },
