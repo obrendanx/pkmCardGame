@@ -61,10 +61,11 @@ const Error = styled.span`
 
 const Select = styled.select`
     border:none;
-    height:35px;
+    height:30px;
     padding:5px;
     margin-left:2.5%;
     margin-top:5px;
+    margin-bottom:5px;
 `
 
 function EditProfile() {

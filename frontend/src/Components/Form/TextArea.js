@@ -14,14 +14,13 @@ function TextArea({ width, type, textname, value, onValueChange }) {
         className={css`
             height: 125px;
             width: ${width};
-            margin: 2.5px 2.5px 7.5px 2.5px;
             padding: 2.5px;
             border-radius: 5px;
-            border: solid 3px #f44336;
-            color: #1c1c1c;
+            color: #8b2900;
             outline:none;
+            
             @media (max-width: 770px) {
-                width:100%;
+                width:98%;
               }
         `}
         type={type}
