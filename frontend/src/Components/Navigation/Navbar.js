@@ -17,6 +17,7 @@ const BarRight = styled.div`
   position: absolute;
   right: 0;
   display: flex;
+  z-index:2;
   @media (max-width: 1000px) {
     width:15%;
   }
