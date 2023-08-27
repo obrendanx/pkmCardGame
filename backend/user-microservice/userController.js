@@ -107,6 +107,42 @@ const fetchDateOfBirth = async (request, response) => {
   }
 };
 
+const fetchInterests = async (request, response) => {
+  try {
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    const interests = profileData.interests;
+
+    response.json({ interests });
+  } catch (error) {
+    console.error('Error in fetchInterests:', error);
+    response.status(500).json({ error: 'Failed to fetch Interests' });
+  }
+};
+
+const fetchSocials = async (request, response) => {
+  try {
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    const socials = profileData.socialMedia;
+    console.log(socials);
+    response.json({ socials });
+  } catch (error) {
+    console.error('Error in fetchSocials:', error);
+    response.status(500).json({ error: 'Failed to fetch socials' });
+  }
+};
+
 const updateProfile = async (request, response) => {
   try {
     const { username } = request.body;
@@ -122,6 +158,14 @@ const updateProfile = async (request, response) => {
 
     if (request.body.gender) {
       updates.gender = request.body.gender;
+    }
+
+    if (request.body.socialMedia) {
+      updates.socialMedia = request.body.socialMedia;
+    }
+
+    if (request.body.interests) {
+      updates.interests = request.body.interests;
     }
 
     const updatedProfile = await profile.findOneAndUpdate(
@@ -144,5 +188,7 @@ module.exports = {
   fetchBio,
   fetchGender,
   updateProfile,
-  fetchDateOfBirth
+  fetchDateOfBirth,
+  fetchInterests,
+  fetchSocials
 };

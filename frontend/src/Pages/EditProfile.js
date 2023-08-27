@@ -11,6 +11,7 @@ import axios from 'axios';
 import { css } from '@emotion/css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs'
 
 const PageWrapper = styled.div`
     height:100%;
@@ -82,6 +83,12 @@ function EditProfile() {
   const [currentBio, setCurrentBio] = useState('');
   const [currentGender, setCurrentGender] = useState('');
   const [isLoading, setLoading] = useState(true);
+  const [socialMedia, setSocialMedia] = useState({
+    twitter: "",
+    facebook: "",
+    instagram: "",
+  });
+  const [interests, setInterests] = useState([]);
   const [isLoadingUsername, setLoadingUsername] = useState(true);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -94,6 +101,8 @@ function EditProfile() {
         fetchFullname(),
         fetchBio(),
         fetchGender(),
+        fetchInterests(),
+        fetchSocials(),
       ]).finally(() => setLoading(false));
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
@@ -170,6 +179,38 @@ function EditProfile() {
     }
   };
 
+  const fetchInterests = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5002/fetchinterests?username=${username}`);
+
+      if (response.status === 200) {
+        setInterests(response.data.interests);
+      } else {
+        console.error('No interests found');
+      }
+    } catch (error) {
+      console.error('No interests found here', error);
+    }
+  };
+
+  const fetchSocials = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5002/fetchsocials?username=${username}`);
+
+      if (response.status === 200) {
+        setSocialMedia({ ...socialMedia, 
+          instagram: response.data.socials.instagram, 
+          twitter: response.data.socials.twitter, 
+          facebook: response.data.socials.facebook 
+        });
+      } else {
+        console.error('No socials found');
+      }
+    } catch (error) {
+      console.error('No socials found here', error);
+    }
+  };
+
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formErrors = {};
@@ -210,6 +251,8 @@ function EditProfile() {
         profileIconColor,
         bio,
         gender,
+        interests,
+        socialMedia
     };
 
     try {
@@ -301,6 +344,64 @@ function EditProfile() {
                         </LabelGroup>
 
                         <LabelGroup>
+                                <Label htmlFor="fullName" text="Full Name"/>
+                                <DisplayText>{currentFullname}</DisplayText>
+                                <Input 
+                                    type="text"
+                                    placeholder="Please enter your name"
+                                    value={updateFullName}
+                                    onValueChange={setUpdateFullName}
+                                    left="2.5%"
+                                />
+                                {errors.updateFullName && <Error>{errors.updateFullName}</Error>}
+                        </LabelGroup>
+
+                        <LabelGroup>
+                          <Label htmlFor="twitter" text={<BsTwitter/>} />
+                          <Input
+                            type="text"
+                            placeholder="Twitter profile URL"
+                            value={socialMedia.twitter}
+                            onValueChange={(value) => setSocialMedia({ ...socialMedia, twitter: value })}
+                            left="2.5%"
+                          />
+                        </LabelGroup>
+
+                        <LabelGroup>
+                          <Label htmlFor="facebook" text={<BsFacebook/>} />
+                          <Input
+                            type="text"
+                            placeholder="Facebook profile URL"
+                            value={socialMedia.facebook}
+                            onValueChange={(value) => setSocialMedia({ ...socialMedia, facebook: value })}
+                            left="2.5%"
+                          />
+                        </LabelGroup>
+
+                        <LabelGroup>
+                          <Label htmlFor="instagram" text={<BsInstagram/>} />
+                          <Input
+                            type="text"
+                            placeholder="Instagram profile URL"
+                            value={socialMedia.instagram}
+                            onValueChange={(value) => setSocialMedia({ ...socialMedia, instagram: value })}
+                            left="2.5%"
+                          />
+                        </LabelGroup>
+
+                        <LabelGroup>
+                          <Label htmlFor="interests" text="Interests" />
+                          <DisplayText>{interests}</DisplayText>
+                          <TextArea
+                            type="text"
+                            placeholder="Your interests"
+                            value={interests.join(", ")}
+                            onValueChange={(value) => setInterests(value.split(",").map((item) => item.trim()))}
+                            width="90%"
+                          />
+                        </LabelGroup>
+
+                        <LabelGroup>
                                 <Label htmlFor="bio" text="Bio" />
                                 <DisplayText>{currentBio}</DisplayText>
                                 <TextArea
@@ -326,19 +427,6 @@ function EditProfile() {
                                 }
                             `}
                             />
-                        </LabelGroup>
-
-                        <LabelGroup>
-                                <Label htmlFor="fullName" text="Full Name"/>
-                                <DisplayText>{currentFullname}</DisplayText>
-                                <Input 
-                                    type="text"
-                                    placeholder="Please enter your name"
-                                    value={updateFullName}
-                                    onValueChange={setUpdateFullName}
-                                    left="2.5%"
-                                />
-                                {errors.updateFullName && <Error>{errors.updateFullName}</Error>}
                         </LabelGroup>
                         <div className={css`
                             width:20%;
