@@ -45,8 +45,12 @@ const profileSchema = new mongoose.Schema({
     },
   },
   favoritePokemon: {
-    type: String,
-    trim: true
+    name: {
+      type: String
+    },
+    image: {
+      type: String
+    }
   },
 });
 

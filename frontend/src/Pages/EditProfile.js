@@ -12,6 +12,7 @@ import { css } from '@emotion/css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs'
+import PokemonCard from '../Components/Cards/PokemonCard'
 
 const PageWrapper = styled.div`
     height:100%;
@@ -70,7 +71,7 @@ const Select = styled.select`
 `
 
 function EditProfile() {
-  const { isLoggedIn, username } = useContext(AuthContext);
+  const { isLoggedIn, username, pokemon } = useContext(AuthContext);
   const [updatedPassword, setUpdatedPassword] = useState('');
   const [passwordRetype, setPasswordRetype] = useState('');
   const [updateFullName, setUpdateFullName] = useState('');
@@ -92,6 +93,8 @@ function EditProfile() {
   const [isLoadingUsername, setLoadingUsername] = useState(true);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  console.log(pokemon);
 
   useEffect(() => {
     if (username !== null) {
@@ -252,7 +255,8 @@ function EditProfile() {
         bio,
         gender,
         interests,
-        socialMedia
+        socialMedia,
+        pokemon
     };
 
     try {
@@ -428,6 +432,7 @@ function EditProfile() {
                             `}
                             />
                         </LabelGroup>
+                        <PokemonCard/>
                         <div className={css`
                             width:20%;
                             position:absolute;

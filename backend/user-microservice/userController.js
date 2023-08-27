@@ -19,7 +19,10 @@ const userprofile = async (request, response) => {
         facebook: "",
         instagram: ""
       },
-      favouritePokemon: ""
+      favoritePokemon: {
+        name: "",
+        image: ""
+      }
     });
 
     console.log('New profile:', newProfile); 
@@ -143,6 +146,23 @@ const fetchSocials = async (request, response) => {
   }
 };
 
+const fetchPokemon = async (request, response) => {
+  try {
+    const username = request.query.username; 
+    const profileData = await profile.findOne({ username });
+
+    if (!profileData) {
+      return response.status(404).json({ error: 'Profile not found' });
+    }
+
+    const pokemon = profileData.favoritePokemon;
+    response.json({ pokemon });
+  } catch (error) {
+    console.error('Error in pokemon:', error);
+    response.status(500).json({ error: 'Failed to fetch pokemon' });
+  }
+};
+
 const updateProfile = async (request, response) => {
   try {
     const { username } = request.body;
@@ -168,6 +188,10 @@ const updateProfile = async (request, response) => {
       updates.interests = request.body.interests;
     }
 
+    if (request.body.pokemon) {
+      updates.favoritePokemon = request.body.pokemon
+    }
+
     const updatedProfile = await profile.findOneAndUpdate(
       { username },
       { $set: updates },
@@ -190,5 +214,6 @@ module.exports = {
   updateProfile,
   fetchDateOfBirth,
   fetchInterests,
-  fetchSocials
+  fetchSocials, 
+  fetchPokemon
 };
