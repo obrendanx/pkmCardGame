@@ -7,6 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [pokemon, setPokemon] = useState({
+    name: "",
+    image: ""
+  });
 
   useEffect(() => {
     const tokenCookie = getCookie('token');
@@ -47,7 +51,11 @@ export const AuthProvider = ({ children }) => {
     const now = new Date();
     now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
     document.cookie = `token=${encodeURIComponent(tokenPayloadString)}; expires=${now.toUTCString()}; path='/'`;
-  }; 
+  };
+  
+  const getUserPokemon = (name, image) => {
+    setPokemon({ ...pokemon, image: image, name: name })
+  };
 
   const logout = () => {
     setIsLoggedIn(false);
@@ -59,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   // Pass the state and functions to the value prop of the context provider
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout, username }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout, username, pokemon, getUserPokemon }}>
       {children}
     </AuthContext.Provider>
   );

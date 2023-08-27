@@ -19,7 +19,10 @@ const userprofile = async (request, response) => {
         facebook: "",
         instagram: ""
       },
-      favouritePokemon: ""
+      favoritePokemon: {
+        name: "",
+        image: ""
+      }
     });
 
     console.log('New profile:', newProfile); 
@@ -166,6 +169,10 @@ const updateProfile = async (request, response) => {
 
     if (request.body.interests) {
       updates.interests = request.body.interests;
+    }
+
+    if (request.body.pokemon) {
+      updates.favouritePokemon = request.body.pokemon
     }
 
     const updatedProfile = await profile.findOneAndUpdate(
