@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         console.error('Error parsing token payload:', error);
       }
     }
-  }, [username, isLoggedIn, userId]);
+  }, [username, isLoggedIn, userId, pokemon]);
 
   const getCookie = (name) => {
     const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
