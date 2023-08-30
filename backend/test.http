@@ -1,9 +1,9 @@
-GET http://localhost:5002/fetchbio
-Content-Type: application/json
+# GET http://localhost:5002/fetchbio
+# Content-Type: application/json
 
-{
-  "username": "testuser2"  
-}
+# {
+#   "username": "testuser2"  
+# }
 
 # {
 #   "username": "adminuser",
@@ -19,14 +19,14 @@ Content-Type: application/json
 #   "password": "Zx56Tt407.9s"
 # }
 
-# POST http://localhost:5001/signup
-# Content-Type: application/json
+POST http://localhost:5001/signup
+Content-Type: application/json
 
-# {
-#   "fullName": "John Doe",
-#   "username": "johndoe",
-#   "email": "johndoe@example.com",
-#   "password": "mypassword",
-#   "dob": "1990-01-01",
-#   "announcements": true
-# }
+{
+  "fullName": "John Doe",
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "password": "mypassword",
+  "dob": "1990-01-01",
+  "announcements": true
+}
