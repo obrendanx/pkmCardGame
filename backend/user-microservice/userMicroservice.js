@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const { userprofile, fetchProfileIcon, fetchBio, fetchGender, updateProfile, fetchDateOfBirth, fetchInterests, fetchSocials, fetchPokemon } = require('./userController');
+const userRoutes = require('./route');
 const cors = require('cors');
 
 require('dotenv').config();
@@ -14,15 +14,7 @@ function startUserMicroservice() {
   app.use(cors());
 
   // Routes
-  app.post('/userprofile', userprofile);
-  app.get('/fetchprofileicon', fetchProfileIcon);
-  app.get('/fetchbio', fetchBio);
-  app.get('/fetchgender', fetchGender);
-  app.get('/fetchdob', fetchDateOfBirth);
-  app.get('/fetchinterests', fetchInterests);
-  app.get('/fetchsocials', fetchSocials);
-  app.get('/fetchpokemon', fetchPokemon);
-  app.put('/updateprofile', updateProfile);
+  app.use('/', userRoutes);
 
   // MongoDB connection options
   const options = {
