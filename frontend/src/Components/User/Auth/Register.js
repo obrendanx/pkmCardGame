@@ -11,6 +11,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import styled from '@emotion/styled';
+
+const Error = styled.span`
+    font-size:0.8em;
+    color:#F44336;
+    margin-left:2.5%;
+`
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -66,6 +73,8 @@ function Register() {
 
     if (dateOfBirth.trim() === '') {
       formErrors.dateOfBirth = 'Date of Birth is required';
+    } else if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateOfBirth)) {
+      formErrors.dateOfBirth = 'Date of Birth must be in the format dd/mm/yyyy';
     } else {
       const dob = new Date(dateOfBirth);
       const now = new Date();
@@ -73,7 +82,7 @@ function Register() {
       if (age < 12) {
         formErrors.dateOfBirth = 'You must be at least 12 years old';
       }
-    }
+    } 
 
     setErrors(formErrors);
 
@@ -172,7 +181,7 @@ function Register() {
                   value={username}
                   onValueChange={setUsername}
                 />
-                {errors.username && <span>{errors.username}</span>}
+                {errors.username && <Error>{errors.username}</Error>}
               </div>
 
               <div>
@@ -183,7 +192,7 @@ function Register() {
                   value={fullName}
                   onValueChange={setFullName}
                 />
-                {errors.fullName && <span>{errors.fullName}</span>}
+                {errors.fullName && <Error>{errors.fullName}</Error>}
               </div>
 
               <div>
@@ -194,7 +203,7 @@ function Register() {
                   value={password}
                   onValueChange={setPassword}
                 />
-                {errors.password && <span>{errors.password}</span>}
+                {errors.password && <Error>{errors.password}</Error>}
               </div>
 
               <div>
@@ -205,7 +214,7 @@ function Register() {
                   value={retypePassword}
                   onValueChange={setRetypePassword}
                 />
-                {errors.retypePassword && <span>{errors.retypePassword}</span>}
+                {errors.retypePassword && <Error>{errors.retypePassword}</Error>}
               </div>
 
               <div>
@@ -216,7 +225,7 @@ function Register() {
                   value={email}
                   onValueChange={setEmail}
                 />
-                {errors.email && <span>{errors.email}</span>}
+                {errors.email && <Error>{errors.email}</Error>}
               </div>
 
               <div>
@@ -227,7 +236,7 @@ function Register() {
                   value={dateOfBirth}
                   onValueChange={setDateOfBirth}
                 />
-                {errors.dateOfBirth && <span>{errors.dateOfBirth}</span>}
+                {errors.dateOfBirth && <Error>{errors.dateOfBirth}</Error>}
               </div>
 
               <div>
