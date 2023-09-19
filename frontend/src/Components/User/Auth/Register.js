@@ -181,7 +181,7 @@ function Register() {
                   value={username}
                   onValueChange={setUsername}
                 />
-                {errors.username && <Error>{errors.username}</Error>}
+                {errors.username && <Error data-testid="username-error">{errors.username}</Error>}
               </div>
 
               <div>
@@ -192,7 +192,7 @@ function Register() {
                   value={fullName}
                   onValueChange={setFullName}
                 />
-                {errors.fullName && <Error>{errors.fullName}</Error>}
+                {errors.fullName && <Error data-testid="fullName-error">{errors.fullName}</Error>}
               </div>
 
               <div>
@@ -203,7 +203,7 @@ function Register() {
                   value={password}
                   onValueChange={setPassword}
                 />
-                {errors.password && <Error>{errors.password}</Error>}
+                {errors.password && <Error data-testid="password-error">{errors.password}</Error>}
               </div>
 
               <div>
@@ -214,7 +214,7 @@ function Register() {
                   value={retypePassword}
                   onValueChange={setRetypePassword}
                 />
-                {errors.retypePassword && <Error>{errors.retypePassword}</Error>}
+                {errors.retypePassword && <Error data-testid="retypePassword-error">{errors.retypePassword}</Error>}
               </div>
 
               <div>
@@ -225,7 +225,7 @@ function Register() {
                   value={email}
                   onValueChange={setEmail}
                 />
-                {errors.email && <Error>{errors.email}</Error>}
+                {errors.email && <Error data-testid="email-error">{errors.email}</Error>}
               </div>
 
               <div>
@@ -236,7 +236,7 @@ function Register() {
                   value={dateOfBirth}
                   onValueChange={setDateOfBirth}
                 />
-                {errors.dateOfBirth && <Error>{errors.dateOfBirth}</Error>}
+                {errors.dateOfBirth && <Error data-testid="dateOfBirth-error">{errors.dateOfBirth}</Error>}
               </div>
 
               <div>

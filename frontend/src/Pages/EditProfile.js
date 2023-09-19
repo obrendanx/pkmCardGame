@@ -218,77 +218,101 @@ function EditProfile() {
     event.preventDefault();
     const formErrors = {};
 
-    //Check to see if a correct 'Full Name' is entered
+    // Check to see if a correct 'Full Name' is entered
     if (updateFullName.trim() === '') {
-        formErrors.updateFullName = 'Full Name is required';
+      formErrors.updateFullName = 'Full Name is required';
     } else if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
-        formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+      formErrors.updateFullName = 'Full Name can only contain letters and spaces';
     }
 
-    //Check to see if a correct 'Password' is entered and matched correctly
+    // Check to see if a correct 'Password' is entered and matched correctly
     if (updatedPassword.trim() === '') {
-        formErrors.updatedPassword = 'Password is required';
+      formErrors.updatedPassword = 'Password is required';
     } else if (updatedPassword.length < 6) {
-        formErrors.updatedPassword = 'Password must be at least 6 characters long';
+      formErrors.updatedPassword = 'Password must be at least 6 characters long';
     } else if (
-        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
     ) {
-        formErrors.updatedPassword =
+      formErrors.updatedPassword =
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
     }
 
     if (updatedPassword !== passwordRetype) {
-        formErrors.passwordRetype = 'Passwords do not match';
+      formErrors.passwordRetype = 'Passwords do not match';
     }
 
-    setErrors(formErrors);
+    // Check for valid social media links
+    const socialMediaErrors = {};
+    const socialMediaLinks = Object.values(socialMedia);
 
+    for (const link of socialMediaLinks) {
+      if (link.trim() !== '' && !/^https:\/\/.+/i.test(link)) {
+        socialMediaErrors.invalidLink = 'Social media links must start with "https://"';
+        break; // Break if any invalid link is found
+      }
+    }
+
+    setErrors({ ...formErrors, ...socialMediaErrors });
+
+    // Prepare the update data excluding empty values
     const authUpdateData = {
-        username,
-        updatedPassword,
-        updateFullName,
+      username,
+      ...(updatedPassword.trim() && { updatedPassword }),
+      ...(updateFullName.trim() && { updateFullName }),
     };
 
     const userUpdateData = {
-        username,
-        profileIconColor,
-        bio,
-        gender,
-        interests,
-        socialMedia,
-        pokemon
+      username,
+      ...(profileIconColor && { profileIconColor }),
+      ...(bio && { bio }),
+      ...(gender && { gender }),
+      interests: interests.filter((interest) => interest.trim() !== ''),
+      socialMedia: {
+        ...(socialMedia.twitter && { twitter: socialMedia.twitter }),
+        ...(socialMedia.facebook && { facebook: socialMedia.facebook }),
+        ...(socialMedia.instagram && { instagram: socialMedia.instagram }),
+      },
+      pokemon,
     };
 
-    try {
+    if (Object.keys(formErrors).length === 0 && Object.keys(socialMediaErrors).length === 0) {
+      // No validation errors, proceed with updating data
+      try {
         let authUpdated = false;
         let userUpdated = false;
 
-
-        //Routes to update information to 
-        //Routes split due to different information in different microservices
-        if (updatedPassword || updateFullName) {
-        await axios.put('http://localhost:5001/updateauthprofile', authUpdateData);
-        authUpdated = true;
+        // Routes to update information to
+        // Routes split due to different information in different microservices
+        if (authUpdateData.updatedPassword || authUpdateData.updateFullName) {
+          await axios.put('http://localhost:5001/updateauthprofile', authUpdateData);
+          authUpdated = true;
         }
 
-        if (profileIconColor || bio || gender) {
-        await axios.put('http://localhost:5002/updateprofile', userUpdateData);
-        userUpdated = true;
+        if (
+          userUpdateData.profileIconColor ||
+          userUpdateData.bio ||
+          userUpdateData.gender ||
+          userUpdateData.interests.length > 0 ||
+          Object.values(userUpdateData.socialMedia).some((link) => link !== '')
+        ) {
+          await axios.put('http://localhost:5002/updateprofile', userUpdateData);
+          userUpdated = true;
         }
 
         // Handle success and failure of updating profile
         if (authUpdated || userUpdated) {
-        toast.success('Profile Updated Successfully!')
+          toast.success('Profile Updated Successfully!');
         }
 
-        if(!authUpdateData && !userUpdateData){
-            toast.error("No changes have been made");
+        if (!authUpdateData.updatedPassword && !authUpdateData.updateFullName && !userUpdated) {
+          toast.error('No changes have been made');
         }
-    } catch (error) {
+      } catch (error) {
         console.log(error);
         toast.error('Error Updating Profile!');
+      }
     }
-    };
+  }; 
 
   return (
     <div>
@@ -353,7 +377,7 @@ function EditProfile() {
                                 <Input 
                                     type="text"
                                     placeholder="Please enter your name"
-                                    value={updateFullName}
+                                    value={currentFullname}
                                     onValueChange={setUpdateFullName}
                                     left="2.5%"
                                 />

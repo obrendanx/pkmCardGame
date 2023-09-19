@@ -91,7 +91,9 @@ function Login() {
               width:100%;
               padding-left:12.5%;
               padding-top:20px;
-            `}>
+            `}
+            data-testid="login-form"
+            >
               <MediumHeader text="Login" />
               <Label htmlFor="username" text="Username" primary />
               <Input

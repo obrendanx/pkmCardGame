@@ -222,7 +222,7 @@ function Sidebar() {
   return (
     <>  
         <MenuButton onClick={toggleMenu}>{menuVisible ? <BsXLg/> : <BsList/>}</MenuButton>
-        <Wrapper menuVisible={menuVisible}>
+        <Wrapper menuVisible={menuVisible} data-testid="sidebar">
             {listItems.map((yearItems, yearIndex) => (
             <CollectionBlock key={yearIndex}>
                 <Heading>

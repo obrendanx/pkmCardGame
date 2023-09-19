@@ -133,7 +133,7 @@ function Navbar() {
   };
 
   return isLoggedIn ? (
-    <Bar>
+    <Bar data-testid="navbar">
       <BarLeft>
         <HomeBtn onClick={handleHomeClick}><TbPokeball/></HomeBtn>
       </BarLeft>
