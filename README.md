@@ -21,20 +21,33 @@ docker-compose up
 
 **To use this project:**
   1. Clone the repo
+
   1. If you have docker
-      * docker-compose build 
-      * docker-compose up
+
+      ```
+      docker-compose build 
+      docker-compose up
+      ```
   1. If you are running using node
-      * open 4 separate terminal windows
-      * cd backend/user-microservice
-      * npm install
-      * node userMicroservice.js
-      * cd backend/auth-microservice
-      * npm install
-      * node authMicroservice.js
-      * cd frontend
-      * npm install
-      * npm start
+
+      **open 3 separate terminal windows**
+
+      ```
+      Terminal 1:
+      cd backend/user-microservice
+      npm install
+      node userMicroservice.js
+
+      Terminal 2:
+      cd backend/auth-microservice
+      npm install
+      node authMicroservice.js
+
+      Terminal 3:
+      cd frontend
+      npm install
+      npm start
+      ```
 
 ## Pages
 
