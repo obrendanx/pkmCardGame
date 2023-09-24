@@ -88,4 +88,51 @@ describe('User Registering', () => {
         cy.get('input[type="submit"]').click();
         cy.contains('An unexpected error occurred').should('be.visible');
     });
+
+    it('checks the DOB validation', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.get('input[placeholder="dd/mm/yyyy"]').type('01/01/fdsa');
+        cy.get('input[type="submit"]').click();
+        cy.contains('Date of Birth must be in the format dd/mm/yyyy').should('be.visible');
+
+        cy.visit('http://localhost:3000/register');
+        cy.get('input[placeholder="dd/mm/yyyy"]').type('01/wd/fdsa');
+        cy.get('input[type="submit"]').click();
+        cy.contains('Date of Birth must be in the format dd/mm/yyyy').should('be.visible');
+
+        cy.visit('http://localhost:3000/register');
+        cy.get('input[placeholder="dd/mm/yyyy"]').type('0101/011/2101');
+        cy.get('input[type="submit"]').click();
+        cy.contains('Date of Birth must be in the format dd/mm/yyyy').should('be.visible');
+
+        cy.visit('http://localhost:3000/register');
+        cy.get('input[placeholder="dd/mm/yyyy"]').type('1111111');
+        cy.get('input[type="submit"]').click();
+        cy.contains('Date of Birth must be in the format dd/mm/yyyy').should('be.visible');
+    })
+
+    it('checks the users minimum age requirement', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.get('input[placeholder="dd/mm/yyyy"]').type('01/01/2020');
+        cy.get('input[type="submit"]').click();
+        cy.contains('You must be at least 12 years old').should('be.visible');
+    })
+
+    it('checks the announcements checkbox state', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.get('[data-testid="announcement"]').click();
+        cy.get('[data-testid="announcement"]').should('be.checked');
+    })
+
+    it('navigates to the login page', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.get('[data-testid="gotologin"]').click();
+        cy.wait(2000);
+
+        cy.contains('Login').should('be.visible');
+    })
+
+    it('checks the response to a down server', () => {
+
+    })
 })

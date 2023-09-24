@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
   const { login, isLoggedIn } = useContext(AuthContext);
@@ -21,45 +22,57 @@ function Login() {
     e.preventDefault();
 
     console.log(username);
-    //Fetching the users login information from mongo
-    const response = await fetch('http://localhost:5001/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username, password
-      }),
-    })
 
-    //Stores the fetch response in the 'data' variable
-    const data = await response.json()
-
-    if (data.user) {
-      console.log(data.user);
-      /*
-          If data matches:
-          - Set a unique token for the user in there local storage
-          - Dispatch the login state to Redux state to use
-          in other components
-      */
-      // Set a cookie to keep the user signed in
-      const now = new Date();
-      now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
-      document.cookie = `token=${data.user.token}; userId=${data.user.id}; username=${username}; expires=${now.toUTCString()}; path=/`;
-
-
-      console.log('Login successful');
-      login(data.user.token, data.user.userId, username);
-
-      // Use navigate to navigate without full page reload
-      navigate('/home');
-    } else {
-      //if incorrect notify the user
-      toast.error('Please check your username and password');
+    if (username.length === 0 || password.length === 0) {
+        toast.error("username or password is missing!");
     }
-    console.log(data)
-  };
+
+    try {
+      const response = await axios.post('http://localhost:5001/login', {
+        username,
+        password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 15000, 
+      });
+
+      const data = response.data;
+
+      if (data.user) {
+        console.log(data.user);
+        /*
+            If data matches:
+            - Set a unique token for the user in their local storage
+            - Dispatch the login state to Redux state to use in other components
+        */
+        // Set a cookie to keep the user signed in
+        const now = new Date();
+        now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
+        document.cookie = `token=${data.user.token}; userId=${data.user.id}; username=${username}; expires=${now.toUTCString()}; path=/`;
+
+        console.log('Login successful');
+        login(data.user.token, data.user.userId, username);
+
+        // Use navigate to navigate without full page reload
+        navigate('/home');
+      } else {
+        // If incorrect, notify the user
+        toast.error('Please check your username and password');
+      }
+
+      console.log(data);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log('Request timed out');
+        toast.error('Request timed out');
+      } else {
+        console.error('An error occurred:', error);
+        toast.error('Please check your username and password');
+      }
+    }
+  }
 
   return (
     <div>

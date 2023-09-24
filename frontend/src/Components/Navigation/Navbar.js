@@ -140,11 +140,11 @@ function Navbar() {
       <BarRight>
         <Group>
           <ButtonUser onClick={toggleDropdown}>
-            <ProfileIcon h="35px" w="35px" />
+            <ProfileIcon h="35px" w="35px"/>
           </ButtonUser>
           <ShowButtons>
             <Button onClick={handleClick}>Edit Profile</Button>
-            <Button onClick={handleLogout}>Logout</Button>
+            <Button onClick={handleLogout} data-testid="logout">Logout</Button>
           </ShowButtons>
         </Group>
       </BarRight>

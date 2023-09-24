@@ -256,6 +256,7 @@ function Register() {
                     id="announcements"
                     checked={announcements}
                     onChange={(event) => setAnnouncements(event.target.checked)}
+                    data-testid="announcement"
                   />
                   Receive announcements
                 </label>
@@ -268,8 +269,9 @@ function Register() {
               <div>
                 <p className={css`
                   color:#8b2900;
-                `}>
-                  Already Signed up? Login <Link to="/login">here</Link>
+                `}
+                >
+                  Already Signed up? Login <Link data-testid="gotologin" to="/login">here</Link>
                 </p>
               </div>
             </form>

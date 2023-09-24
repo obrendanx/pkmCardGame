@@ -25,6 +25,8 @@ function ProfileIcon({ h, w }) {
     }
   };
 
+  const initials = username ? username.split(" ").map(word => word[0]).join("") : "?"; 
+
   return (
     <div
       className={css`
@@ -35,8 +37,9 @@ function ProfileIcon({ h, w }) {
         font-size:0.7em;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
       `}
+      data-testid="userpicture"
     >
-      be
+      {initials}
     </div>
   );
 }

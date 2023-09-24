@@ -1,0 +1,10 @@
+stages:
+  - test
+
+cypress:
+  stage: test
+  image: cypress/browsers:node14.17.0-chrome92
+  script:
+    - cd frontend  # Change to the frontend directory where your Cypress tests are located
+    - npm install  # Install dependencies (if not already cached)
+    - npx cypress run --spec "cypress/e2e/**/*.js"  # Run Cypress tests
