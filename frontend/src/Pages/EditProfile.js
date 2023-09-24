@@ -108,7 +108,7 @@ function EditProfile() {
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
     }
-  }, [username, currentFullname, currentBio, currentGender, socialMedia, interests]);
+  }, [username]);
 
   const fetchEmail = async () => {
     try {
