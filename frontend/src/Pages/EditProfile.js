@@ -94,8 +94,6 @@ function EditProfile() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  console.log(pokemon);
-
   useEffect(() => {
     if (username !== null) {
       Promise.all([
@@ -110,7 +108,7 @@ function EditProfile() {
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
     }
-  }, [username]);
+  }, [username, currentFullname, currentBio, currentGender, socialMedia, interests]);
 
   const fetchEmail = async () => {
     try {
@@ -219,19 +217,17 @@ function EditProfile() {
     const formErrors = {};
 
     // Check to see if a correct 'Full Name' is entered
-    if (updateFullName.trim() === '') {
-      formErrors.updateFullName = 'Full Name is required';
-    } else if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
-      formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+    if(updateFullName.length > 0) {
+      if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
+        formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+      }
     }
 
     // Check to see if a correct 'Password' is entered and matched correctly
-    if (updatedPassword.trim() === '') {
-      formErrors.updatedPassword = 'Password is required';
-    } else if (updatedPassword.length < 6) {
+    if (updatedPassword.length > 0 && updatedPassword.length <= 6) {
       formErrors.updatedPassword = 'Password must be at least 6 characters long';
     } else if (
-      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword) && updatedPassword.length > 6
     ) {
       formErrors.updatedPassword =
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
@@ -377,7 +373,7 @@ function EditProfile() {
                                 <Input 
                                     type="text"
                                     placeholder="Please enter your name"
-                                    value={currentFullname}
+
                                     onValueChange={setUpdateFullName}
                                     left="2.5%"
                                 />
