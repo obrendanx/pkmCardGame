@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import styled from '@emotion/styled';
+import useSignup from '../../../Querys/signupQuery';
+import useProfileSetup from '../../../Querys/setProfileQuery';
 
 const Error = styled.span`
     font-size:0.8em;
@@ -30,6 +32,8 @@ function Register() {
   const [errors, setErrors] = useState({});
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const addSignupMutation = useSignup();
+  const addProfileMutation = useProfileSetup();
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -92,22 +96,23 @@ function Register() {
         const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
         // const dob = moment(dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
-        const response = await axios.post('http://localhost:5001/signup', {
+        const registered = {
           fullName,
           username,
           email,
           password,
           dob,
           announcements
-        });
+        };
 
-        // Handle successful signup
-        const profileResponse = await axios.post('http://localhost:5002/userprofile', {
+        await addSignupMutation.mutateAsync(registered);
+
+        const profile = {
           username,
           dob
-        });
+        };
 
-        window.location = './Login'
+        await addProfileMutation.mutateAsync(profile);
 
       } catch (error) {
         console.error(error.response.data); 

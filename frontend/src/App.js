@@ -9,6 +9,8 @@ import Splashscreen from './Pages/Splashscreen';
 import Logout from './Components/User/Auth/Logout';
 import Navbar from './Components/Navigation/Navbar';
 import EditProfile from './Pages/EditProfile';
+import { ToastContainer } from 'react-toastify'; 
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const {isLoggedIn} = useContext(AuthContext);
@@ -26,6 +28,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/editprofile" element={<EditProfile />} />
               </Routes>
+              <ToastContainer />
         </AuthProvider>
       </Router>
     </div>

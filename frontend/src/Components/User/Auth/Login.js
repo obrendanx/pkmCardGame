@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useLogin from '../../../Querys/loginQuery';
 
 function Login() {
   const { login, isLoggedIn } = useContext(AuthContext);
@@ -16,24 +17,17 @@ function Login() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const addLoginMutation = useLogin();
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     console.log(username);
     //Fetching the users login information from mongo
-    const response = await fetch('http://localhost:5001/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username, password
-      }),
-    })
-
-    //Stores the fetch response in the 'data' variable
-    const data = await response.json()
+    const data = await addLoginMutation.mutateAsync({
+        username,
+        password,
+      });
 
     if (data.user) {
       console.log(data.user);

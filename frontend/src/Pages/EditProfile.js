@@ -11,8 +11,10 @@ import axios from 'axios';
 import { css } from '@emotion/css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs'
-import PokemonCard from '../Components/Cards/PokemonCard'
+import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs';
+import PokemonCard from '../Components/Cards/PokemonCard';
+import useUpdateAuth from '../Querys/updateAuthQuery';
+import useUpdateUser from '../Querys/updateUserQuery';
 
 const PageWrapper = styled.div`
     height:100%;
@@ -93,6 +95,8 @@ function EditProfile() {
   const [isLoadingUsername, setLoadingUsername] = useState(true);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const addUserMutation = useUpdateUser();
+  const addAuthMutation = useUpdateAuth();
 
   console.log(pokemon);
 
@@ -259,7 +263,6 @@ function EditProfile() {
         pokemon
     };
 
-    try {
         let authUpdated = false;
         let userUpdated = false;
 
@@ -267,12 +270,12 @@ function EditProfile() {
         //Routes to update information to 
         //Routes split due to different information in different microservices
         if (updatedPassword || updateFullName) {
-        await axios.put('http://localhost:5001/updateauthprofile', authUpdateData);
+        await addAuthMutation.mutateAsync(authUpdateData);
         authUpdated = true;
         }
 
         if (profileIconColor || bio || gender) {
-        await axios.put('http://localhost:5002/updateprofile', userUpdateData);
+        await addUserMutation.mutateAsync(userUpdateData);
         userUpdated = true;
         }
 
@@ -284,10 +287,6 @@ function EditProfile() {
         if(!authUpdateData && !userUpdateData){
             toast.error("No changes have been made");
         }
-    } catch (error) {
-        console.log(error);
-        toast.error('Error Updating Profile!');
-    }
     };
 
   return (
