@@ -15,6 +15,13 @@ import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs';
 import PokemonCard from '../Components/Cards/PokemonCard';
 import useUpdateAuth from '../Querys/updateAuthQuery';
 import useUpdateUser from '../Querys/updateUserQuery';
+import { useShowEmail } from '../Querys/showEmailQuery';
+import { useShowSocials } from '../Querys/showSocialsQuery';
+import { useShowDob } from '../Querys/showDobQuery';
+import { useShowFullname } from '../Querys/showFullnameQuery';
+import { useShowBio } from '../Querys/showBioQuery';
+import { useShowGender } from '../Querys/showGenderQuery';
+import { useShowInterests } from '../Querys/showInterestsQuery';
 
 const PageWrapper = styled.div`
     height:100%;
@@ -83,7 +90,6 @@ function EditProfile() {
   const [email, setEmail] = useState('');
   const [dob, setDob] = useState('');
   const [currentFullname, setCurrentFullname] = useState('');
-  const [currentBio, setCurrentBio] = useState('');
   const [currentGender, setCurrentGender] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [socialMedia, setSocialMedia] = useState({
@@ -98,93 +104,24 @@ function EditProfile() {
   const addUserMutation = useUpdateUser();
   const addAuthMutation = useUpdateAuth();
 
-  console.log(pokemon);
+  const { data: currentEmail } = useShowEmail(username);
+  const { data: socials } = useShowSocials(username);
+  const { data: currentDob } = useShowDob(username);
+  const { data: fullname } = useShowFullname(username);
+  const { data: currentBio } = useShowBio(username);
+  const { data: curGender } = useShowGender(username);
+  const { data: currentInterests } = useShowInterests(username);
+
 
   useEffect(() => {
     if (username !== null) {
       Promise.all([
-        fetchEmail(),
-        fetchDob(),
-        fetchFullname(),
-        fetchBio(),
-        fetchGender(),
         fetchInterests(),
-        fetchSocials(),
       ]).finally(() => setLoading(false));
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
     }
   }, [username]);
-
-  const fetchEmail = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5001/fetchemail?username=${username}`);
-
-      if (response.status === 200) {
-        setEmail(response.data.email);
-      } else {
-        console.error('No email found');
-      }
-    } catch (error) {
-      console.error('No email found here', error);
-    }
-  };
-
-  const fetchDob = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5002/fetchdob?username=${username}`);
-
-      if (response.status === 200) {
-        setDob(response.data.dateOfBirth);
-      } else {
-        console.error('No date of birth found');
-      }
-    } catch (error) {
-      console.error('No date of birth found here', error);
-    }
-  };
-
-  const fetchFullname = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5001/fetchfullname?username=${username}`);
-
-      if (response.status === 200) {
-        setCurrentFullname(response.data.fullName);
-      } else {
-        console.error('No icon found');
-      }
-    } catch (error) {
-      console.error('No icon found here', error);
-    }
-  };
-
-  const fetchBio = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5002/fetchbio?username=${username}`);
-
-      if (response.status === 200) {
-        setCurrentBio(response.data.bio);
-      } else {
-        console.error('No bio found');
-      }
-    } catch (error) {
-      console.error('No bio found here', error);
-    }
-  };
-
-  const fetchGender = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5002/fetchgender?username=${username}`);
-
-      if (response.status === 200) {
-        setCurrentGender(response.data.gender);
-      } else {
-        console.error('No gender found');
-      }
-    } catch (error) {
-      console.error('No gender found here', error);
-    }
-  };
 
   const fetchInterests = async () => {
     try {
@@ -197,24 +134,6 @@ function EditProfile() {
       }
     } catch (error) {
       console.error('No interests found here', error);
-    }
-  };
-
-  const fetchSocials = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5002/fetchsocials?username=${username}`);
-
-      if (response.status === 200) {
-        setSocialMedia({ ...socialMedia, 
-          instagram: response.data.socials.instagram, 
-          twitter: response.data.socials.twitter, 
-          facebook: response.data.socials.facebook 
-        });
-      } else {
-        console.error('No socials found');
-      }
-    } catch (error) {
-      console.error('No socials found here', error);
     }
   };
 
@@ -279,11 +198,6 @@ function EditProfile() {
         userUpdated = true;
         }
 
-        // Handle success and failure of updating profile
-        if (authUpdated || userUpdated) {
-        toast.success('Profile Updated Successfully!')
-        }
-
         if(!authUpdateData && !userUpdateData){
             toast.error("No changes have been made");
         }
@@ -304,17 +218,17 @@ function EditProfile() {
 
                         <LabelGroup>
                                 <Label htmlFor="email" text="Email"/>
-                                <DisplayText>{email}</DisplayText>
+                                <DisplayText>{currentEmail.email}</DisplayText>
                         </LabelGroup>
 
                         <LabelGroup>
                                 <Label htmlFor='dateofbirth' text="Date of Birth"/>
-                                <DisplayText>{dob}</DisplayText>
+                                <DisplayText>{currentDob.dateOfBirth}</DisplayText>
                         </LabelGroup>
 
                         <LabelGroup>
                             <Label htmlFor="gender" text="Gender" />
-                            <Select name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                            <Select name="gender" value={curGender.gender} onChange={(e) => setGender(e.target.value)}>
                             <option>Select a Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -352,7 +266,7 @@ function EditProfile() {
                                 <Input 
                                     type="text"
                                     placeholder="Please enter your name"
-                                    value={updateFullName}
+                                    value={fullname.fullName}
                                     onValueChange={setUpdateFullName}
                                     left="2.5%"
                                 />
@@ -364,7 +278,7 @@ function EditProfile() {
                           <Input
                             type="text"
                             placeholder="Twitter profile URL"
-                            value={socialMedia.twitter}
+                            value={socials.socials.twitter}
                             onValueChange={(value) => setSocialMedia({ ...socialMedia, twitter: value })}
                             left="2.5%"
                           />
@@ -375,7 +289,7 @@ function EditProfile() {
                           <Input
                             type="text"
                             placeholder="Facebook profile URL"
-                            value={socialMedia.facebook}
+                            value={socials.socials.facebook}
                             onValueChange={(value) => setSocialMedia({ ...socialMedia, facebook: value })}
                             left="2.5%"
                           />
@@ -386,7 +300,7 @@ function EditProfile() {
                           <Input
                             type="text"
                             placeholder="Instagram profile URL"
-                            value={socialMedia.instagram}
+                            value={socials.socials.instagram}
                             onValueChange={(value) => setSocialMedia({ ...socialMedia, instagram: value })}
                             left="2.5%"
                           />
@@ -394,11 +308,11 @@ function EditProfile() {
 
                         <LabelGroup>
                           <Label htmlFor="interests" text="Interests" />
-                          <DisplayText>{interests}</DisplayText>
+                          <DisplayText>{currentInterests.interests}</DisplayText>
                           <TextArea
                             type="text"
                             placeholder="Your interests"
-                            value={interests.join(", ")}
+                            value={currentInterests.interests.join(", ")}
                             onValueChange={(value) => setInterests(value.split(",").map((item) => item.trim()))}
                             width="90%"
                           />
@@ -406,7 +320,7 @@ function EditProfile() {
 
                         <LabelGroup>
                                 <Label htmlFor="bio" text="Bio" />
-                                <DisplayText>{currentBio}</DisplayText>
+                                <DisplayText>{currentBio.bio}</DisplayText>
                                 <TextArea
                                     type="text"
                                     placeholder="Bio"

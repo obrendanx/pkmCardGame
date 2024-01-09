@@ -27,7 +27,6 @@ export default function PokemonCard() {
       const response = await axios.get(`http://localhost:5002/fetchpokemon?username=${username}`);
 
       if (response.status === 200) {
-        console.log(response);
         setPokemon({ ...pokemon, 
           name: response.data.pokemon.name, 
           image: response.data.pokemon.image  
