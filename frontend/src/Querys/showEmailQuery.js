@@ -12,5 +12,7 @@ export const fetchEmail = (username) => {
 };
 
 export const useShowEmail = (username) => {
-  return useQuery(['email', username], () => fetchEmail(username));
+  return useQuery(['email', username], () => fetchEmail(username), {
+    enabled: !!username,
+  }); 
 };

@@ -12,5 +12,7 @@ export const fetchBio = (username) => {
 };
 
 export const useShowBio = (username) => {
-  return useQuery(['bio', username], () => fetchBio(username));
+  return useQuery(['bio', username], () => fetchBio(username), {
+    enabled: !!username,
+  });
 };

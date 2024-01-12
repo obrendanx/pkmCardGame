@@ -12,5 +12,7 @@ export const fetchFullname = (username) => {
 };
 
 export const useShowFullname = (username) => {
-  return useQuery(['fullname', username], () => fetchFullname(username));
+  return useQuery(['fullname', username], () => fetchFullname(username), {
+    enabled: !!username,
+  });
 };

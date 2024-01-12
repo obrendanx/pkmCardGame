@@ -87,10 +87,6 @@ function EditProfile() {
   const [bio, setBio] = useState('');
   const [profileIconColor, setProfileIconColor] = useState('#3F51B5'); // Default color
   const [gender, setGender] = useState('');
-  const [email, setEmail] = useState('');
-  const [dob, setDob] = useState('');
-  const [currentFullname, setCurrentFullname] = useState('');
-  const [currentGender, setCurrentGender] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [socialMedia, setSocialMedia] = useState({
     twitter: "",
@@ -115,27 +111,13 @@ function EditProfile() {
 
   useEffect(() => {
     if (username !== null) {
-      Promise.all([
-        fetchInterests(),
-      ]).finally(() => setLoading(false));
+      if((currentEmail || socials || currentDob || fullname || currentBio || curGender || currentInterests) !== undefined){
+        setLoading(false)
+      }
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
     }
-  }, [username]);
-
-  const fetchInterests = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5002/fetchinterests?username=${username}`);
-
-      if (response.status === 200) {
-        setInterests(response.data.interests);
-      } else {
-        console.error('No interests found');
-      }
-    } catch (error) {
-      console.error('No interests found here', error);
-    }
-  };
+  }, [username, currentEmail, socials, currentDob, currentBio, fullname, curGender, currentInterests]);
 
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -262,7 +244,7 @@ function EditProfile() {
 
                         <LabelGroup>
                                 <Label htmlFor="fullName" text="Full Name"/>
-                                <DisplayText>{currentFullname}</DisplayText>
+                                <DisplayText>{fullname.fullName}</DisplayText>
                                 <Input 
                                     type="text"
                                     placeholder="Please enter your name"

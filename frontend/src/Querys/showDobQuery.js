@@ -12,5 +12,7 @@ export const fetchDob = (username) => {
 };
 
 export const useShowDob = (username) => {
-  return useQuery(['dob', username], () => fetchDob(username));
+  return useQuery(['dob', username], () => fetchDob(username), {
+    enabled: !!username,
+  });
 };

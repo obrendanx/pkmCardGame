@@ -12,5 +12,7 @@ export const fetchSocials = (username) => {
 };
 
 export const useShowSocials = (username) => {
-  return useQuery(['socials', username], () => fetchSocials(username));
+  return useQuery(['socials', username], () => fetchSocials(username), {
+    enabled: !!username,
+  });
 };

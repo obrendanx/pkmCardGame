@@ -12,5 +12,7 @@ export const fetchGender = (username) => {
 };
 
 export const useShowGender = (username) => {
-  return useQuery(['gender', username], () => fetchGender(username));
+  return useQuery(['gender', username], () => fetchGender(username), {
+    enabled: !!username,
+  });
 };
