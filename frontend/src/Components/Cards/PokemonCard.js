@@ -4,6 +4,7 @@ import { css } from "@emotion/css";
 import { AuthContext } from "../User/AuthContext";
 import axios from 'axios'
 import Label from "../Form/Label";
+import { useShowPokemon } from "../../Querys/showPokemonQuery";
 
 const POKEMON_LIST_API = 'https://pokeapi.co/api/v2/pokemon?limit=500"';
 console.clear();
@@ -12,6 +13,7 @@ export default function PokemonCard() {
   const [pokemonList, setPokemonList] = useState([]);
   const [currentPokemon, setCurrentPokemon] = useState({});
   const { getUserPokemon, username } = useContext(AuthContext);
+  const { data: currPokemon } = useShowPokemon(username);
   const [pokemon, setPokemon] = useState({
     name: "",
     image: ""
@@ -27,7 +29,6 @@ export default function PokemonCard() {
       const response = await axios.get(`http://localhost:5002/fetchpokemon?username=${username}`);
 
       if (response.status === 200) {
-        console.log(response);
         setPokemon({ ...pokemon, 
           name: response.data.pokemon.name, 
           image: response.data.pokemon.image  
