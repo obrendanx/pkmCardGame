@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import config from '../config';
+import { toast } from 'react-toastify';
 
 const environment = process.env.NODE_ENV || 'development';
 const userUrl = config[environment].auth;
@@ -18,13 +19,24 @@ export default function useLogin () {
 
         return await response.data;
       } catch (error) {
-        throw error
+        if(error.response.status === 401){
+          throw new Error("401 Incorrect username or password");
+        } else if(error.response.status === 404){
+          throw new Error("404 Incorrect username or password");
+        } else{
+          throw new Error("An error has occurred");
+        }
       }
     },
     {
-      throwOnError: false,
+      throwOnError: true,
       onSuccess: () => {
         queryClient.invalidateQueries('login'); 
+      },
+      onError: (error) => {
+        toast.error(
+          `Error: ${error.message}`
+        );
       },
     },
   );
