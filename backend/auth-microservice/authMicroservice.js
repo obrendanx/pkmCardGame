@@ -37,7 +37,7 @@ function startAuthMicroservice() {
     });
 
   // Start the server
-  const port = process.env.PORT || 5001;
+  const port = process.env.PORT || 5005;
   app.listen(port, () => {
     console.log(`Auth microservice is running on port ${port}`);
   });

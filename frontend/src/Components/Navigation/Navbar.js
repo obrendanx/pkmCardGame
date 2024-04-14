@@ -128,6 +128,10 @@ function Navbar() {
     navigate('./home');
   }
 
+  const handleTestClick = () => {
+    navigate('./test');
+  }
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -143,6 +147,7 @@ function Navbar() {
             <ProfileIcon h="35px" w="35px" />
           </ButtonUser>
           <ShowButtons>
+          <Button onClick={handleTestClick}>Test</Button>
             <Button onClick={handleClick}>Edit Profile</Button>
             <Button onClick={handleLogout}>Logout</Button>
           </ShowButtons>

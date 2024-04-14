@@ -9,6 +9,7 @@ import Splashscreen from './Pages/Splashscreen';
 import Logout from './Components/User/Auth/Logout';
 import Navbar from './Components/Navigation/Navbar';
 import EditProfile from './Pages/EditProfile';
+import Test from './Pages/Test';
 import { ToastContainer } from 'react-toastify'; 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/editprofile" element={<EditProfile />} />
+                <Route path="/test" element={<Test/>} />
               </Routes>
               <ToastContainer />
         </AuthProvider>

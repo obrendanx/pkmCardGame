@@ -37,7 +37,7 @@ function startUserMicroservice() {
     });
 
   // Start the server
-  const port = process.env.PORT || 5002;
+  const port = process.env.PORT || 5004;
   app.listen(port, () => {
     console.log(`User microservice is running on port ${port}`);
   });
