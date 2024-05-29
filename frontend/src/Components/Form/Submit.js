@@ -5,24 +5,8 @@ function Submit({ small, left, value, form }) {
   return (
     <div>
         <input 
-        className={css`
-            ${small ? 'width: 50%;' : 'width: 70%;'}
-            height:45px;
-            border:none;
-            line-height:10px;
-            margin-top:10px;
-            color:#fff;
-            background:#31acee;
-            margin-left:${left};
-            border-radius:10px;
-            margin-bottom:10px;
-            &:hover{
-                border:
-                solid 1px #1C1C1C;
-            }
-            @media (max-width: 770px) {
-            }
-        `}
+        className="${primary ? bg-[#31acee] : bg-[#ffd57b]}
+        hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3 mb-3"
         type='submit' 
         value={value} 
         form={form}

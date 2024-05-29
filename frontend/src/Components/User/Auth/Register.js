@@ -150,33 +150,11 @@ function Register() {
       {isLoggedIn ? (
         navigate('../home')
       ) : (
-        <div className={css`
-          width: 100%;
-          height:100vh;
-          overflow-x:hidden;
-          background:#de5239;
-        `}>
-          <div className={css`
-            width:45%;
-            margin-left:27.5%;
-            min-height: 750px;
-            margin-top:5%;
-            margin-bottom:7.5%;
-            border-radius:15px;
-            background:#ffd57b;
-            padding-bottom:20px;
-            @media (max-width: 770px) {
-              width:90%;
-              margin-left:5%;
-            }
-          `}>
+        <div className='w-full h-lvh overflow-x-hidden bg-[#de5239]'>
+          <div className='w-1/2 mx-auto min-h-1/2 mt-20 mb-6 rounded bg-[#ffd57b] pb-2'>
             <form
               onSubmit={handleSignUp}
-              className={css`
-              width:100%;
-              padding-left:12.5%;
-              padding-top:20px;
-            `}>
+              className='w-3/4 pt-3 pb-4 mx-auto'>
               <MediumHeader text="Register" />
               <div>
                 <Label htmlfor="username" text="Username" />
@@ -247,16 +225,9 @@ function Register() {
               <div>
                 <label
                   htmlFor="announcements"
-                  className={css`
-                  height:20px;
-                  color:#8b2900;
-                  font-size:1em;
-                `}>
+                  className='h-4 text-[#8b2900] text-sm'>
                   <input
-                    className={css`
-                    height:20px;
-                    width:20px;
-                  `}
+                    className='h-4 w-4 mr-2'
                     type="checkbox"
                     id="announcements"
                     checked={announcements}
@@ -271,10 +242,8 @@ function Register() {
               </div>
 
               <div>
-                <p className={css`
-                  color:#8b2900;
-                `}>
-                  Already Signed up? Login <Link to="/login">here</Link>
+                <p className='text-[#8b2900]'>
+                  Already Signed up? Login <Link to="/login"><span className='font-bold'>here</span></Link>
                 </p>
               </div>
             </form>

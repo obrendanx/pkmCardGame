@@ -6,12 +6,7 @@ function Label({htmlfor, text, primary}) {
     <div>
         <label 
             htmlFor={htmlfor}
-            className={css`
-                ${primary ? 'color: #fff;' : 'color: #8b2900;'}
-                height:35px;
-                padding:5px;
-                margin:5px;
-            `}
+            className="block text-sm font-medium mb-2 dark:text-black"
         >
             {text}
         </label>

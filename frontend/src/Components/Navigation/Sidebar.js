@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
-import {css} from '@emotion/css'
-import {BsList, BsXLg} from 'react-icons/bs'
+import {css} from '@emotion/css';
+import {BsList, BsXLg} from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -232,13 +233,13 @@ function Sidebar() {
                 <List>
                 {yearItems.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <CollectionItem
+                      <Link
                         itemStatus={item.status}
-                        href="#"
+                        to={`/collections/${encodeURIComponent(item.name)}`}
                         style={{ color: getCollectionItemColor(item.status) }}
                       >
                         {item.name}
-                      </CollectionItem>
+                      </Link>
                     </li>
                 ))}
                 </List>

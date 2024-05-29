@@ -60,82 +60,52 @@ function Login() {
       {isLoggedIn ? (
         navigate('../home')
       ) : (
-        <div className={css`
-            width: 100%;
-            height:100vh;
-            overflow-x:hidden;
-            background:#de5239;
-        `}>
-          <div className={css`
-              width:45%;
-              margin-left:27.5%;
-              min-height: 460px;
-              margin-top:10%;
-              border-radius:15px;
-              background:#ffd57b;
-              padding-bottom:20px;
-              @media (max-width: 770px) {
-                width:90%;
-                margin-left:5%;
-              }
-            `}>
+        <div className="w-full h-lvh overflow-x-hidden bg-[#de5239]">
+          <div className='h-full mt-56 flex justify-center'>
             <form
               onSubmit={handleSubmit}
-              className={css`
-              width:100%;
-              padding-left:12.5%;
-              padding-top:20px;
-            `}>
-              <MediumHeader text="Login" />
-              <Label htmlFor="username" text="Username" primary />
-              <Input
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                onValueChange={setUsername}
-              />
-
-              <Label htmlFor="password" text="Password" primary />
-              <Input
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onValueChange={setPassword}
-              />
-
-              <Submit value="Login" />
-
-              <div>
-                <input
-                  className={css`
-                  height:20px;
-                  width:20px;
-                `}
-                  type="checkbox"
-                  id="rememberMe"
-                  checked={rememberMe}
-                  onChange={setRememberMe}
+              className="w-1/2 h-1/2 bg-[#ffd57b]">
+              <div className='w-3/6 mx-auto pt-10'> 
+                <MediumHeader text="Login" />
+                
+                <Input
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onValueChange={setUsername}
                 />
-                <label
-                  htmlFor="rememberMe"
-                  className={css`
-                  height:20px;
-                  color:#8b2900;
-                  font-size:1em;
-                `}
-                >
-                  Remember Me
-                </label>
-              </div>
 
-              <div>
-                <p className={css`
-                  color:#8b2900;
-                `}>
-                  Not registered? Sign up <Link to="/register">here</Link>
-                </p>
+                <Input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onValueChange={setPassword}
+                />
+
+                <Submit value="Login" />
+
+                <div>
+                  <input
+                    className='h-4 w-4'
+                    type="checkbox"
+                    id="rememberMe"
+                    checked={rememberMe}
+                    onChange={setRememberMe}
+                  />
+                  <label
+                    htmlFor="rememberMe"
+                    className='h-4 text-[#8b2900] text-base ml-2'>
+                    Remember Me
+                  </label>
+                </div>
+
+                <div>
+                  <p className='text-[#8b2900]'>
+                    Not registered? Sign up <Link to="/register"><span className='font-bold'>here</span></Link>
+                  </p>
+                </div>
+                <ToastContainer />
               </div>
-              <ToastContainer />
             </form>
           </div>
         </div>

@@ -9,32 +9,17 @@ function Input({ small, type, placeholder, value, onValueChange, left }) {
   };
 
   return (
-    <div>
+  <div class="w-full">
+    <div class="relative w-full min-w-[200px] h-10 mb-5">
       <input
-      className={css`
-          height: 35px;
-          margin-top: 2%;
-          margin-bottom: 2%;
-          margin-left: ${left};
-          padding: 10px;
-          border: 0;
-          border-radius: 10px;
-          font-size: 1em;
-          font-weight: normal;
-          font-family: Roboto, sans-serif;
-          color: #8b2900;
-          transition: 1s;
-          outline:none;
-          ${small ? 'width: 50%;' : 'width: 70%;'}
-           @media (max-width: 770px) {
-          }
-      `}
-      type={type}
-      value={value}
-      onChange={handleInputChange}
-      placeholder={placeholder}
-      />
+        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        onChange={handleInputChange}
+        />
     </div>
+  </div>  
   );
 }
 

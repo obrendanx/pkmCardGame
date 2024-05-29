@@ -3,13 +3,13 @@ import { css } from "@emotion/css";
 import { AuthContext } from "../User/AuthContext";
 import axios from 'axios'
 
-function PokemonTCGCard() {
+function PokemonTCGCard({setGroup}) {
     const [card, setCards] = useState([]);
 
     const fetchPokemon = async () => {
         try {
             const response = await axios.get(
-              `https://api.tcgdex.net/v2/en/sets/base1`);
+              `https://api.tcgdex.net/v2/en/sets/${setGroup}`);
 
           if (response.status === 200) {
             setCards(response.data.cards);

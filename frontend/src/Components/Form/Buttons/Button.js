@@ -6,23 +6,10 @@ function Button({ handleClick, text, primary, sm, h, w }) {
     <div>
         <button
         onClick={handleClick}
-        className={css`
-                height:${h};
-                widht:${w}
-                font-size:0.8em;
-                color:#8b2900;
-                height:35px;
-                ${sm ? 'width: 75px;' : 'width:100px;'}
-                padding:5px;
-                border:none;
-                border-radius:10px;
-                font-weight:900;
-                text-transform:uppercase;
-                ${primary ? 'background: #31acee;' : 'background: #ffd57b;'}
-                @media (max-width: 770px){
-                  width:100%;
-                }
-        `}
+        className="
+                  ${primary ? bg-[#31acee] : bg-[#ffd57b]}
+                  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                  "
         >
         {text}
         </button>
