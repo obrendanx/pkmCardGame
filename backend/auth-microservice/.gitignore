@@ -1,0 +1,64 @@
+# Ignore Node.js build artifacts
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Ignore environment variables file
+.env
+
+# Ignore development server logs
+logs/
+
+# Ignore production build files
+build/
+dist/
+
+# Ignore dependency lock files
+package-lock.json
+yarn.lock
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swn
+*.bak
+*~.nib
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Ignore testing and coverage files
+coverage/
+
+# Ignore compiled files
+*.log
+*.dll
+*.pyc
+*.class
+
+# Ignore system files
+._*
+
+# Ignore Mac-specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignore temporary files
+.tmp/
+*.tmp
+*.bak
+*.cache
+
+# Ignore Firebase configuration files
+firebase.config.json
+
