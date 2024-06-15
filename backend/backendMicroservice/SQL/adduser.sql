@@ -28,4 +28,7 @@ BEGIN
 
     INSERT INTO Users (UserId, FullName, Username, Email, Password, DateOfBirth, Announcements, IsGlobalAdmin, CreatedAt)
     VALUES (@UserId, @FullName, @Username, @Email, @Password, @DateOfBirth, @Announcements, @IsGlobalAdmin, @CreatedAt);
+
+    INSERT INTO UserProfile (UserId, ProfileIconColor, Bio, Gender, Twitter, Facebook, Instagram, FavoritePokemonName, FavoritePokemonImage)
+    VALUES (@UserId, '#3F51B5', '', '', '', '', '', '', '');
 END

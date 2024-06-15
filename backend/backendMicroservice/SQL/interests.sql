@@ -1,0 +1,6 @@
+CREATE TABLE Interests (
+    InterestId INT IDENTITY(1,1) PRIMARY KEY,
+    UserId UNIQUEIDENTIFIER,
+    Interest NVARCHAR(100),
+    FOREIGN KEY (UserId) REFERENCES Users(UserId)
+);

@@ -34,5 +34,45 @@ namespace backendMicroservice.Controllers
                 return StatusCode(500, "An error occurred while adding the user.");
             }
         }
+
+        [HttpPost]
+        [Route("addinterest")]
+        public IActionResult AddInterest([FromBody] Interest interest)
+        {
+            if (interest == null)
+            {
+                return BadRequest("Interest is null.");
+            }
+
+            bool result = _databaseMethods.addInterest(interest);
+            if (result)
+            {
+                return Ok("Interest added successfully.");
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while adding a new interest.");
+            }
+        }
+
+        [HttpPost]
+        [Route("updateinterest")]
+        public IActionResult UpdateInterest([FromBody] Interest interest)
+        {
+            if (interest == null)
+            {
+                return BadRequest("Interest is null.");
+            }
+
+            bool result = _databaseMethods.updateInterest(interest);
+            if (result)
+            {
+                return Ok("Interest updated successfully.");
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while updating your interest.");
+            }
+        }
     }
 }

@@ -51,5 +51,61 @@ namespace backendMicroservice.DataAccessLayer
                 return false;
             }
         }
+
+        public bool addInterest(Interest interest)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("AddInterest", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        cmd.Parameters.AddWithValue("@UserId", interest.UserId);
+                        cmd.Parameters.AddWithValue("@Interest", interest.InterestName);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                return false;
+            }
+        }
+
+        public bool updateInterest(Interest interest)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("UpdateInterest", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        cmd.Parameters.AddWithValue("@InterestId", interest.InterestId);
+                        cmd.Parameters.AddWithValue("@Interest", interest.InterestName);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                return false;
+            }
+        }
     }
 }
