@@ -16,7 +16,7 @@ namespace backendMicroservice.Controllers
         }
 
         [HttpPost]
-        [Route("adduser")]
+        [Route("register")]
         public IActionResult AddUser([FromBody]User user)
         {
             if (user == null)
@@ -72,6 +72,46 @@ namespace backendMicroservice.Controllers
             else
             {
                 return StatusCode(500, "An error occurred while updating your interest.");
+            }
+        }
+
+        [HttpGet]
+        [Route("getprofile")]
+        public IActionResult GetProfile([FromQuery] Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                return BadRequest("userId is null.");
+            }
+
+            UserProfile profile = _databaseMethods.getProfile(userId);
+            if (profile != null)
+            {
+                return Ok(profile);
+            }
+            else
+            {
+                return NotFound("User profile not found.");
+            }
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login([FromBody] Login request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Invalid login request.");
+            }
+
+            User user = _databaseMethods.LoginUser(request.Username, request.Password);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return Unauthorized("Invalid username or password.");
             }
         }
     }

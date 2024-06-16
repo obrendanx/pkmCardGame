@@ -13,7 +13,7 @@ export default function useSignup () {
   return useMutation(
     async (registered) => {
       try {
-        const response = await axios.post(`https://localhost:7109/api/user/adduser`, registered);
+        const response = await axios.post(`https://localhost:7109/api/user/register`, registered);
         
         if(response) {
           window.location = './Login';

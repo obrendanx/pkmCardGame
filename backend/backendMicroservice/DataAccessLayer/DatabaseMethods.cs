@@ -107,5 +107,101 @@ namespace backendMicroservice.DataAccessLayer
                 return false;
             }
         }
+
+        public UserProfile getProfile(Guid userId)
+        {
+            UserProfile userProfile = null;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("GetUserProfile", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+
+                        conn.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                userProfile = new UserProfile
+                                {
+                                    UserId = reader.GetGuid(reader.GetOrdinal("UserId")),
+                                    ProfileIconColor = reader.GetString(reader.GetOrdinal("ProfileIconColor")),
+                                    Bio = reader.GetString(reader.GetOrdinal("Bio")),
+                                    Gender = reader.GetString(reader.GetOrdinal("Gender")),
+                                    Twitter = reader.GetString(reader.GetOrdinal("Twitter")),
+                                    Facebook = reader.GetString(reader.GetOrdinal("Facebook")),
+                                    Instagram = reader.GetString(reader.GetOrdinal("Instagram")),
+                                    FavoritePokemonName = reader.GetString(reader.GetOrdinal("FavoritePokemonName")),
+                                    FavoritePokemonImage = reader.GetString(reader.GetOrdinal("FavoritePokemonImage"))
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                throw new Exception("An error occurred while retrieving the user profile.", ex);
+            }
+
+            return userProfile;
+        }
+
+        public User LoginUser(string username, string password)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("UserLogin", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        cmd.Parameters.AddWithValue("@Password", password);
+
+                        conn.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                reader.Read();
+                                string storedHashedPassword = reader["Password"].ToString();
+                                if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
+                                {
+                                    User user = new User
+                                    {
+                                        UserId = reader.GetGuid(reader.GetOrdinal("UserId")),
+                                        Username = reader.GetString(reader.GetOrdinal("Username")),
+                                        Fullname = reader.GetString(reader.GetOrdinal("Fullname")),
+                                        Email = reader.GetString(reader.GetOrdinal("Email")),
+                                        DateOfBirth = reader.GetString(reader.GetOrdinal("DateOfBirth")),
+                                        Announcements = reader.GetBoolean(reader.GetOrdinal("Announcements")),
+                                        IsGlobalAdmin = reader.GetBoolean(reader.GetOrdinal("IsGlobalAdmin")),
+                                        DateTime = reader.GetDateTime(reader.GetOrdinal("CreatedAt"))
+                                    };
+                                    return user;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+            }
+
+            return null;
+        }
     }
 }

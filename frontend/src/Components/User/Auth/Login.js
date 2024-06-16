@@ -29,8 +29,10 @@ function Login() {
         password,
       });
 
-    if (data.user) {
-      console.log(data.user);
+    console.log(data);
+
+    if (data) {
+      console.log(data);
       /*
           If data matches:
           - Set a unique token for the user in there local storage
@@ -40,11 +42,11 @@ function Login() {
       // Set a cookie to keep the user signed in
       const now = new Date();
       now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
-      document.cookie = `token=${data.user.token}; userId=${data.user.id}; username=${username}; expires=${now.toUTCString()}; path=/`;
+      document.cookie = `token=${data.userId}; userId=${data.userId}; username=${username}; expires=${now.toUTCString()}; path=/`;
 
 
       console.log('Login successful');
-      login(data.user.token, data.user.userId, username);
+      login(data.userId, data.userId, username);
 
       // Use navigate to navigate without full page reload
       navigate('/home');
