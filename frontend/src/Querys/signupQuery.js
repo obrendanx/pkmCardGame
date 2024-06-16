@@ -13,13 +13,13 @@ export default function useSignup () {
   return useMutation(
     async (registered) => {
       try {
-        const response = await axios.post(`${userUrl}/signup`, registered);
+        const response = await axios.post(`https://localhost:7109/api/user/adduser`, registered);
         
         if(response) {
           window.location = './Login';
         }
 
-        return await response.data;
+        return await response;
       } catch (error) {
         if(error.response.status === 404) {
           throw new Error(`resource not found`);

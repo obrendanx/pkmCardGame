@@ -94,15 +94,20 @@ function Register() {
     if (Object.keys(formErrors).length === 0) {
       try {
         const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
+        const dateTime = new Date(); 
         // const dob = moment(dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
+        var isGlobalAdmin = false;
+
         const registered = {
-          fullName,
           username,
-          email,
+          fullName,
           password,
-          dob,
-          announcements
+          email,
+          dateOfBirth,
+          announcements,
+          isGlobalAdmin,
+          dateTime
         };
 
         await addSignupMutation.mutateAsync(registered);
@@ -115,13 +120,13 @@ function Register() {
         await addProfileMutation.mutateAsync(profile);
 
       } catch (error) {
-        console.error(error.response.data); 
+        console.error(error.response); 
         if (
           error.response &&
-          error.response.data &&
-          error.response.data.message
+          error.response &&
+          error.response.message
         ) {
-          toast.error(error.response.data.message, {
+          toast.error(error.response.message, {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 5000,
             hideProgressBar: true,
