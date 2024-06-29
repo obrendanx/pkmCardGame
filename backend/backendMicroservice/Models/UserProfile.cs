@@ -12,4 +12,9 @@
         public string FavoritePokemonName { get; set; }
         public string FavoritePokemonImage { get; set; }
     }
+
+    public class GetUserId
+    {
+        public Guid UserId { get; set; }
+    }
 }

@@ -3,7 +3,7 @@ import Select from "react-select";
 import { AuthContext } from "../User/AuthContext";
 import axios from 'axios'
 import Label from "../Form/Label";
-import { useShowPokemon } from "../../Querys/showPokemonQuery";
+import { useShowProfile } from "../../Querys/showProfileQuery";
 
 const POKEMON_LIST_API = 'https://pokeapi.co/api/v2/pokemon?limit=500"';
 console.clear();
@@ -11,8 +11,8 @@ console.clear();
 export default function PokemonCard() {
   const [pokemonList, setPokemonList] = useState([]);
   const [currentPokemon, setCurrentPokemon] = useState({});
-  const { getUserPokemon, username } = useContext(AuthContext);
-  const { data: currPokemon } = useShowPokemon(username);
+  const { getUserPokemon, username, userId } = useContext(AuthContext);
+  const { data: profile } = useShowProfile(userId);
   const [pokemon, setPokemon] = useState({
     name: "",
     image: ""
@@ -24,20 +24,10 @@ export default function PokemonCard() {
   }, [username]);
 
   const fetchPokemon = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5002/fetchpokemon?username=${username}`);
-
-      if (response.status === 200) {
-        setPokemon({ ...pokemon, 
-          name: response.data.pokemon.name, 
-          image: response.data.pokemon.image  
-        });
-      } else {
-        console.error('No pokemon found');
-      }
-    } catch (error) {
-      console.error('No pokemon found here', error);
-    }
+    setPokemon({ ...pokemon, 
+      name: profile.favoritePokemonName, 
+      image: profile.favoritePokemonImage 
+    });
   };
 
   const getAllPokemons = async () => {

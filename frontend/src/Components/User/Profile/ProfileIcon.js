@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function ProfileIcon({ h, w }) {
   const [profileIcon, setProfileIcon] = useState();
-  const { username } = useContext(AuthContext);
+  const { username, userId } = useContext(AuthContext);
 
   useEffect(() => {
     fetchIcon();

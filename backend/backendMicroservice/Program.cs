@@ -9,12 +9,12 @@ builder.Services.AddSingleton<DatabaseMethods>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
-        policy =>
+    options.AddPolicy("AllowAll",
+        builder =>
         {
-            policy.WithOrigins("http://localhost:3000") 
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
         });
 });
 
@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowReactApp");
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

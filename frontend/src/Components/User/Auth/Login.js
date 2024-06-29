@@ -46,7 +46,7 @@ function Login() {
 
 
       console.log('Login successful');
-      login(data.userId, data.userId, username);
+      login(data.userId, data.userId, username, data.email, data.dateofbirth);
 
       // Use navigate to navigate without full page reload
       navigate('/home');

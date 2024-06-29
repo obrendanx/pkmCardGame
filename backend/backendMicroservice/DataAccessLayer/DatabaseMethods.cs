@@ -203,5 +203,40 @@ namespace backendMicroservice.DataAccessLayer
 
             return null;
         }
+
+        public bool UpdateUserProfile(UserProfile userProfile)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("UpdateUserProfile", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        cmd.Parameters.AddWithValue("@UserId", userProfile.UserId);
+                        cmd.Parameters.AddWithValue("@ProfileIconColor", (object)userProfile.ProfileIconColor ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Bio", (object)userProfile.Bio ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Gender", (object)userProfile.Gender ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Twitter", (object)userProfile.Twitter ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Facebook", (object)userProfile.Facebook ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Instagram", (object)userProfile.Instagram ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@FavoritePokemonName", (object)userProfile.FavoritePokemonName ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@FavoritePokemonImage", (object)userProfile.FavoritePokemonImage ?? DBNull.Value);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                return false;
+            }
+        }
     }
 }

@@ -75,16 +75,16 @@ namespace backendMicroservice.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("getprofile")]
-        public IActionResult GetProfile([FromQuery] Guid userId)
+        public IActionResult GetProfile([FromBody] GetUserId userId)
         {
-            if (userId == Guid.Empty)
+            if (userId == null)
             {
                 return BadRequest("userId is null.");
             }
 
-            UserProfile profile = _databaseMethods.getProfile(userId);
+            UserProfile profile = _databaseMethods.getProfile(userId.UserId);
             if (profile != null)
             {
                 return Ok(profile);
@@ -112,6 +112,26 @@ namespace backendMicroservice.Controllers
             else
             {
                 return Unauthorized("Invalid username or password.");
+            }
+        }
+
+        [HttpPost]
+        [Route("updateprofile")]
+        public IActionResult UpdateProfile([FromBody] UserProfile userprofile)
+        {
+            if (userprofile == null)
+            {
+                return BadRequest("Profile is null.");
+            }
+
+            bool result = _databaseMethods.UpdateUserProfile(userprofile);
+            if (result)
+            {
+                return Ok("Profile updated successfully.");
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while updating your Profile.");
             }
         }
     }
