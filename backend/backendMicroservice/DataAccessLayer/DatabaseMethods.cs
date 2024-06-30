@@ -155,6 +155,50 @@ namespace backendMicroservice.DataAccessLayer
             return userProfile;
         }
 
+        public UserAuth getUser(Guid userId)
+        {
+            UserAuth userAuth = null;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("GetUser", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+
+                        conn.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                userAuth = new UserAuth
+                                {
+                                    Password = reader.GetString(reader.GetOrdinal("Password")),
+                                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                                    FullName = reader.GetString(reader.GetOrdinal("FullName")),
+                                    DateOfBirth = reader.GetString(reader.GetOrdinal("DateOfBirth")),
+                                    Announcements = reader.GetBoolean(reader.GetOrdinal("Announcements")),
+                                    IsGlobalAdmin = reader.GetBoolean(reader.GetOrdinal("IsGlobalAdmin")),
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                throw new Exception("An error occurred while retrieving the user.", ex);
+            }
+
+            return userAuth;
+        }
+
         public User LoginUser(string username, string password)
         {
             try
@@ -224,6 +268,38 @@ namespace backendMicroservice.DataAccessLayer
                         cmd.Parameters.AddWithValue("@Instagram", (object)userProfile.Instagram ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@FavoritePokemonName", (object)userProfile.FavoritePokemonName ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@FavoritePokemonImage", (object)userProfile.FavoritePokemonImage ?? DBNull.Value);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                return false;
+            }
+        }
+
+        public bool UpdateUser(UserAuth userAuth)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("UpdateUser", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        //Hash Password
+                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userAuth.Password);
+
+                        // Add parameters
+                        cmd.Parameters.AddWithValue("@UserId", userAuth.UserId);
+                        cmd.Parameters.AddWithValue("@FullName", (object)userAuth.FullName ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Password", hashedPassword);
 
                         conn.Open();
                         cmd.ExecuteNonQuery();

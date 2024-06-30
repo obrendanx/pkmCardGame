@@ -96,6 +96,26 @@ namespace backendMicroservice.Controllers
         }
 
         [HttpPost]
+        [Route("getuser")]
+        public IActionResult GetUser([FromBody] GetUserId userId)
+        {
+            if (userId == null)
+            {
+                return BadRequest("userId is null.");
+            }
+
+            UserAuth userprofile = _databaseMethods.getUser(userId.UserId);
+            if (userprofile != null)
+            {
+                return Ok(userprofile);
+            }
+            else
+            {
+                return NotFound("User profile not found.");
+            }
+        }
+
+        [HttpPost]
         [Route("login")]
         public IActionResult Login([FromBody] Login request)
         {
@@ -128,6 +148,26 @@ namespace backendMicroservice.Controllers
             if (result)
             {
                 return Ok("Profile updated successfully.");
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while updating your Profile.");
+            }
+        }
+
+        [HttpPost]
+        [Route("updateuser")]
+        public IActionResult UpdateUser([FromBody] UserAuth user)
+        {
+            if (user == null)
+            {
+                return BadRequest("Profile is null.");
+            }
+
+            bool result = _databaseMethods.UpdateUser(user);
+            if (result)
+            {
+                return Ok("User updated successfully.");
             }
             else
             {

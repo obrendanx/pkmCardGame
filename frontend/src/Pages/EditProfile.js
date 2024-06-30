@@ -12,16 +12,13 @@ import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs';
 import PokemonCard from '../Components/Cards/PokemonCard';
 import useUpdateUser from '../Querys/updateProfileQuery';
 import { useShowProfile } from '../Querys/showProfileQuery';
+import { useShowUser } from '../Querys/showUserQuery';
+import useUpdateUserAuth from '../Querys/updateAuthQuery';
 
 function EditProfile() {
   const { isLoggedIn, username, pokemon, userId, email, dob } = useContext(AuthContext);
 
-  //update password
-  const [updatedPassword, setUpdatedPassword] = useState('');
-  const [passwordRetype, setPasswordRetype] = useState('');
-
   //update profile
-  const [updateFullName, setUpdateFullName] = useState(null);
   const [Bio, setBio] = useState(null);
   const [profileIconColor, setProfileIconColor] = useState('#3F51B5'); // Default color
   const [Gender, setGender] = useState(null);
@@ -31,6 +28,11 @@ function EditProfile() {
   const [FavoritePokemonName, setPokemonName] = useState(null);
   const [FavoritePokemonImage, setPokemonImage] = useState(null);
 
+  //update user
+  const [FullName, setUpdateFullName] = useState('');
+  const [Password, setPassword] = useState('');
+  const [passwordRetype, setPasswordRetype] = useState('');
+
   //update interest
   const [userUpdated, setUserUpdated] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -39,13 +41,13 @@ function EditProfile() {
   const [errors, setErrors] = useState({});
 
   const addUserMutation = useUpdateUser();
+  const addUserAuthMutation = useUpdateUserAuth();
 
   const navigate = useNavigate();
 
   //get profile data
   const { data: profile } = useShowProfile(userId);
-  console.log(profile);
-
+  const { data: user } = useShowUser(userId);
 
   useEffect(() => {
     if (username !== null) {
@@ -62,25 +64,25 @@ function EditProfile() {
     const formErrors = {};
 
     //Check to see if a correct 'Full Name' is entered
-    if (updateFullName.trim() === '') {
+    if (FullName.trim() === '') {
         formErrors.updateFullName = 'Full Name is required';
-    } else if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
+    } else if (!/^[a-zA-Z ]+$/.test(FullName)) {
         formErrors.updateFullName = 'Full Name can only contain letters and spaces';
     }
 
     //Check to see if a correct 'Password' is entered and matched correctly
-    if (updatedPassword.trim() === '') {
-        formErrors.updatedPassword = 'Password is required';
-    } else if (updatedPassword.length < 6) {
-        formErrors.updatedPassword = 'Password must be at least 6 characters long';
+    if (Password.trim() === '') {
+        formErrors.Password = 'Password is required';
+    } else if (Password.length < 6) {
+        formErrors.Password = 'Password must be at least 6 characters long';
     } else if (
-        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
+        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(Password)
     ) {
-        formErrors.updatedPassword =
+        formErrors.Password =
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
     }
 
-    if (updatedPassword !== passwordRetype) {
+    if (Password !== passwordRetype) {
         formErrors.passwordRetype = 'Passwords do not match';
     }
 
@@ -99,6 +101,17 @@ function EditProfile() {
         FavoritePokemonName,
         FavoritePokemonImage
     };
+
+    const userUpdateAuthData = {
+      userId,
+      FullName,
+      Password
+    }
+
+    if (userUpdateAuthData != null) {
+      await addUserAuthMutation.mutateAsync(userUpdateAuthData);
+      setUserUpdated(true);
+    }
 
         if (userUpdateData != null) {
           await addUserMutation.mutateAsync(userUpdateData);
@@ -125,12 +138,12 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor="email" text="Email"/>
-                                <span className='min-h-4 w-full m-4 p-2'>{email}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{user.email}</span>
                         </div>
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor='dateofbirth' text="Date of Birth"/>
-                                <span className='min-h-4 w-full m-4 p-2'>{dob}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{user.dateOfBirth}</span>
                         </div>
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
@@ -148,8 +161,8 @@ function EditProfile() {
                                 <Input 
                                     type="password"
                                     placeholder="Please enter a password"
-                                    value={updatedPassword}
-                                    onValueChange={setUpdatedPassword}
+                                    value={Password}
+                                    onValueChange={setPassword}
                                     left="2.5%"
                                 />
                                 {errors.updatedPassword && <span className='font-sm text-[#f44336] ml-4'>{errors.updatedPassword}</span>}
@@ -169,7 +182,7 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor="fullName" text="Full Name"/>
-                                <span className='min-h-4 w-full m-4 p-2'>{profile.fullName}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{user.fullName}</span>
                                 <Input 
                                     type="text"
                                     placeholder="Please enter your name"
@@ -229,7 +242,7 @@ function EditProfile() {
                                 <TextArea
                                     type="text"
                                     placeholder="Bio"
-                                    value={profile.bio}
+                                    value={Bio}
                                     onValueChange={setBio}
                                     width="90%"
                                 />
