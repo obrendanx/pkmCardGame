@@ -10,7 +10,10 @@ console.clear();
 
 export default function PokemonCard() {
   const [pokemonList, setPokemonList] = useState([]);
-  const [currentPokemon, setCurrentPokemon] = useState({});
+  const [currentPokemon, setCurrentPokemon] = useState({
+    name: "",
+    image: ""
+  });
   const { getUserPokemon, username, userId } = useContext(AuthContext);
   const { data: profile } = useShowProfile(userId);
   const [pokemon, setPokemon] = useState({

@@ -29,9 +29,9 @@ function EditProfile() {
   const [FavoritePokemonImage, setPokemonImage] = useState(null);
 
   //update user
-  const [FullName, setUpdateFullName] = useState('');
-  const [Password, setPassword] = useState('');
-  const [passwordRetype, setPasswordRetype] = useState('');
+  const [FullName, setUpdateFullName] = useState(null);
+  const [Password, setPassword] = useState(null);
+  const [passwordRetype, setPasswordRetype] = useState(null);
 
   //update interest
   const [userUpdated, setUserUpdated] = useState(false);
@@ -57,29 +57,40 @@ function EditProfile() {
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
     }
-  }, [username, profile]);
+
+    setPokemonName(pokemon.name);
+    setPokemonImage(pokemon.image);
+  }, [username, profile, pokemon]);
+
+  const hasValidData = (obj) => {
+    return Object.values(obj).some(value => value !== null && value !== '');
+  };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formErrors = {};
 
     //Check to see if a correct 'Full Name' is entered
-    if (FullName.trim() === '') {
+    if(FullName != null){
+      if (FullName.trim() === '') {
         formErrors.updateFullName = 'Full Name is required';
-    } else if (!/^[a-zA-Z ]+$/.test(FullName)) {
-        formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+      } else if (!/^[a-zA-Z ]+$/.test(FullName)) {
+          formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+      }
     }
 
     //Check to see if a correct 'Password' is entered and matched correctly
-    if (Password.trim() === '') {
+    if(Password != null){
+      if (Password.trim() === '') {
         formErrors.Password = 'Password is required';
-    } else if (Password.length < 6) {
-        formErrors.Password = 'Password must be at least 6 characters long';
-    } else if (
-        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(Password)
-    ) {
-        formErrors.Password =
-        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
+      } else if (Password.length < 6) {
+          formErrors.Password = 'Password must be at least 6 characters long';
+      } else if (
+          !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(Password)
+      ) {
+          formErrors.Password =
+          'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
+      }
     }
 
     if (Password !== passwordRetype) {
@@ -87,8 +98,6 @@ function EditProfile() {
     }
 
     setErrors(formErrors);
-    setPokemonName(pokemon.name);
-    setPokemonImage(pokemon.image);
 
     const userUpdateData = {
         userId,
@@ -108,19 +117,19 @@ function EditProfile() {
       Password
     }
 
-    if (userUpdateAuthData != null) {
+    if (userUpdateAuthData.FullName != null || userUpdateAuthData.Password != null) {
       await addUserAuthMutation.mutateAsync(userUpdateAuthData);
       setUserUpdated(true);
     }
 
-        if (userUpdateData != null) {
-          await addUserMutation.mutateAsync(userUpdateData);
-          setUserUpdated(true);
-        }
+    if (userUpdateData.Bio != null || userUpdateData.Facebook != null || userUpdateData.FavoritePokemonImage != null || userUpdateData.FavoritePokemonName != null || userUpdateData.Gender != null || userUpdateData.Instagram != null || userUpdateData.Twitter != null || userUpdateData.profileIconColor != null) {
+      await addUserMutation.mutateAsync(userUpdateData);
+      setUserUpdated(true);
+    }
 
-        if(!userUpdateData){
-            toast.error("No changes have been made");
-        }
+    if(!userUpdateData && !userUpdateAuthData){
+        toast.error("No changes have been made");
+    }
     };
 
   return (
@@ -194,7 +203,7 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="twitter" text={<BsTwitter/>} />
-                          <span className='min-h-4 w-full m-4 p-2'>{profile.twitter}</span>
+                          <span className='min-h-4 w-full m-4 p-2'><a href={profile.twitter}>{profile.twitter}</a></span>
                           <Input
                             type="text"
                             placeholder="Twitter profile URL"
@@ -205,7 +214,7 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="facebook" text={<BsFacebook/>} />
-                          <span className='min-h-4 w-full m-4 p-2'>{profile.facebook}</span>
+                          <span className='min-h-4 w-full m-4 p-2'><a href={profile.facebook}>{profile.facebook}</a></span>
                           <Input
                             type="text"
                             placeholder="Facebook profile URL"
@@ -216,7 +225,7 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="instagram" text={<BsInstagram/>} />
-                          <span className='min-h-4 w-full m-4 p-2'>{profile.instagram}</span>
+                          <span className='min-h-4 w-full m-4 p-2'><a href={profile.instagram}>{profile.instagram}</a></span>
                           <Input
                             type="text"
                             placeholder="Instagram profile URL"
@@ -224,7 +233,7 @@ function EditProfile() {
                             left="2.5%"
                           />
                         </div>
-
+                        {/*}
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="interests" text="Interests" />
                           <span className='min-h-4 w-full m-4 p-2'></span>
@@ -235,7 +244,7 @@ function EditProfile() {
                             width="90%"
                           />
                         </div>
-
+                        */}
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor="bio" text="Bio" />
                                 <span className='min-h-4 w-full m-4 p-2'>{profile.bio}</span>
@@ -251,7 +260,7 @@ function EditProfile() {
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                             <Label htmlFor="profileIconColor" text="Profile Icon Color" />
                             <TwitterPicker
-                            color={profileIconColor}
+                            color={profile.profileIconColor}
                             onChange={(color) => setProfileIconColor(color.hex)}
                             className='mt-4 ml-6 p-4 md:mb-4'/>
                         </div>
