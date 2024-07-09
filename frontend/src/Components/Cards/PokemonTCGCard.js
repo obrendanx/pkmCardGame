@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../User/AuthContext";
+import { useEffect, useState } from "react";
 import axios from 'axios'
 
 function PokemonTCGCard({setGroup}) {

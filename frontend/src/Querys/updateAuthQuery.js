@@ -5,14 +5,14 @@ import { toast } from 'react-toastify';
 
 const environment = process.env.NODE_ENV || 'development';
 // Get the API URL based on the environment
-const userUrl = config[environment].profile;
+const backendURL = config[environment].backend;
 
 export default function useUpdateUserAuth () {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (userUpdateAuthData) => {
-        const response = await axios.post(`https://localhost:7109/api/user/updateuser`, userUpdateAuthData);
+        const response = await axios.post(`${backendURL}/api/user/updateuser`, userUpdateAuthData);
         
         toast.success("User updated successfully");
         return response;

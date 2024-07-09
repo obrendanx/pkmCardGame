@@ -4,14 +4,14 @@ import config from '../config';
 
 const environment = process.env.NODE_ENV || 'development';
 // Get the API URL based on the environment
-const userUrl = config[environment].profile;
+const backendURL = config[environment].backend;
 
 export const fetchUser = async (userid) => {
     if (!userid) {
         throw new Error('userid is required');
     }
     console.log(`fetchUser userid: ${userid}`);
-    const response = await axios.post(`https://localhost:7109/api/user/getuser`, {
+    const response = await axios.post(`${backendURL}/user/getuser`, {
         userId: userid
     });
     return response.data;

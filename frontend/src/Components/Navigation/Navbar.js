@@ -2,10 +2,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../User/AuthContext';
 import ProfileIcon from '../User/Profile/ProfileIcon';
 import { useNavigate } from 'react-router-dom';
-import { TbPokeball, TbPokeballOff } from "react-icons/tb"
+import { TbPokeball } from "react-icons/tb"
 
 function Navbar() {
-  const { isLoggedIn, logout, user } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 

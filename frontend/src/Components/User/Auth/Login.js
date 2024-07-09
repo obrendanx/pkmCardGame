@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Input from '../../Form/Input'
-import Label from '../../Form/Label';
 import Submit from '../../Form/Submit';
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/css';
 import MediumHeader from '../../Headers/MediumHeader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

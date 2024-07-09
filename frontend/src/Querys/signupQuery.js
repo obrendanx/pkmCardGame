@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const environment = process.env.NODE_ENV || 'development';
 // Get the API URL based on the environment
-const userUrl = config[environment].auth;
+const backendURL = config[environment].backend;
 
 export default function useSignup () {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export default function useSignup () {
   return useMutation(
     async (registered) => {
       try {
-        const response = await axios.post(`https://localhost:7109/api/user/register`, registered);
+        const response = await axios.post(`${backendURL}/api/user/register`, registered);
         
         if(response) {
           window.location = './Login';

@@ -3,17 +3,13 @@ import Input from '../../Form/Input';
 import Label from '../../Form/Label';
 import Submit from '../../Form/Submit';
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/css';
 import MediumHeader from '../../Headers/MediumHeader';
-import axios from 'axios';
-import moment from 'moment';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import styled from '@emotion/styled';
 import useSignup from '../../../Querys/signupQuery';
-import useProfileSetup from '../../../Querys/setProfileQuery';
 
 const Error = styled.span`
     font-size:0.8em;
@@ -33,7 +29,6 @@ function Register() {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const addSignupMutation = useSignup();
-  const addProfileMutation = useProfileSetup();
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -93,7 +88,6 @@ function Register() {
     // Proceed with sign-up logic if there are no errors
     if (Object.keys(formErrors).length === 0) {
       try {
-        const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
         const dateTime = new Date(); 
         // const dob = moment(dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
@@ -111,13 +105,6 @@ function Register() {
         };
 
         await addSignupMutation.mutateAsync(registered);
-
-        const profile = {
-          username,
-          dob
-        };
-
-        await addProfileMutation.mutateAsync(profile);
 
       } catch (error) {
         console.error(error.response); 

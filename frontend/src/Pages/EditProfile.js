@@ -16,7 +16,7 @@ import { useShowUser } from '../Querys/showUserQuery';
 import useUpdateUserAuth from '../Querys/updateAuthQuery';
 
 function EditProfile() {
-  const { isLoggedIn, username, pokemon, userId, email, dob } = useContext(AuthContext);
+  const { isLoggedIn, username, pokemon, userId} = useContext(AuthContext);
 
   //update profile
   const [Bio, setBio] = useState(null);
@@ -33,7 +33,6 @@ function EditProfile() {
   const [Password, setPassword] = useState(null);
   const [passwordRetype, setPasswordRetype] = useState(null);
 
-  //update interest
   const [userUpdated, setUserUpdated] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isLoadingUsername, setLoadingUsername] = useState(true);
@@ -61,10 +60,6 @@ function EditProfile() {
     setPokemonName(pokemon.name);
     setPokemonImage(pokemon.image);
   }, [username, profile, pokemon]);
-
-  const hasValidData = (obj) => {
-    return Object.values(obj).some(value => value !== null && value !== '');
-  };
 
   const handleUpdate = async (event) => {
     event.preventDefault();

@@ -1,8 +1,6 @@
 module.exports = {
   development: {
-    backend: 'http://localhost:5000', //  local development API URL
-    auth: 'http://localhost:5001', 
-    profile: 'http://localhost:5002',  
+    backend: 'https://localhost:7109/api', //  local development API URL
   },
   production: {
     backend: 'http://localhost:', //  local development API URL

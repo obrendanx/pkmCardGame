@@ -133,8 +133,7 @@ function Sidebar() {
         return '#ccc';
     }
     }
-//className={"h-full w-1/4 fixed overflow-y-scroll mb-10 overflow-x-hidden bg-[#de5239] scrollStyles pl-10 md:w-full md:z-10 md:p-10 lg:text-md " + ( menuVisible ? 'md:block' : 'md:hidden' )}
-// className='block md:hidden fixed top-10 p-5 text-sm z-20'
+
   return (
     <>  
         <div className='md:block hidden fixed top-20 left-4 text-lg z-20' onClick={toggleMenu}>
