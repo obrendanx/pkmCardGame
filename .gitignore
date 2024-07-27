@@ -62,3 +62,4 @@ coverage/
 # Ignore Firebase configuration files
 firebase.config.json
 
+/backend/backendMicroservice/.vs/backendMicroservice/FileContentIndex
