@@ -8,14 +8,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
-import styled from '@emotion/styled';
 import useSignup from '../../../Querys/signupQuery';
-
-const Error = styled.span`
-    font-size:0.8em;
-    color:#F44336;
-    margin-left:2.5%;
-`
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -156,7 +149,7 @@ function Register() {
                   value={username}
                   onValueChange={setUsername}
                 />
-                {errors.username && <Error>{errors.username}</Error>}
+                {errors.username && <span className='font-sm text-[#f44336] ml-4'>{errors.username}</span>}
               </div>
 
               <div>
@@ -167,7 +160,7 @@ function Register() {
                   value={fullName}
                   onValueChange={setFullName}
                 />
-                {errors.fullName && <Error>{errors.fullName}</Error>}
+                {errors.fullName && <span className='font-sm text-[#f44336] ml-4'>{errors.fullName}</span>}
               </div>
 
               <div>
@@ -178,7 +171,7 @@ function Register() {
                   value={password}
                   onValueChange={setPassword}
                 />
-                {errors.password && <Error>{errors.password}</Error>}
+                {errors.password && <span className='font-sm text-[#f44336] ml-4'>{errors.password}</span>}
               </div>
 
               <div>
@@ -189,7 +182,7 @@ function Register() {
                   value={retypePassword}
                   onValueChange={setRetypePassword}
                 />
-                {errors.retypePassword && <Error>{errors.retypePassword}</Error>}
+                {errors.retypePassword && <span className='font-sm text-[#f44336] ml-4'>{errors.retypePassword}</span>}
               </div>
 
               <div>
@@ -200,7 +193,7 @@ function Register() {
                   value={email}
                   onValueChange={setEmail}
                 />
-                {errors.email && <Error>{errors.email}</Error>}
+                {errors.email && <span className='font-sm text-[#f44336] ml-4'>{errors.email}</span>}
               </div>
 
               <div>
@@ -211,7 +204,7 @@ function Register() {
                   value={dateOfBirth}
                   onValueChange={setDateOfBirth}
                 />
-                {errors.dateOfBirth && <Error>{errors.dateOfBirth}</Error>}
+                {errors.dateOfBirth && <span className='font-sm text-[#f44336] ml-4'>{errors.dateOfBirth}</span>}
               </div>
 
               <div>
