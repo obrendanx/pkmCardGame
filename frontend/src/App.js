@@ -6,7 +6,6 @@ import Home from './Pages/Home';
 import Login from './Components/User/Auth/Login';
 import Register from './Components/User/Auth/Register';
 import Splashscreen from './Pages/Splashscreen';
-import Logout from './Components/User/Auth/Logout';
 import Navbar from './Components/Navigation/Navbar';
 import EditProfile from './Pages/EditProfile';
 import Test from './Pages/Test';
@@ -23,7 +22,6 @@ function App() {
         <AuthProvider>
               <Navbar />
               <Routes>
-                <Route path="/logout" element={<Logout />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/" element={<Splashscreen />} />
                 <Route path="/login" element={<Login />} />

@@ -1,3 +1,13 @@
+USE [backendMicroservice]
+GO
+
+/****** Object: SqlProcedure [dbo].[UpdateUserProfile] Script Date: 7/27/2024 10:40:52 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE PROCEDURE UpdateUserProfile
     @UserId UNIQUEIDENTIFIER,
     @ProfileIconColor VARCHAR(50) = NULL,
