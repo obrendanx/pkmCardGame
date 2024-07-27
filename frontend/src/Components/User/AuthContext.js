@@ -7,6 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [dob, setDob] = useState(null);
   const [pokemon, setPokemon] = useState({
     name: "",
     image: ""
@@ -32,10 +34,12 @@ export const AuthProvider = ({ children }) => {
     return cookieValue ? cookieValue.pop() : '';
   };
 
- const login = (token, userId, username) => {
+ const login = (token, userId, username, email, dob) => {
     setIsLoggedIn(true);
     setUserId(userId);
     setUsername(username);
+    setEmail(email);
+    setDob(dob);
 
     // Create the token payload with user information
     const tokenPayload = {
@@ -67,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   // Pass the state and functions to the value prop of the context provider
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout, username, pokemon, getUserPokemon }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout, username, pokemon, getUserPokemon, email, dob }}>
       {children}
     </AuthContext.Provider>
   );

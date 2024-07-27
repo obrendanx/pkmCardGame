@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "R9v+BpHj+8lTxYwM0R7d+Zvuw7CqAl/+g6Q1vOcSmmw=",
+  "Source": "backendMicroservice",
+  "BasePath": "_content/backendMicroservice",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

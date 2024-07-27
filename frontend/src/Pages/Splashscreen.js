@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import { css } from '@emotion/css'
-import styled from '@emotion/styled'
 import SplashscreenLg from '../Images/splashscreen-lg.png'
 import PikachuRun from '../Components/Animations/PikachuRun'
 import Button from '../Components/Form/Buttons/Button'

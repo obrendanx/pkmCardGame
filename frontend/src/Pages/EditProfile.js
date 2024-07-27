@@ -1,5 +1,4 @@
 import React, {useContext, useState, useEffect} from 'react'
-import styled from '@emotion/styled'
 import { AuthContext } from '../Components/User/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Input from '../Components/Form/Input';
@@ -7,125 +6,125 @@ import Submit from '../Components/Form/Submit';
 import Label from '../Components/Form/Label';
 import TextArea from '../Components/Form/TextArea'
 import { TwitterPicker } from 'react-color';
-import axios from 'axios';
-import { css } from '@emotion/css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {BsTwitter, BsFacebook, BsInstagram} from 'react-icons/bs';
 import PokemonCard from '../Components/Cards/PokemonCard';
-import useUpdateAuth from '../Querys/updateAuthQuery';
-import useUpdateUser from '../Querys/updateUserQuery';
-import { useShowEmail } from '../Querys/showEmailQuery';
-import { useShowSocials } from '../Querys/showSocialsQuery';
-import { useShowDob } from '../Querys/showDobQuery';
-import { useShowFullname } from '../Querys/showFullnameQuery';
-import { useShowBio } from '../Querys/showBioQuery';
-import { useShowGender } from '../Querys/showGenderQuery';
-import { useShowInterests } from '../Querys/showInterestsQuery';
+import useUpdateUser from '../Querys/updateProfileQuery';
+import { useShowProfile } from '../Querys/showProfileQuery';
+import { useShowUser } from '../Querys/showUserQuery';
+import useUpdateUserAuth from '../Querys/updateAuthQuery';
 
 function EditProfile() {
-  const { isLoggedIn, username, pokemon } = useContext(AuthContext);
-  const [updatedPassword, setUpdatedPassword] = useState('');
-  const [passwordRetype, setPasswordRetype] = useState('');
-  const [updateFullName, setUpdateFullName] = useState('');
-  const [bio, setBio] = useState('');
-  const [profileIconColor, setProfileIconColor] = useState('#3F51B5'); // Default color
-  const [gender, setGender] = useState('');
-  const [isLoading, setLoading] = useState(true);
-  const [socialMedia, setSocialMedia] = useState({
-    twitter: "",
-    facebook: "",
-    instagram: "",
-  });
-  const [interests, setInterests] = useState([]);
-  const [isLoadingUsername, setLoadingUsername] = useState(true);
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
-  const addUserMutation = useUpdateUser();
-  const addAuthMutation = useUpdateAuth();
-  const { data: currentEmail } = useShowEmail(username);
-  const { data: socials } = useShowSocials(username);
-  const { data: currentDob } = useShowDob(username);
-  const { data: fullname } = useShowFullname(username);
-  const { data: currentBio } = useShowBio(username);
-  const { data: curGender } = useShowGender(username);
-  const { data: currentInterests } = useShowInterests(username);
+  const { isLoggedIn, username, pokemon, userId} = useContext(AuthContext);
 
+  //update profile
+  const [Bio, setBio] = useState(null);
+  const [profileIconColor, setProfileIconColor] = useState('#3F51B5'); // Default color
+  const [Gender, setGender] = useState(null);
+  const [Twitter, setTwitter] = useState(null);
+  const [Facebook, setFacebook] = useState(null);
+  const [Instagram, setInstagram] = useState(null);
+  const [FavoritePokemonName, setPokemonName] = useState(null);
+  const [FavoritePokemonImage, setPokemonImage] = useState(null);
+
+  //update user
+  const [FullName, setUpdateFullName] = useState(null);
+  const [Password, setPassword] = useState(null);
+  const [passwordRetype, setPasswordRetype] = useState(null);
+
+  const [userUpdated, setUserUpdated] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [isLoadingUsername, setLoadingUsername] = useState(true);
+
+  const [errors, setErrors] = useState({});
+
+  const addUserMutation = useUpdateUser();
+  const addUserAuthMutation = useUpdateUserAuth();
+
+  const navigate = useNavigate();
+
+  //get profile data
+  const { data: profile } = useShowProfile(userId);
+  const { data: user } = useShowUser(userId);
 
   useEffect(() => {
     if (username !== null) {
-      if((currentEmail || socials || currentDob || fullname || currentBio || curGender || currentInterests) !== undefined){
+      if((profile) !== undefined){
         setLoading(false)
       }
     } else {
       setLoadingUsername(false); // Set loading to false if username is not found
     }
-  }, [username, currentEmail, socials, currentDob, currentBio, fullname, curGender, currentInterests]);
+
+    setPokemonName(pokemon.name);
+    setPokemonImage(pokemon.image);
+  }, [username, profile, pokemon]);
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formErrors = {};
 
     //Check to see if a correct 'Full Name' is entered
-    if (updateFullName.trim() === '') {
+    if(FullName != null){
+      if (FullName.trim() === '') {
         formErrors.updateFullName = 'Full Name is required';
-    } else if (!/^[a-zA-Z ]+$/.test(updateFullName)) {
-        formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+      } else if (!/^[a-zA-Z ]+$/.test(FullName)) {
+          formErrors.updateFullName = 'Full Name can only contain letters and spaces';
+      }
     }
 
     //Check to see if a correct 'Password' is entered and matched correctly
-    if (updatedPassword.trim() === '') {
-        formErrors.updatedPassword = 'Password is required';
-    } else if (updatedPassword.length < 6) {
-        formErrors.updatedPassword = 'Password must be at least 6 characters long';
-    } else if (
-        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(updatedPassword)
-    ) {
-        formErrors.updatedPassword =
-        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
+    if(Password != null){
+      if (Password.trim() === '') {
+        formErrors.Password = 'Password is required';
+      } else if (Password.length < 6) {
+          formErrors.Password = 'Password must be at least 6 characters long';
+      } else if (
+          !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*().]).{6,}/.test(Password)
+      ) {
+          formErrors.Password =
+          'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol';
+      }
     }
 
-    if (updatedPassword !== passwordRetype) {
+    if (Password !== passwordRetype) {
         formErrors.passwordRetype = 'Passwords do not match';
     }
 
     setErrors(formErrors);
 
-    const authUpdateData = {
-        username,
-        updatedPassword,
-        updateFullName,
-    };
-
     const userUpdateData = {
-        username,
+        userId,
         profileIconColor,
-        bio,
-        gender,
-        interests,
-        socialMedia,
-        pokemon
+        Bio,
+        Gender,
+        Twitter,
+        Facebook,
+        Instagram,
+        FavoritePokemonName,
+        FavoritePokemonImage
     };
 
-        let authUpdated = false;
-        let userUpdated = false;
+    const userUpdateAuthData = {
+      userId,
+      FullName,
+      Password
+    }
 
+    if (userUpdateAuthData.FullName != null || userUpdateAuthData.Password != null) {
+      await addUserAuthMutation.mutateAsync(userUpdateAuthData);
+      setUserUpdated(true);
+    }
 
-        //Routes to update information to 
-        //Routes split due to different information in different microservices
-        if (updatedPassword || updateFullName) {
-        await addAuthMutation.mutateAsync(authUpdateData);
-        authUpdated = true;
-        }
+    if (userUpdateData.Bio != null || userUpdateData.Facebook != null || userUpdateData.FavoritePokemonImage != null || userUpdateData.FavoritePokemonName != null || userUpdateData.Gender != null || userUpdateData.Instagram != null || userUpdateData.Twitter != null || userUpdateData.profileIconColor != null) {
+      await addUserMutation.mutateAsync(userUpdateData);
+      setUserUpdated(true);
+    }
 
-        if (profileIconColor || bio || gender) {
-        await addUserMutation.mutateAsync(userUpdateData);
-        userUpdated = true;
-        }
-
-        if(!authUpdateData && !userUpdateData){
-            toast.error("No changes have been made");
-        }
+    if(!userUpdateData && !userUpdateAuthData){
+        toast.error("No changes have been made");
+    }
     };
 
   return (
@@ -143,17 +142,17 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor="email" text="Email"/>
-                                <span className='min-h-4 w-full m-4 p-2'>{currentEmail.email}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{user.email}</span>
                         </div>
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor='dateofbirth' text="Date of Birth"/>
-                                <span className='min-h-4 w-full m-4 p-2'>{currentDob.dateOfBirth}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{user.dateOfBirth}</span>
                         </div>
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                             <Label htmlFor="gender" text="Gender" />
-                            <select className='border-none h-10 p-2 ml-4 mt-2 mb-2' name="gender" value={curGender.gender} onChange={(e) => setGender(e.target.value)}>
+                            <select className='border-none h-10 p-2 ml-4 mt-2 mb-2' name="gender" value={profile.gender} onChange={(e) => setGender(e.target.value)}>
                             <option>Select a Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -166,8 +165,8 @@ function EditProfile() {
                                 <Input 
                                     type="password"
                                     placeholder="Please enter a password"
-                                    value={updatedPassword}
-                                    onValueChange={setUpdatedPassword}
+                                    value={Password}
+                                    onValueChange={setPassword}
                                     left="2.5%"
                                 />
                                 {errors.updatedPassword && <span className='font-sm text-[#f44336] ml-4'>{errors.updatedPassword}</span>}
@@ -187,11 +186,10 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor="fullName" text="Full Name"/>
-                                <span className='min-h-4 w-full m-4 p-2'>{fullname.fullName}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{user.fullName}</span>
                                 <Input 
                                     type="text"
                                     placeholder="Please enter your name"
-                                    value={fullname.fullName}
                                     onValueChange={setUpdateFullName}
                                     left="2.5%"
                                 />
@@ -200,56 +198,55 @@ function EditProfile() {
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="twitter" text={<BsTwitter/>} />
+                          <span className='min-h-4 w-full m-4 p-2'><a href={profile.twitter}>{profile.twitter}</a></span>
                           <Input
                             type="text"
                             placeholder="Twitter profile URL"
-                            value={socials.socials.twitter}
-                            onValueChange={(value) => setSocialMedia({ ...socialMedia, twitter: value })}
+                            onValueChange={setTwitter}
                             left="2.5%"
                           />
                         </div>
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="facebook" text={<BsFacebook/>} />
+                          <span className='min-h-4 w-full m-4 p-2'><a href={profile.facebook}>{profile.facebook}</a></span>
                           <Input
                             type="text"
                             placeholder="Facebook profile URL"
-                            value={socials.socials.facebook}
-                            onValueChange={(value) => setSocialMedia({ ...socialMedia, facebook: value })}
+                            onValueChange={setFacebook}
                             left="2.5%"
                           />
                         </div>
 
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="instagram" text={<BsInstagram/>} />
+                          <span className='min-h-4 w-full m-4 p-2'><a href={profile.instagram}>{profile.instagram}</a></span>
                           <Input
                             type="text"
                             placeholder="Instagram profile URL"
-                            value={socials.socials.instagram}
-                            onValueChange={(value) => setSocialMedia({ ...socialMedia, instagram: value })}
+                            onValueChange={setInstagram}
                             left="2.5%"
                           />
                         </div>
-
+                        {/*}
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                           <Label htmlFor="interests" text="Interests" />
-                          <span className='min-h-4 w-full m-4 p-2'>{currentInterests.interests}</span>
+                          <span className='min-h-4 w-full m-4 p-2'></span>
                           <TextArea
                             type="text"
                             placeholder="Your interests"
-                            value={currentInterests.interests.join(", ")}
-                            onValueChange={(value) => setInterests(value.split(",").map((item) => item.trim()))}
+                            
                             width="90%"
                           />
                         </div>
-
+                        */}
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                                 <Label htmlFor="bio" text="Bio" />
-                                <span className='min-h-4 w-full m-4 p-2'>{currentBio.bio}</span>
+                                <span className='min-h-4 w-full m-4 p-2'>{profile.bio}</span>
                                 <TextArea
                                     type="text"
                                     placeholder="Bio"
-                                    value={bio}
+                                    value={Bio}
                                     onValueChange={setBio}
                                     width="90%"
                                 />
@@ -258,7 +255,7 @@ function EditProfile() {
                         <div className='min-h-24 w-2/5 m-4 p-4 rounded-xl bg-[#ffd57b] md:w-full'>
                             <Label htmlFor="profileIconColor" text="Profile Icon Color" />
                             <TwitterPicker
-                            color={profileIconColor}
+                            color={profile.profileIconColor}
                             onChange={(color) => setProfileIconColor(color.hex)}
                             className='mt-4 ml-6 p-4 md:mb-4'/>
                         </div>

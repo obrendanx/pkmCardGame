@@ -3,23 +3,12 @@ import Input from '../../Form/Input';
 import Label from '../../Form/Label';
 import Submit from '../../Form/Submit';
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/css';
 import MediumHeader from '../../Headers/MediumHeader';
-import axios from 'axios';
-import moment from 'moment';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
-import styled from '@emotion/styled';
 import useSignup from '../../../Querys/signupQuery';
-import useProfileSetup from '../../../Querys/setProfileQuery';
-
-const Error = styled.span`
-    font-size:0.8em;
-    color:#F44336;
-    margin-left:2.5%;
-`
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -33,7 +22,6 @@ function Register() {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const addSignupMutation = useSignup();
-  const addProfileMutation = useProfileSetup();
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -93,35 +81,32 @@ function Register() {
     // Proceed with sign-up logic if there are no errors
     if (Object.keys(formErrors).length === 0) {
       try {
-        const dob = moment(dateOfBirth, 'DD/MM/YYYY').toDate();
+        const dateTime = new Date(); 
         // const dob = moment(dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
+        var isGlobalAdmin = false;
+
         const registered = {
-          fullName,
           username,
-          email,
+          fullName,
           password,
-          dob,
-          announcements
+          email,
+          dateOfBirth,
+          announcements,
+          isGlobalAdmin,
+          dateTime
         };
 
         await addSignupMutation.mutateAsync(registered);
 
-        const profile = {
-          username,
-          dob
-        };
-
-        await addProfileMutation.mutateAsync(profile);
-
       } catch (error) {
-        console.error(error.response.data); 
+        console.error(error.response); 
         if (
           error.response &&
-          error.response.data &&
-          error.response.data.message
+          error.response &&
+          error.response.message
         ) {
-          toast.error(error.response.data.message, {
+          toast.error(error.response.message, {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 5000,
             hideProgressBar: true,
@@ -164,7 +149,7 @@ function Register() {
                   value={username}
                   onValueChange={setUsername}
                 />
-                {errors.username && <Error>{errors.username}</Error>}
+                {errors.username && <span className='font-sm text-[#f44336] ml-4'>{errors.username}</span>}
               </div>
 
               <div>
@@ -175,7 +160,7 @@ function Register() {
                   value={fullName}
                   onValueChange={setFullName}
                 />
-                {errors.fullName && <Error>{errors.fullName}</Error>}
+                {errors.fullName && <span className='font-sm text-[#f44336] ml-4'>{errors.fullName}</span>}
               </div>
 
               <div>
@@ -186,7 +171,7 @@ function Register() {
                   value={password}
                   onValueChange={setPassword}
                 />
-                {errors.password && <Error>{errors.password}</Error>}
+                {errors.password && <span className='font-sm text-[#f44336] ml-4'>{errors.password}</span>}
               </div>
 
               <div>
@@ -197,7 +182,7 @@ function Register() {
                   value={retypePassword}
                   onValueChange={setRetypePassword}
                 />
-                {errors.retypePassword && <Error>{errors.retypePassword}</Error>}
+                {errors.retypePassword && <span className='font-sm text-[#f44336] ml-4'>{errors.retypePassword}</span>}
               </div>
 
               <div>
@@ -208,7 +193,7 @@ function Register() {
                   value={email}
                   onValueChange={setEmail}
                 />
-                {errors.email && <Error>{errors.email}</Error>}
+                {errors.email && <span className='font-sm text-[#f44336] ml-4'>{errors.email}</span>}
               </div>
 
               <div>
@@ -219,7 +204,7 @@ function Register() {
                   value={dateOfBirth}
                   onValueChange={setDateOfBirth}
                 />
-                {errors.dateOfBirth && <Error>{errors.dateOfBirth}</Error>}
+                {errors.dateOfBirth && <span className='font-sm text-[#f44336] ml-4'>{errors.dateOfBirth}</span>}
               </div>
 
               <div>

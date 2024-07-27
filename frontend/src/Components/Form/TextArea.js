@@ -1,5 +1,4 @@
 import React from 'react'
-import { css } from '@emotion/css'
 
 function TextArea({ width, type, textname, value, onValueChange }) {
    const handleInputChange = (event) => {
